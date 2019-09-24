@@ -1,0 +1,14 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$domi-app-primary: mat-palette($mat-teal, 200, );
+$domi-app-accent:  mat-palette($mat-amber, A200);
+$domi-theme-warn:  mat-palette($mat-red, A200);
+
+$domi-theme: mat-light-theme(
+  $domi-theme-primary,
+  $domi-theme-accent,
+  $domi-theme-warn
+);
+
+@include angular-material-theme($domi-theme);

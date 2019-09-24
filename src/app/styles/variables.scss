@@ -1,0 +1,6 @@
+@import '~@angular/material/theming';
+@import 'theme.scss';
+
+$primary: mat-color($domi-app-primary);
+$accent: mat-color($domi-app-accent);
+$warn: mat-color($domi-app-warn);

@@ -3,11 +3,26 @@
 }
 
 .container-geral {
+  background-color: #fafafa;
   height: 100vh;
 }
 
 .conteudo {
-  background-color: #fafafa;
-  // height: 100%;
+  width: 100%;
+  padding: 0 24px;
   max-width: 1200px;
+}
+
+.navegacao {
+  padding: 24px;
+}
+
+mat-sidenav-container {
+  mat-sidenav {
+    background-color: #fafafa;
+    border: none;
+  }
+  mat-sidenav-content {
+    width: 100%;
+  }
 }

@@ -1,8 +1,16 @@
-<div fxLayout="column" class="container-geral" fxLayoutAlign="center center">
-  <div class="cabecalho">
-    <app-toolbar fxFlex></app-toolbar>
+<div class="container-geral" fxLayout="column">
+  <div class="cabecalho" fxFlex="nogrow">
+    <app-toolbar fxFlex (toggleSidenav)="sidenavEsquerdoAberto = !sidenavEsquerdoAberto"></app-toolbar>
   </div>
-  <div fxFlex class="conteudo" fxLayoutAlign="start">
-    <router-outlet></router-outlet>
-  </div>
+  <mat-sidenav-container fxFlex>
+    <mat-sidenav [(opened)]="sidenavEsquerdoAberto" mode="side" fxFlex="250px" class="navegacao">
+      <app-navegacao-menu></app-navegacao-menu>
+    </mat-sidenav>
+    <mat-sidenav opened mode="side" fxFlex="200px" position="end">Outras coisas</mat-sidenav>
+    <mat-sidenav-content fxLayoutAlign="center" fxFlex>
+      <div fxFlex class="conteudo">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

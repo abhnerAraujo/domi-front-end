@@ -1,3 +1,12 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>Teste</mat-toolbar-row>
+  <mat-toolbar-row fxLayoutAlign="space-between center">
+    <div fxLayoutAlign="start center" fxLayoutGap="16px">
+      <button mat-icon-button (click)="toggleSidenav.emit()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div style="height: 40px; font-size: 24px;" fxLayoutAlign="center center">
+        TESTE
+      </div>
+    </div>
+  </mat-toolbar-row>
 </mat-toolbar>

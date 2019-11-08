@@ -7,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContainerPrincipalWrapperComponent implements OnInit {
 
-  constructor() { }
+  sidenavEsquerdoAberto: boolean;
+
+  constructor() {
+    this.sidenavEsquerdoAberto = true;
+  }
 
   ngOnInit() {
   }

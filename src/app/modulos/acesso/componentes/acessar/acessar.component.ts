@@ -15,7 +15,12 @@ export class AcessarComponent implements OnInit {
 
   entrar() {
     const milli = new Date().getMilliseconds();
+    const usuario = {
+      nome: 'Abhner Araujo',
+      email: 'abhnerfelipe@gmail.com'
+    };
     localStorage.setItem('x-access-token', `${milli}`);
+    localStorage.setItem('usuario', JSON.stringify(usuario));
     this.router.navigate(['home']);
   }
 

@@ -1,0 +1,24 @@
+<h1>Pacientes</h1>
+<div>
+  <div *ngFor="let paciente of pacientes" fxLayoutGap="8px">
+    <div fxFlex="nogrow">
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <div fxLayout="column" fxFlex>
+      <div fxFlex="8px">
+        <div>
+          {{ paciente.nome }}
+        </div>
+        <div>
+          {{ paciente.idade }} anos
+        </div>
+      </div>
+      <div *ngIf="paciente.responsavel">
+        {{ paciente.responsavel }}
+      </div>
+    </div>
+    <div fxFlex="nogrow">
+      <mat-icon>edit</mat-icon>
+    </div>
+  </div>
+</div>

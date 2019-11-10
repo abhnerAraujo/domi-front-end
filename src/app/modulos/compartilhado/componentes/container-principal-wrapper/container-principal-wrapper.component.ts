@@ -28,11 +28,18 @@ export class ContainerPrincipalWrapperComponent implements OnInit {
           this.sidenavEsquerdoMode = 'over';
         } else {
           this.sidenavEsquerdoMode = 'side';
+          this.sidenavDireitoAberto = true;
         }
       });
   }
 
   ngOnInit() {
+  }
+
+  fecharSidenavEsquerdo() {
+    if (this.activeMediaQuery === 'xs') {
+      this.sidenavEsquerdoAberto = false;
+    }
   }
 
 }

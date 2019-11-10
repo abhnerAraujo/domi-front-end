@@ -4,7 +4,7 @@
   </div>
   <mat-sidenav-container fxFlex>
     <mat-sidenav [(opened)]="sidenavEsquerdoAberto" [mode]="sidenavEsquerdoMode" fxFlex="250px" class="navegacao">
-      <app-navegacao-menu></app-navegacao-menu>
+      <app-navegacao-menu (click)="fecharSidenavEsquerdo()"></app-navegacao-menu>
     </mat-sidenav>
     <mat-sidenav [(opened)]="sidenavDireitoAberto" mode="side" fxFlex="200px" position="end"></mat-sidenav>
     <mat-sidenav-content fxLayoutAlign="center" fxFlex>

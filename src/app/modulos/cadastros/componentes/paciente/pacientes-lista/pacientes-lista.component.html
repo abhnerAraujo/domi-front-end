@@ -1,24 +1,33 @@
 <h1>Pacientes</h1>
-<div>
-  <div *ngFor="let paciente of pacientes" fxLayoutGap="8px">
-    <div fxFlex="nogrow">
-      <mat-icon>account_circle</mat-icon>
-    </div>
-    <div fxLayout="column" fxFlex>
-      <div fxFlex="8px">
-        <div>
-          {{ paciente.nome }}
+<div fxLayout="column" fxLayoutGap="8px">
+  <div *ngFor="let paciente of pacientes" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayoutGap="8px" fxLayoutAlign="start center">
+      <div fxFlex="nogrow" fxLayoutAlign="center center" class="icon-usuario">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div fxLayout="column" fxFlex>
+        <div class="info-paciente" fxLayoutGap="8px" fxLayout="row">
+          <div class="nome-paciente">
+            {{ paciente.nome }}
+          </div>
+          <div class="idade-paciente">
+            {{ paciente.idade }} anos
+          </div>
         </div>
-        <div>
-          {{ paciente.idade }} anos
+        <div class="nome-responsavel" *ngIf="paciente.responsavel" title="Responável: {{ paciente.responsavel }}">
+          Resp.: {{ paciente.responsavel }}
         </div>
       </div>
-      <div *ngIf="paciente.responsavel">
-        {{ paciente.responsavel }}
+      <div fxFlex="nogrow">
+        <button mat-icon-button color="accent">
+          <mat-icon>edit</mat-icon>
+        </button>
       </div>
     </div>
-    <div fxFlex="nogrow">
-      <mat-icon>edit</mat-icon>
-    </div>
+    <mat-divider></mat-divider>
   </div>
 </div>
+
+<button mat-fab color="accent">
+  <mat-icon>add</mat-icon>
+</button>

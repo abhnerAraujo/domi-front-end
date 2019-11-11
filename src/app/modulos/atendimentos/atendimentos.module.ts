@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AtendimentosListaComponent } from './componentes/atendimentos-lista/atendimentos-lista.component';
 import { MatIconModule, MatDividerModule, MatButtonModule } from '@angular/material';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [AtendimentosListaComponent],
@@ -13,7 +14,8 @@ import { MatIconModule, MatDividerModule, MatButtonModule } from '@angular/mater
     FlexLayoutModule,
     MatIconModule,
     MatDividerModule,
-    MatButtonModule
+    MatButtonModule,
+    FullCalendarModule
   ]
 })
 export class AtendimentosModule { }

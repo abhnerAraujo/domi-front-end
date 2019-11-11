@@ -1,0 +1,28 @@
+<div fxLayoutAlign="space-between center">
+  <h1>Atendimentos</h1>
+  <div>
+    <button mat-button color="accent">
+      <mat-icon>view_agenda</mat-icon> AGENDA
+    </button>
+  </div>
+</div>
+<div fxLayout="column" fxLayoutGap="8px">
+  <div *ngFor="let atendimento of atendimentos" fxLayout="column" fxLayoutGap="8px">
+    <div fxLayout="column" class="info-paciente" fxLayoutGap="4px">
+      <div fxFlex fxLayoutGap="8px" fxLayoutAlign="start center">
+        <div fxFlex="nogrow" fxLayoutAlign="center center">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        <div fxLayout="column">
+          <div class="nome-paciente" fxLayoutAlign="start center">
+            {{ atendimento.nome }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+</div>
+<button mat-fab color="accent">
+  <mat-icon>add</mat-icon>
+</button>

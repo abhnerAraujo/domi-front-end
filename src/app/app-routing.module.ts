@@ -23,6 +23,10 @@ const routes: Routes = [
       {
         path: 'cadastros',
         loadChildren: () => import('./modulos/cadastros/cadastros-routing.module').then(m => m.CadastrosRoutingModule)
+      },
+      {
+        path: 'atendimentos',
+        loadChildren: () => import('./modulos/atendimentos/atendimentos.module').then(m => m.AtendimentosModule)
       }
     ]
   },

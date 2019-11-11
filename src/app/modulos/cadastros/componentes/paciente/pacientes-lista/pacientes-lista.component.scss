@@ -1,0 +1,30 @@
+.info-paciente {
+  font-size: 16px;
+  .nome-paciente {
+    font-weight: 600;
+    opacity: 0.9;
+  }
+  .idade-paciente {
+    opacity: 0.8;
+  }
+}
+
+.icon-usuario {
+  opacity: 0.8;
+}
+
+.nome-responsavel {
+  opacity: 0.7;
+}
+
+.add-paciente {
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.mat-fab {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+}

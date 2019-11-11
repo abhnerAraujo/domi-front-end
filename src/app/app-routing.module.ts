@@ -1,10 +1,35 @@
+import { AcessoGuard } from './guards/acesso/acesso.guard';
 import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {
+  ContainerPrincipalWrapperComponent
+} from './modulos/compartilhado/componentes/container-principal-wrapper/container-principal-wrapper.component';
 
 const routes: Routes = [
   {
-    path: '**'
+    path: 'acessar',
+    loadChildren: () => import('./modulos/acesso/acesso.module').then(m => m.AcessoModule)
+  },
+  {
+    path: '',
+    component: ContainerPrincipalWrapperComponent,
+    canActivate: [AcessoGuard],
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./modulos/home/home.module').then(m => m.HomeModule)
+      },
+      {
+        path: 'cadastros',
+        loadChildren: () => import('./modulos/cadastros/cadastros-routing.module').then(m => m.CadastrosRoutingModule)
+      }
+    ]
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ];
 

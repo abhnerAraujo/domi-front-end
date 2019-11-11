@@ -1,2 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'app/styles/_index.scss';
+
+* {
+  font-family: 'Karla', sans-serif;
+}
+
+.mat-dialog-container {
+  max-width: 100vw !important;
+}
+
+mat-icon {
+  font-family: 'Material Icons' !important;
+}

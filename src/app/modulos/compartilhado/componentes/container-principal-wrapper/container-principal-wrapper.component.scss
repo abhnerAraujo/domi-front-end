@@ -26,4 +26,7 @@ mat-sidenav-container {
   mat-sidenav-content {
     width: 100%;
   }
+  .mat-drawer.mat-drawer-end {
+    z-index: 0;
+  }
 }

@@ -8,4 +8,8 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname + `/dist/domi-front-end/index.html`));
 });
 
-app.listen(process.env.PORT || 8080);
+var port = process.env.PORT || 3000;
+
+app.listen(port, process.env.IP || "0.0.0.0", function () {
+  console.log("Server listening on " + port);
+});

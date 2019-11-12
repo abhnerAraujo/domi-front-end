@@ -3,17 +3,18 @@
   <form fxLayout="column" [formGroup]="horarioForm" autocomplete="off">
     <mat-form-field appearance="outline" fxFlex>
       <mat-label>Começarei as</mat-label>
-      <input matInput [ngxTimepicker]="pickerInicio" [disableClick]="true" [format]="24" formControlName="inicio"
-        readonly>
+      <input cdkFocusInitial matInput [ngxTimepicker]="pickerInicio" [disableClick]="true" [format]="24"
+        formControlName="inicio" readonly>
       <ngx-material-timepicker [theme]="temaPrimario" #pickerInicio></ngx-material-timepicker>
       <ngx-material-timepicker-toggle [for]="pickerInicio" matSuffix>
         <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
       </ngx-material-timepicker-toggle>
+      <mat-error *ngIf="horarioForm.get('inicio').getError('required')">Este campo é obrigatório</mat-error>
     </mat-form-field>
     <div fxLayoutGap="8px" fxLayout="column">
       <div fxLayoutAlign="space-between center">
         <div style="font-weight: 600;">
-          Sessões
+          Sessões:
         </div>
         <div>
           {{ horarioForm.get('quantidade').value }}
@@ -26,7 +27,7 @@
     <div fxLayoutGap="8px" fxLayout="column">
       <div fxLayoutAlign="space-between center">
         <div style="font-weight: 600;">
-          Duração da sessão
+          Duração da sessão (min):
         </div>
         <div>
           {{ horarioForm.get('duracao').value }}
@@ -40,6 +41,6 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button>CANCELAR</button>
-  <button mat-button cdkFocusInitial>CRIAR</button>
+  <button mat-button [mat-dialog-close]="null">CANCELAR</button>
+  <button mat-button [disabled]="!horarioForm.valid" (click)="confirmar()">CRIAR</button>
 </div>

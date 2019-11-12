@@ -1,7 +1,8 @@
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dialog-adicionar-evento',
@@ -11,9 +12,7 @@ import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
 export class DialogAdicionarEventoComponent implements OnInit {
 
   horarioForm: FormGroup;
-  selecao = {
-
-  };
+  eventos: any[];
 
   darkTheme: NgxMaterialTimepickerTheme;
   temaPrimario: NgxMaterialTimepickerTheme;
@@ -23,8 +22,8 @@ export class DialogAdicionarEventoComponent implements OnInit {
     formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: Date) {
     this.horarioForm = formBuilder.group({
-      inicio: [''],
-      quantidade: [3],
+      inicio: ['', Validators.required],
+      quantidade: [1],
       duracao: [40]
     });
     this.temaPrimario = {
@@ -34,7 +33,7 @@ export class DialogAdicionarEventoComponent implements OnInit {
       },
       dial: {
         dialBackgroundColor: '#4fb3bf',
-        dialActiveColor: '#455a64',
+        dialActiveColor: '#fff',
         dialInactiveColor: '#cfd8dc'
       },
       clockFace: {
@@ -43,26 +42,34 @@ export class DialogAdicionarEventoComponent implements OnInit {
         clockFaceTimeInactiveColor: '#00838f'
       }
     };
-    this.darkTheme = {
-      container: {
-        bodyBackgroundColor: '#424242',
-        buttonColor: '#fff'
-      },
-      dial: {
-        dialBackgroundColor: '#555',
-      },
-      clockFace: {
-        clockFaceBackgroundColor: '#555',
-        clockHandColor: '#9fbd90',
-        clockFaceTimeInactiveColor: '#fff'
-      }
-    };
+
+
   }
 
-  ngOnInit() {
-    this.horarioForm.valueChanges.subscribe(value => {
-      console.log(value);
-    });
+  ngOnInit() { }
+
+  confirmar() {
+    this.eventos = [];
+    const value = this.horarioForm.value;
+    if (value.inicio) {
+      for (let i = 0; i < value.quantidade; i++) {
+        const dataAtendimento = this.data.toISOString().split('T').shift();
+        let horaAtendimento: string;
+        if (i > 0) {
+          horaAtendimento = moment(this.eventos[i - 1].end).format('HH:mm');
+        } else {
+          horaAtendimento = (value.inicio as string);
+        }
+        const inicio = moment(`${dataAtendimento} ${horaAtendimento}`);
+        this.eventos.push({
+          title: 'Matheus Felipe',
+          start: inicio.toISOString(),
+          end: inicio.add(value.duracao, 'minutes').toISOString(),
+          description: 'Atendimento de Matheus Felipe (Sessão 1)'
+        });
+      }
+    }
+    this.dialogRef.close(this.eventos);
   }
 
 }

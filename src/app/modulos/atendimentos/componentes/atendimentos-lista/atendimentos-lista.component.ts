@@ -1,5 +1,5 @@
 import { DialogAdicionarEventoComponent } from './componentes/dialog-adicionar-evento/dialog-adicionar-evento.component';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -89,15 +89,11 @@ export class AtendimentosListaComponent implements OnInit, AfterViewInit {
     this.calendario.setOption('navLinks', true);
     this.calendario.setOption('navLinkDayClick', (date: Date, jsEvent) => {
       const dialogRef = this.dialog.open(DialogAdicionarEventoComponent, { data: date });
-      dialogRef.afterClosed().subscribe(resultado => {
-        this.calendario.addEvent({
-          title: 'Matheus Felipe',
-          start: date.toISOString(),
-          end: moment(date.toISOString()).add(1, 'hours').toISOString(),
-          description: 'Atendimento de Matheus Felipe (Sessão 2)'
-        });
-        this.snackBar.open('Atendimento agendado', 'OK', { duration: 3500 });
-
+      dialogRef.afterClosed().subscribe((eventos: any[]) => {
+        if (eventos) {
+          eventos.forEach(evento => this.calendario.addEvent(evento));
+          this.snackBar.open('Atendimento agendado', 'OK', { duration: 3500 });
+        }
       });
     });
     events.forEach(event => {

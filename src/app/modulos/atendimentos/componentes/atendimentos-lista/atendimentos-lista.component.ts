@@ -88,7 +88,7 @@ export class AtendimentosListaComponent implements OnInit, AfterViewInit {
     this.calendario.setOption('footer', { center: '', left: '', right: '' });
     this.calendario.setOption('navLinks', true);
     this.calendario.setOption('navLinkDayClick', (date: Date, jsEvent) => {
-      const dialogRef = this.dialog.open(DialogAdicionarEventoComponent);
+      const dialogRef = this.dialog.open(DialogAdicionarEventoComponent, { data: date });
       dialogRef.afterClosed().subscribe(resultado => {
         this.calendario.addEvent({
           title: 'Matheus Felipe',

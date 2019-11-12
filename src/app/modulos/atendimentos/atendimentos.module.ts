@@ -6,7 +6,8 @@ import { CommonModule } from '@angular/common';
 import { AtendimentosListaComponent } from './componentes/atendimentos-lista/atendimentos-lista.component';
 import {
   MatIconModule, MatDividerModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatDialogModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatSliderModule
 } from '@angular/material';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -29,7 +30,8 @@ import {
     ReactiveFormsModule,
     MatDialogModule,
     MatSnackBarModule,
-    NgxMaterialTimepickerModule.setLocale('pt-BR')
+    NgxMaterialTimepickerModule.setLocale('pt-BR'),
+    MatSliderModule,
   ],
   entryComponents: [
     DialogAdicionarEventoComponent

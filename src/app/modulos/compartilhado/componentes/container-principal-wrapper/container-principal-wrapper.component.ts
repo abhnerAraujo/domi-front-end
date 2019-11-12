@@ -22,7 +22,7 @@ export class ContainerPrincipalWrapperComponent implements OnInit {
     this.mediaQuerySubscription = this.mediaObserver.asObservable().subscribe(
       (change: MediaChange[]) => {
         this.activeMediaQuery = change[0].mqAlias;
-        if (this.activeMediaQuery === 'xs') {
+        if (this.activeMediaQuery === 'xs' || this.activeMediaQuery === 'sm') {
           this.sidenavDireitoAberto = false;
           this.sidenavEsquerdoAberto = false;
           this.sidenavEsquerdoMode = 'over';

@@ -1,3 +1,4 @@
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { CompartilhadoModule } from './modulos/compartilhado/compartilhado.module';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -13,7 +14,8 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    CompartilhadoModule
+    CompartilhadoModule,
+    NgxMaterialTimepickerModule.setLocale('pt-BR')
   ],
   providers: [],
   bootstrap: [AppComponent]

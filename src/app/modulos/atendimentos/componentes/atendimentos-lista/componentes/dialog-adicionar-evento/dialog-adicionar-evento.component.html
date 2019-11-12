@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Novo evento</h1>
+<div mat-dialog-content fxLayoutGap="8px">
+  <mat-form-field appearance="outline" fxFlex>
+    <mat-label>Começarei as</mat-label>
+    <input matInput [ngxTimepicker]="pickerInicio">
+    <ngx-material-timepicker #pickerInicio></ngx-material-timepicker>
+  </mat-form-field>
+  <mat-form-field appearance="outline" fxFlex>
+    <mat-label>Terminarei as</mat-label>
+    <input matInput [ngxTimepicker]="pickerFim">
+    <ngx-material-timepicker #pickerFim></ngx-material-timepicker>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button>No Thanks</button>
+  <button mat-button cdkFocusInitial>Ok</button>
+</div>

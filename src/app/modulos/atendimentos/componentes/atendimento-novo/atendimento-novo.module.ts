@@ -1,4 +1,10 @@
-import { MatButtonModule, MatDividerModule } from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import {
+  MatButtonModule, MatDividerModule, MatIconModule, MatCardModule, MatFormFieldModule, MatInputModule,
+  MatAutocompleteModule,
+  MatDatepickerModule
+} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AtendimentoNovoRoutingModule } from './atendimento-novo-routing.module';
 import { NgModule } from '@angular/core';
@@ -12,7 +18,15 @@ import { AtendimentoNovoComponent } from './componentes/atendimento-novo/atendim
     AtendimentoNovoRoutingModule,
     FlexLayoutModule,
     MatButtonModule,
-    MatDividerModule
+    MatDividerModule,
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule.setLocale('pt-BR'),
+    ReactiveFormsModule
   ]
 })
 export class AtendimentoNovoModule { }

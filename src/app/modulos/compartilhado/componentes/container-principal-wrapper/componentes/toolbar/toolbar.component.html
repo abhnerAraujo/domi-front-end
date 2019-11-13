@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row fxFlex fxLayoutAlign="space-between center">
-    <div fxLayoutAlign="start center" fxLayoutGap="16px" fxFlex>
+    <div fxLayoutAlign="start center" fxLayoutGap="8px" fxFlex>
       <button mat-icon-button (click)="toggleSidenav.emit()">
         <mat-icon>menu</mat-icon>
       </button>
@@ -11,7 +11,7 @@
     <div fxflex fxLayoutAlign="center center">
       <button mat-button>INICIAR ATENDIMENTO</button>
     </div>
-    <div fxFlex fxLayoutAlign="end center">
+    <div fxHide.xs fxFlex fxLayoutAlign="end center">
       <button mat-button>Abhner Araujo</button>
     </div>
   </mat-toolbar-row>

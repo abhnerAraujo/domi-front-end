@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dialog-adicionar-evento',
@@ -8,9 +11,65 @@ import { MatDialogRef } from '@angular/material';
 })
 export class DialogAdicionarEventoComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<DialogAdicionarEventoComponent>) { }
+  horarioForm: FormGroup;
+  eventos: any[];
 
-  ngOnInit() {
+  darkTheme: NgxMaterialTimepickerTheme;
+  temaPrimario: NgxMaterialTimepickerTheme;
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogAdicionarEventoComponent>,
+    formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: Date) {
+    this.horarioForm = formBuilder.group({
+      inicio: ['', Validators.required],
+      quantidade: [1],
+      duracao: [40]
+    });
+    this.temaPrimario = {
+      container: {
+        bodyBackgroundColor: '#fafafa',
+        buttonColor: '#48a999'
+      },
+      dial: {
+        dialBackgroundColor: '#4fb3bf',
+        dialActiveColor: '#fff',
+        dialInactiveColor: '#cfd8dc'
+      },
+      clockFace: {
+        clockFaceBackgroundColor: '#fafafa',
+        clockHandColor: '#00838f',
+        clockFaceTimeInactiveColor: '#00838f'
+      }
+    };
+
+
+  }
+
+  ngOnInit() { }
+
+  confirmar() {
+    this.eventos = [];
+    const value = this.horarioForm.value;
+    if (value.inicio) {
+      for (let i = 0; i < value.quantidade; i++) {
+        const dataAtendimento = this.data.toISOString().split('T').shift();
+        let horaAtendimento: string;
+        if (i > 0) {
+          horaAtendimento = moment(this.eventos[i - 1].end).format('HH:mm');
+        } else {
+          horaAtendimento = (value.inicio as string);
+        }
+        const inicio = moment(`${dataAtendimento} ${horaAtendimento}`);
+        this.eventos.push({
+          title: 'Matheus Felipe',
+          start: inicio.toISOString(),
+          end: inicio.add(value.duracao, 'minutes').toISOString(),
+          description: 'Atendimento de Matheus Felipe (Sessão 1)'
+        });
+      }
+    }
+    this.dialogRef.close(this.eventos);
   }
 
 }

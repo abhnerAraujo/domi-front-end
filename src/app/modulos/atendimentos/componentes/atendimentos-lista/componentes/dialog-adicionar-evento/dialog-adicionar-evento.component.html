@@ -1,17 +1,46 @@
-<h1 mat-dialog-title>Novo evento</h1>
-<div mat-dialog-content fxLayoutGap="8px">
-  <mat-form-field appearance="outline" fxFlex>
-    <mat-label>Começarei as</mat-label>
-    <input matInput [ngxTimepicker]="pickerInicio">
-    <ngx-material-timepicker #pickerInicio></ngx-material-timepicker>
-  </mat-form-field>
-  <mat-form-field appearance="outline" fxFlex>
-    <mat-label>Terminarei as</mat-label>
-    <input matInput [ngxTimepicker]="pickerFim">
-    <ngx-material-timepicker #pickerFim></ngx-material-timepicker>
-  </mat-form-field>
+<h1 mat-dialog-title>Novo agendamento</h1>
+<div mat-dialog-content>
+  <form fxLayout="column" [formGroup]="horarioForm" autocomplete="off">
+    <mat-form-field appearance="outline" fxFlex>
+      <mat-label>Começarei as</mat-label>
+      <input cdkFocusInitial matInput [ngxTimepicker]="pickerInicio" [disableClick]="true" [format]="24"
+        formControlName="inicio" readonly>
+      <ngx-material-timepicker [theme]="temaPrimario" #pickerInicio></ngx-material-timepicker>
+      <ngx-material-timepicker-toggle [for]="pickerInicio" matSuffix>
+        <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
+      </ngx-material-timepicker-toggle>
+      <mat-error *ngIf="horarioForm.get('inicio').getError('required')">Este campo é obrigatório</mat-error>
+    </mat-form-field>
+    <div fxLayoutGap="8px" fxLayout="column">
+      <div fxLayoutAlign="space-between center">
+        <div style="font-weight: 600;">
+          Sessões:
+        </div>
+        <div>
+          {{ horarioForm.get('quantidade').value }}
+        </div>
+      </div>
+      <div>
+        <mat-slider formControlName="quantidade" [min]="1" [max]="5" [step]="1" [thumbLabel]="true" fxFlex></mat-slider>
+      </div>
+    </div>
+    <div fxLayoutGap="8px" fxLayout="column">
+      <div fxLayoutAlign="space-between center">
+        <div style="font-weight: 600;">
+          Duração da sessão (min):
+        </div>
+        <div>
+          {{ horarioForm.get('duracao').value }}
+        </div>
+      </div>
+      <div>
+        <mat-slider formControlName="duracao" [min]="10" [max]="60" [step]="5" [thumbLabel]="true" fxFlex>
+        </mat-slider>
+      </div>
+    </div>
+  </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button>No Thanks</button>
-  <button mat-button cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="null">CANCELAR</button>
+  <button mat-button [disabled]="!horarioForm.valid" (click)="confirmar()">CRIAR</button>
 </div>

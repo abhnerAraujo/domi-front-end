@@ -92,16 +92,12 @@ export class AtendimentosListaComponent implements OnInit, AfterViewInit {
     this.calendario.setOption('footer', { center: '', left: '', right: '' });
     this.calendario.setOption('navLinks', true);
     this.calendario.setOption('navLinkDayClick', (date: Date, jsEvent) => {
-      const dialogRef = this.dialog.open(DialogAdicionarEventoComponent);
-      dialogRef.afterClosed().subscribe(resultado => {
-        this.calendario.addEvent({
-          title: 'Matheus Felipe',
-          start: date.toISOString(),
-          end: moment(date.toISOString()).add(1, 'hours').toISOString(),
-          description: 'Atendimento de Matheus Felipe (Sessão 2)'
-        });
-        this.snackBar.open('Atendimento agendado', 'OK', { duration: 3500 });
-
+      const dialogRef = this.dialog.open(DialogAdicionarEventoComponent, { data: date });
+      dialogRef.afterClosed().subscribe((eventos: any[]) => {
+        if (eventos) {
+          eventos.forEach(evento => this.calendario.addEvent(evento));
+          this.snackBar.open('Atendimento agendado', 'OK', { duration: 3500 });
+        }
       });
     });
     events.forEach(event => {

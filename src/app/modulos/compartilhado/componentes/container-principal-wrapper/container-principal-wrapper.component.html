@@ -7,7 +7,7 @@
       <app-navegacao-menu (click)="fecharSidenavEsquerdo()"></app-navegacao-menu>
     </mat-sidenav>
     <mat-sidenav [(opened)]="sidenavDireitoAberto" mode="side" fxFlex="200px" position="end"></mat-sidenav>
-    <mat-sidenav-content fxLayoutAlign="center" fxFlex>
+    <mat-sidenav-content fxLayoutAlign="center" fxFlex fxLayout="column">
       <div fxFlex class="conteudo">
         <router-outlet></router-outlet>
       </div>

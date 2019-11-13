@@ -1,8 +1,13 @@
-<div fxLayoutAlign="start center" fxLayoutGap="16px">
-  <button mat-icon-button (click)="location.back()">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
-  <h1>Novo</h1>
+<div fxLayoutAlign="space-between center">
+  <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+    <button mat-icon-button (click)="location.back()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Novo</h1>
+  </div>
+  <div>
+    <button mat-raised-button color="accent">SALVAR</button>
+  </div>
 </div>
 <div>
   <form action="" [formGroup]="atendimentoForm">
@@ -13,12 +18,27 @@
       <mat-card-content>
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Nome do paciente</mat-label>
-          <input matInput placeholder="Pesquisa" formControlName="paciente">
+          <input matInput placeholder="Pesquisa" formControlName="paciente" [matAutocomplete]="auto">
           <mat-icon matSuffix class="icon">search</mat-icon>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let paciente of pacientesFiltrados | async" [value]="paciente">
+              {{ paciente.nome }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
       </mat-card-content>
+      <mat-card-footer>
+        <mat-card-actions fxLayoutAlign="center center">
+          <ng-container *ngIf="atendimentoForm.get('paciente').value?.id; else criarPaciente">
+            <button mat-button color="accent">EDITAR PACIENTE</button>
+          </ng-container>
+          <ng-template #criarPaciente>
+            <button mat-button *ngIf="atendimentoForm.get('paciente').value" color="primary">CRIAR PACIENTE</button>
+          </ng-template>
+        </mat-card-actions>
+      </mat-card-footer>
     </mat-card>
-    <p *ngIf="atendimentoForm.get('paciente').value" class="informacoes-atendimento">
+    <p *ngIf="atendimentoForm.get('paciente').value?.id" class="informacoes-atendimento">
       <mat-card>
         <mat-card-header>
           <mat-card-subtitle>Informe o responsável e a data de início</mat-card-subtitle>
@@ -28,6 +48,7 @@
             <mat-form-field appearance="outline" fxFlex fxFlex.lt-md="100">
               <mat-label>Responsável</mat-label>
               <input matInput placeholder="Nome">
+              <mat-icon matSuffix class="icon">person</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline" fxFlex fxFlex.lt-md="100">
               <mat-label>Contato do responsável</mat-label>

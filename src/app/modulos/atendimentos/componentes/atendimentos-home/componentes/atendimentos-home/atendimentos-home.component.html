@@ -1,10 +1,10 @@
-<div fxLayoutAlign="start center">
+<div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
   <button mat-icon-button (click)="location.back()">
     <mat-icon>arrow_back</mat-icon>
   </button>
   <h1>Atendimentos</h1>
 </div>
-<div fxLayoutGap="16px" fxLayout="column">
+<div fxLayoutGap="16px" fxLayout="column" class="navegacao">
   <div>
     <button mat-button fxFlex="240px" [routerLink]="['/atendimentos/agenda']">
       <mat-icon>event</mat-icon>AGENDA

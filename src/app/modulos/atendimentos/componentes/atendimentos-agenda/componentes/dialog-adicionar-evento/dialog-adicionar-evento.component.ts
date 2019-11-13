@@ -1,3 +1,4 @@
+import { TEMA_PRIMARIO } from './../../../../../../constantes/time-picker';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -26,24 +27,7 @@ export class DialogAdicionarEventoComponent implements OnInit {
       quantidade: [1],
       duracao: [40]
     });
-    this.temaPrimario = {
-      container: {
-        bodyBackgroundColor: '#fafafa',
-        buttonColor: '#48a999'
-      },
-      dial: {
-        dialBackgroundColor: '#4fb3bf',
-        dialActiveColor: '#fff',
-        dialInactiveColor: '#cfd8dc'
-      },
-      clockFace: {
-        clockFaceBackgroundColor: '#fafafa',
-        clockHandColor: '#00838f',
-        clockFaceTimeInactiveColor: '#00838f'
-      }
-    };
-
-
+    this.temaPrimario = TEMA_PRIMARIO;
   }
 
   ngOnInit() { }

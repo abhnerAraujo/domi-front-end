@@ -1,5 +1,5 @@
-import { DialogAdicionarEventoComponent } from './componentes/dialog-adicionar-evento/dialog-adicionar-evento.component';
-import { Subscription, of } from 'rxjs';
+import { DialogAdicionarEventoComponent } from '../dialog-adicionar-evento/dialog-adicionar-evento.component';
+import { Subscription } from 'rxjs';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -10,13 +10,14 @@ import brLocale from '@fullcalendar/core/locales/pt-br';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import * as moment from 'moment';
 import { MatDialog, MatSnackBar } from '@angular/material';
+import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-atendimentos-lista',
-  templateUrl: './atendimentos-lista.component.html',
-  styleUrls: ['./atendimentos-lista.component.scss'],
+  selector: 'app-atendimentos-agenda',
+  templateUrl: './atendimentos-agenda.component.html',
+  styleUrls: ['./atendimentos-agenda.component.scss'],
 })
-export class AtendimentosListaComponent implements OnInit, AfterViewInit {
+export class AtendimentosAgendaComponent implements OnInit, AfterViewInit {
 
   @ViewChild('calendar', { static: true }) calendar: FullCalendarComponent;
 
@@ -32,7 +33,10 @@ export class AtendimentosListaComponent implements OnInit, AfterViewInit {
   mediaQuerySubscription: Subscription;
   activeMediaQuery: string;
 
-  constructor(private mediaObserver: MediaObserver, public dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(private mediaObserver: MediaObserver
+    , public dialog: MatDialog
+    , private snackBar: MatSnackBar
+    , public location: Location) {
     this.calendarPlugins = [dayGridPlugin, timeGridPlugin, listGridPlugin];
   }
 
@@ -81,7 +85,7 @@ export class AtendimentosListaComponent implements OnInit, AfterViewInit {
         description: 'Atendimento de Matheus Felipe (Sessão 2)'
       }
     ];
-    this.calendario.setOption('height', 600);
+    this.calendario.setOption('height', 500);
     this.calendario.setOption('plugins', [dayGridPlugin, timeGridPlugin, listGridPlugin]);
     this.calendario.setOption('locale', brLocale);
     this.calendario.setOption('header', { center: 'title', left: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' });

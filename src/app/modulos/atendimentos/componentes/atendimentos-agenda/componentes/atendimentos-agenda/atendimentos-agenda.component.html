@@ -1,0 +1,7 @@
+<div fxLayoutAlign="start center" fxLayoutGap="16px">
+  <button mat-icon-button (click)="location.back()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1>Agenda</h1>
+</div>
+<full-calendar [plugins]="calendarPlugins" id="calendar" #calendar></full-calendar>

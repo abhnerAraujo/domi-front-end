@@ -29,8 +29,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatNativeDateModule,
     MatMomentDateModule
   ],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
-  ]
+  providers: []
 })
 export class PacienteModule { }

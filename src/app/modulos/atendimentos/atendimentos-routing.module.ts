@@ -1,11 +1,14 @@
-import { AtendimentosListaComponent } from './componentes/atendimentos-lista/atendimentos-lista.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const rotas: Routes = [
   {
     path: '',
-    component: AtendimentosListaComponent
+    loadChildren: () => import('./componentes/atendimentos-home/atendimentos-home.module').then(m => m.AtendimentosHomeModule)
+  },
+  {
+    path: 'agenda',
+    loadChildren: () => import('./componentes/atendimentos-lista/atendimentos-lista.module').then(m => m.AtendimentosListaModule)
   }
 ];
 

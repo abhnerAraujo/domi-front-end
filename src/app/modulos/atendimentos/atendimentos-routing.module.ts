@@ -8,7 +8,11 @@ const rotas: Routes = [
   },
   {
     path: 'agenda',
-    loadChildren: () => import('./componentes/atendimentos-lista/atendimentos-lista.module').then(m => m.AtendimentosListaModule)
+    loadChildren: () => import('./componentes/atendimentos-agenda/atendimentos-agenda.module').then(m => m.AtendimentosAgendaModule)
+  },
+  {
+    path: 'novo',
+    loadChildren: () => import('./componentes/atendimento-novo/atendimento-novo.module').then(m => m.AtendimentoNovoModule)
   }
 ];
 

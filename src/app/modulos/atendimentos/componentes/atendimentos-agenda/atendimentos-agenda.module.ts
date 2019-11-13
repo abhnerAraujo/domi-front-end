@@ -1,22 +1,23 @@
-import { AtendimentosListaRoutingModule } from './atendimentos-lista-routing.module';
+import { AtendimentosAgendaRoutingModule } from './atendimentos-agenda-routing.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DialogAdicionarEventoComponent } from './componentes/dialog-adicionar-evento/dialog-adicionar-evento.component';
-import { AtendimentosListaComponent } from './componentes/atendimentos-lista/atendimentos-lista.component';
+import { AtendimentosAgendaComponent } from './componentes/atendimentos-agenda/atendimentos-agenda.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatIconModule, MatDividerModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatDialogModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatSliderModule
 } from '@angular/material';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 @NgModule({
-  declarations: [AtendimentosListaComponent, DialogAdicionarEventoComponent],
+  declarations: [AtendimentosAgendaComponent, DialogAdicionarEventoComponent],
   imports: [
     CommonModule,
-    AtendimentosListaRoutingModule,
+    AtendimentosAgendaRoutingModule,
     FlexLayoutModule,
     MatIconModule,
     MatDividerModule,
@@ -27,10 +28,11 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     ReactiveFormsModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatSliderModule,
     NgxMaterialTimepickerModule.setLocale('pt-BR')
   ],
   entryComponents: [
     DialogAdicionarEventoComponent
   ]
 })
-export class AtendimentosListaModule { }
+export class AtendimentosAgendaModule { }

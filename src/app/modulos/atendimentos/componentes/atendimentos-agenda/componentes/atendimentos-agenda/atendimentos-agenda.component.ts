@@ -1,4 +1,4 @@
-import { DialogAdicionarEventoComponent } from './../dialog-adicionar-evento/dialog-adicionar-evento.component';
+import { DialogAdicionarEventoComponent } from '../dialog-adicionar-evento/dialog-adicionar-evento.component';
 import { Subscription } from 'rxjs';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
@@ -13,11 +13,11 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-atendimentos-lista',
-  templateUrl: './atendimentos-lista.component.html',
-  styleUrls: ['./atendimentos-lista.component.scss'],
+  selector: 'app-atendimentos-agenda',
+  templateUrl: './atendimentos-agenda.component.html',
+  styleUrls: ['./atendimentos-agenda.component.scss'],
 })
-export class AtendimentosListaComponent implements OnInit, AfterViewInit {
+export class AtendimentosAgendaComponent implements OnInit, AfterViewInit {
 
   @ViewChild('calendar', { static: true }) calendar: FullCalendarComponent;
 

@@ -1,11 +1,11 @@
-import { AtendimentosListaComponent } from './componentes/atendimentos-lista/atendimentos-lista.component';
+import { AtendimentoNovoComponent } from './componentes/atendimento-novo/atendimento-novo.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const rotas: Routes = [
   {
     path: '',
-    component: AtendimentosListaComponent
+    component: AtendimentoNovoComponent
   }
 ];
 
@@ -14,4 +14,4 @@ const rotas: Routes = [
   exports: [RouterModule]
 })
 
-export class AtendimentosListaRoutingModule { }
+export class AtendimentoNovoRoutingModule { }

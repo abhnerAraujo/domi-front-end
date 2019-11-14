@@ -1,6 +1,6 @@
 import {
   MatIconModule, MatDividerModule, MatButtonModule, MatFormFieldModule, MatInputModule,
-  MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE
+  MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, MatListModule
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -27,7 +27,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatListModule
   ],
   providers: []
 })

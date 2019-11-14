@@ -1,0 +1,10 @@
+<div fxLayout="column">
+  <mat-list>
+    <mat-list-item *ngFor="let atendimento of atendimentos">
+      <mat-icon mat-list-icon>account_circle</mat-icon>
+      <h4 mat-line class="titulo-linha">{{atendimento.nome}}</h4>
+      <p mat-line class="subtitulo-linha">Desde {{atendimento.data_inicio}} </p>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</div>

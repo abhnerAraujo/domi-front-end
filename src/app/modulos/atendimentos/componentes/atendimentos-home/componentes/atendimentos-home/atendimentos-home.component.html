@@ -1,18 +1,26 @@
-<div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
-  <button mat-icon-button (click)="location.back()">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
-  <h1>Atendimentos</h1>
-</div>
-<div fxLayoutGap="16px" fxLayout="column" class="navegacao">
-  <div>
-    <button mat-button fxFlex="240px" [routerLink]="['/atendimentos/agenda']">
-      <mat-icon>event</mat-icon>AGENDA
-    </button>
+<div fxLayout="column" style="height: 100%;">
+  <div fxLayout="column" fxFlex="nogrow">
+    <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+      <button mat-icon-button (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Atendimentos</h1>
+    </div>
+    <div fxLayoutGap="16px" fxLayout="column" class="navegacao">
+      <div>
+        <button mat-button fxFlex="240px" [routerLink]="['/atendimentos/agenda']">
+          <mat-icon>event</mat-icon>AGENDA
+        </button>
+      </div>
+      <div>
+        <button mat-button fxFlex="240px" [routerLink]="['/atendimentos/novo']">
+          <mat-icon>perm_contact_calendar</mat-icon>NOVO ATENDIMENTO
+        </button>
+      </div>
+    </div>
   </div>
-  <div>
-    <button mat-button fxFlex="240px" [routerLink]="['/atendimentos/novo']">
-      <mat-icon>perm_contact_calendar</mat-icon>NOVO ATENDIMENTO
-    </button>
+  <h3 fxFlex="nogrow">Em andamento</h3>
+  <div fxFlex class="lista-atendimento">
+    <app-atendimentos-lista></app-atendimentos-lista>
   </div>
 </div>

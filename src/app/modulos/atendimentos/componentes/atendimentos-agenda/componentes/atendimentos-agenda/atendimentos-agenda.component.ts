@@ -8,7 +8,6 @@ import listGridPlugin from '@fullcalendar/list';
 import { Calendar } from '@fullcalendar/core';
 import brLocale from '@fullcalendar/core/locales/pt-br';
 import { FullCalendarComponent } from '@fullcalendar/angular';
-import * as moment from 'moment';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Location } from '@angular/common';
 

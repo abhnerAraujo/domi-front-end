@@ -1,0 +1,27 @@
+@import './../../../../../../../../styles/variables.scss';
+
+.mat-list-icon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.subtitulo-linha {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.titulo-linha {
+  color: $accent;
+  font-weight: 600;
+}
+
+.mat-list-item:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+
+@media screen and (max-width: 480) {
+  .mat-list-item:hover {
+    background-color: transparent;
+  } 
+  .mat-list-icon:active {
+    background-color: rgba(0,0,0,0.1);
+  }
+}

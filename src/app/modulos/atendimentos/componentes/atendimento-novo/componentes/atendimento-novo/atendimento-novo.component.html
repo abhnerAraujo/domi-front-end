@@ -6,18 +6,18 @@
     <h1>Novo</h1>
   </div>
   <div>
-    <button mat-raised-button color="accent">SALVAR</button>
+    <button mat-raised-button color="accent">CRIAR</button>
   </div>
 </div>
 <div>
   <form action="" [formGroup]="atendimentoForm">
     <mat-card>
       <mat-card-header>
-        <mat-card-subtitle>Escolha o paciente</mat-card-subtitle>
+        <mat-card-subtitle>Digite o nome do paciente</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content fxLayout="column">
         <mat-form-field appearance="outline" fxFlex>
-          <mat-label>Nome do paciente</mat-label>
+          <mat-label>Nome</mat-label>
           <input matInput placeholder="Pesquisa" formControlName="paciente" [matAutocomplete]="auto">
           <mat-icon matSuffix class="icon">search</mat-icon>
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -26,6 +26,9 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
+        <div *ngIf="atendimentoForm.get('paciente').value && !atendimentoForm.get('paciente').value?.id">
+          * Você pode realizar o cadastro do paciente agora ou durante a sessão
+        </div>
       </mat-card-content>
       <mat-card-footer>
         <mat-card-actions fxLayoutAlign="center center">
@@ -33,12 +36,16 @@
             <button mat-button color="accent">EDITAR PACIENTE</button>
           </ng-container>
           <ng-template #criarPaciente>
-            <button mat-button *ngIf="atendimentoForm.get('paciente').value" color="primary">CRIAR PACIENTE</button>
+            <button mat-button *ngIf="atendimentoForm.get('paciente').value" color="primary">
+              CADASTRAR PACIENTE</button>
           </ng-template>
         </mat-card-actions>
       </mat-card-footer>
     </mat-card>
-    <p *ngIf="atendimentoForm.get('paciente').value?.id" class="informacoes-atendimento">
+    <p>
+      * É obrigatório informar o nome do paciente ou do responsável.
+    </p>
+    <p class="informacoes-atendimento">
       <mat-card>
         <mat-card-header>
           <mat-card-subtitle>Informe o responsável e a data de início</mat-card-subtitle>
@@ -62,15 +69,6 @@
               <input matInput [matDatepicker]="picker" placeholder="Escolha" readonly="true">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker disabled="false"></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex fxFlex.lt-md="100">
-              <mat-label>Hora de início</mat-label>
-              <input cdkFocusInitial matInput [ngxTimepicker]="pickerInicio" [disableClick]="true" [format]="24"
-                formControlName="inicioHora" readonly>
-              <ngx-material-timepicker [theme]="temaPrimario" #pickerInicio></ngx-material-timepicker>
-              <ngx-material-timepicker-toggle [for]="pickerInicio" matSuffix>
-                <mat-icon ngxMaterialTimepickerToggleIcon class="icon">access_time</mat-icon>
-              </ngx-material-timepicker-toggle>
             </mat-form-field>
           </div>
         </mat-card-content>

@@ -24,6 +24,11 @@ const rotas: Routes = [
       {
         path: 'sessoes',
         loadChildren: () => import('../../modulos/sessao/sessao.module').then(m => m.SessaoModule)
+      },
+      {
+        path: 'configuracoes',
+        loadChildren: () => import('./componentes/atendimento-configuracao/atendimento-configuracao.module')
+          .then(m => m.AtendimentoConfiguracaoModule)
       }
     ]
   }

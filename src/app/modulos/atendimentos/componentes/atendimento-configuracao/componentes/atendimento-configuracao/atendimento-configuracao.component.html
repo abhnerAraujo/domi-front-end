@@ -1,0 +1,40 @@
+<div fxLayoutAlign="space-between center">
+  <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+    <button mat-icon-button (click)="location.back()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Configuração</h1>
+  </div>
+</div>
+<div>
+  <h3>Atender nos(as)</h3>
+  <div fxLayoutGap="8px" fxLayout="column">
+    <div fxLayout="row" class="header-atender-dias">
+      <div>
+        Dia/
+      </div>
+      <div>
+        Hora/
+      </div>
+      <div>
+        Duração/
+      </div>
+      <div>
+        Sessões
+      </div>
+    </div>
+    <div *ngFor="let diaAtendimento of diasAtendimento; let i = index">
+      <mat-chip-list>
+        <mat-chip color="accent" selected (click)="abrirDialog(i)">
+          {{ diaAtendimento.diaSemana }} /
+          {{ diaAtendimento.hora }} /
+          {{ diaAtendimento.duracao }} (min) /
+          {{ diaAtendimento.qtdSessoes }}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <button mat-icon-button color="accent" (click)="abrirDialog(-1)">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

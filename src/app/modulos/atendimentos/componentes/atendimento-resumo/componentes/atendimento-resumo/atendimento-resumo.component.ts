@@ -56,7 +56,7 @@ export class AtendimentoResumoComponent implements OnInit {
       total_recebido: 800.00,
       total_receber: 240.00,
       total_sessoes: 8,
-      queixa: 'Não fala, só se comunica por sinais.',
+      queixa: 'Fala poucas palavras e não interage.',
       ultimos_acontecimentos: [
         { tipo: 1, descricao: 'Nota', data: moment(new Date().toISOString()).subtract(7, 'days').format('ll') },
         { tipo: 1, descricao: 'Imagem', data: moment(new Date().toISOString()).subtract(14, 'days').format('ll') },

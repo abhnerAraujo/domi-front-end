@@ -1,1 +1,118 @@
-<p>atendimento-resumo works!</p>
+<div fxLayout="column" style="height: 100%;">
+  <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+    <button mat-icon-button (click)="location.back()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Atendimento</h1>
+  </div>
+  <div fxFlex fxLayoutGap="16px" fxLayout="row" fxLayout.lt-sm="column">
+    <div fxFlex>
+      <mat-card class="card-paciente">
+        <mat-card-header>
+          <img mat-card-avatar class="avatar" [src]="atendimento.paciente.foto" />
+          <mat-card-title>{{ atendimento.paciente.nome }}</mat-card-title>
+          <mat-card-subtitle>{{ atendimento.paciente.idade }} anos</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutGap="4px">
+          <div class="content-info">
+            Dt. Nascimento: {{ atendimento.paciente.data_nascimento }}
+          </div>
+          <div class="content-info">
+            Responsável: {{ atendimento.responsavel }}
+          </div>
+          <div class="content-info">
+            Queixa: "{{ atendimento.queixa }}"
+          </div>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions [align]="'end'">
+          <button mat-raised-button color="accent" fxFlex.xs>DAR ALTA</button>
+          <button mat-raised-button color="accent" fxFlex.xs>ATENDER AGORA</button>
+        </mat-card-actions>
+      </mat-card>
+      <p>
+        <mat-nav-list>
+          <a mat-list-item [routerLink]="['/atendimentos/1/sessoes']">
+            <mat-icon>history</mat-icon> HISTÓRIO DE SESSÕES
+          </a>
+          <a mat-list-item [routerLink]="['/atendimentos/1/configuracoes']">
+            <mat-icon>settings</mat-icon> CONFIGURAÇÕES
+          </a>
+          <a mat-list-item [routerLink]="['/cadastros/pacientes/1']">
+            <mat-icon>edit</mat-icon> EDITAR PACIENTE
+          </a>
+        </mat-nav-list>
+      </p>
+    </div>
+    <mat-divider fxHide.xs [vertical]="true"></mat-divider>
+    <div fxFlex="60" fxLayout="column">
+      <div fxLayoutGap="16px" class="lista-cards" fxFlex="nogrow">
+        <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
+          <h2 fxFlex>
+            {{ atendimento.total_sessoes }}
+          </h2>
+          <div fxFlex="nogrow" class="titulo">
+            Sessões
+          </div>
+        </div>
+        <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
+          <h2 fxFlex class="informacao-numerica">
+            {{ atendimento.total_recebido | moeda:true }}
+          </h2>
+          <div fxFlex="nogrow" class="titulo">
+            Recebidos
+          </div>
+        </div>
+        <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
+          <h2 fxFlex>
+            {{ atendimento.total_receber | moeda:true }}
+          </h2>
+          <div fxFlex="nogrow" class="titulo">
+            A receber
+          </div>
+        </div>
+      </div>
+      <div fxHide.xs fxLayout="column" fxFlex>
+        <div fxLayoutAlign="start center" fxLayoutGap="8px" fxFlex="nogrow">
+          <mat-icon>trending_up</mat-icon>
+          <h3>Última evolução</h3>
+        </div>
+        <div>
+          <mat-card class="ultima-evolucao">
+            <mat-card-content [ngClass]="{'ocultar-evolucao': evolucaoOcultada}">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere perspiciatis enim doloribus qui cupiditate
+              aspernatur maiores animi repellat a beatae, vero odio esse debitis. Nulla possimus commodi iure at quasi!
+            </mat-card-content>
+            <mat-card-actions [align]="'end'">
+              <button mat-icon-button (click)="evolucaoOcultada = !evolucaoOcultada">
+                <mat-icon *ngIf="evolucaoOcultada">expand_more</mat-icon>
+                <mat-icon *ngIf="!evolucaoOcultada">expand_less</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div fxLayoutAlign="start center" fxLayoutGap="8px" fxFlex="nogrow">
+          <mat-icon>timeline</mat-icon>
+          <h3>Últimos acontecimentos</h3>
+        </div>
+        <div fxFlex class="ultimos-acontecimentos" fxLayout="column" fxLayoutGap="8px">
+          <div *ngFor="let evento of atendimento.ultimos_acontecimentos" fxLayout="row" fxLayoutAlign="start start"
+            fxLayoutGap="8px" fxFlex="45px">
+            <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="center center">
+              <div class="timeline-circulo" fxFlex="nogrow"></div>
+              <div fxFlex class="timeline-traco"></div>
+            </div>
+            <div fxLayout="column">
+              <div class="evento-descricao">
+                Criou: {{ evento.descricao }}
+              </div>
+              <div>
+                {{ evento.data }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

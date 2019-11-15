@@ -1,0 +1,73 @@
+@import '../../../../../../styles/variables.scss';
+
+.avatar {
+  background-size: cover; 
+}
+
+.card-paciente {
+  .mat-card-header .mat-card-title{
+    font-size: 16px;
+  }
+}
+
+mat-nav-list {
+  mat-icon {
+    opacity: 0.72;
+  }
+}
+
+.lista-cards {
+  .card-info-numero {
+    padding: 16px;
+    h2 {
+      font-size: 1.4em;
+    }
+   .titulo {
+     font-weight: 600;
+     opacity: 0.8;
+   } 
+  }
+}
+
+.ocultar-evolucao {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ultimos-acontecimentos {
+  overflow-y: auto;
+  .container-esquerdo {
+    height: 100%;
+    .timeline-circulo {
+      border-radius: 50%;
+      background-color: $primary;
+      padding: 8px;
+    }
+    .timeline-traco {
+      width: 1.6px;
+      background-color: #bbb;
+    }
+  }
+  .evento-descricao {
+    font-weight: 600;
+    font-size: 16px;
+    color: $accent;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  
+  .lista-cards {
+    .card-info-numero {
+      padding: 8px;
+      h2 {
+        font-size: 16px;
+      }
+    .titulo {
+      font-weight: 600;
+      opacity: 0.8;
+    } 
+    }
+  }
+}

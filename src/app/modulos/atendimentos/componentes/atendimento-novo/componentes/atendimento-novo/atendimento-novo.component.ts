@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 export interface Paciente {
@@ -30,7 +31,8 @@ export class AtendimentoNovoComponent implements OnInit {
   pacientesFiltrados: Observable<Paciente[]>;
 
   constructor(public location: Location
-    , formBuilder: FormBuilder) {
+    , formBuilder: FormBuilder
+    , private router: Router) {
     this.temaPrimario = TEMA_PRIMARIO;
     this.atendimentoForm = formBuilder.group({
       paciente: [''],
@@ -58,6 +60,10 @@ export class AtendimentoNovoComponent implements OnInit {
 
   displayFn(paciente?: Paciente): string | undefined {
     return paciente ? paciente.nome : undefined;
+  }
+
+  criar() {
+    this.router.navigate(['atendimentos/1/sessoes/nova']);
   }
 
 }

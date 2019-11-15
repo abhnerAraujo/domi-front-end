@@ -49,11 +49,11 @@ export class AtendimentosAgendaComponent implements OnInit, AfterViewInit {
       (change: MediaChange[]) => {
         this.activeMediaQuery = change[0].mqAlias;
         if (this.activeMediaQuery === 'xs' || this.activeMediaQuery === 'sm') {
-          const header = { center: '', left: 'title' };
+          const header = { center: '', left: 'title', right: 'prev,next' };
           const footer = { center: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek', left: '', right: '' };
           this.atualizaCalendario(header, footer, 500);
         } else {
-          const header = { center: 'title', left: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek', right: 'today prev,next' };
+          const header = { center: 'title', left: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek', right: 'today,prev,next' };
           const footer = { center: '', left: '', right: '' };
           this.atualizaCalendario(header, footer, 600);
         }
@@ -90,6 +90,12 @@ export class AtendimentosAgendaComponent implements OnInit, AfterViewInit {
     this.calendario.setOption('header', { center: 'title', left: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' });
     this.calendario.setOption('footer', { center: '', left: '', right: '' });
     this.calendario.setOption('navLinks', true);
+    this.calendario.setOption('titleFormat', {
+      month: 'short',
+      year: 'numeric',
+      day: '2-digit',
+      hour12: false
+    });
     this.calendario.setOption('navLinkDayClick', (date: Date, jsEvent) => {
       const dialogRef = this.dialog.open(DialogAdicionarEventoComponent, { data: date });
       dialogRef.afterClosed().subscribe((eventos: any[]) => {

@@ -1,28 +1,18 @@
-<h1>Pacientes</h1>
+<div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+  <button mat-icon-button (click)="location.back()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1>Pacientes</h1>
+</div>
 <div fxLayout="column" fxLayoutGap="8px">
-  <div *ngFor="let paciente of pacientes" fxLayout="column" fxLayoutGap="8px">
-    <div fxLayoutGap="8px" fxLayoutAlign="start center">
-      <div fxFlex="nogrow" fxLayoutAlign="center center" class="icon-usuario">
-        <mat-icon>account_circle</mat-icon>
-      </div>
-      <div fxLayout="column" fxFlex>
-        <div class="info-paciente" fxLayoutGap="8px" fxLayout="row">
-          <div class="nome-paciente">
-            {{ paciente.nome }}
-          </div>
-          <div class="idade-paciente">
-            {{ paciente.idade }} anos
-          </div>
-        </div>
-      </div>
-      <div fxFlex="nogrow">
-        <button mat-icon-button color="accent">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
-    </div>
-    <mat-divider></mat-divider>
-  </div>
+  <mat-list>
+    <mat-list-item *ngFor="let paciente of pacientes" [routerLink]="['/cadastros/pacientes/novo']">
+      <mat-icon mat-list-icon>account_circle</mat-icon>
+      <h4 mat-line class="titulo-linha">{{paciente.nome}}</h4>
+      <p mat-line class="subtitulo-linha">{{paciente.idade}} anos</p>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
 </div>
 
 <button mat-fab color="accent" [routerLink]="['/cadastros/pacientes/novo']">

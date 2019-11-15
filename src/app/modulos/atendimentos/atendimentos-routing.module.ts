@@ -13,6 +13,19 @@ const rotas: Routes = [
   {
     path: 'novo',
     loadChildren: () => import('./componentes/atendimento-novo/atendimento-novo.module').then(m => m.AtendimentoNovoModule)
+  },
+  {
+    path: ':id',
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./componentes/atendimento-resumo/atendimento-resumo.module').then(m => m.AtendimentoResumoModule)
+      },
+      {
+        path: 'sessoes',
+        loadChildren: () => import('../../modulos/sessao/sessao.module').then(m => m.SessaoModule)
+      }
+    ]
   }
 ];
 

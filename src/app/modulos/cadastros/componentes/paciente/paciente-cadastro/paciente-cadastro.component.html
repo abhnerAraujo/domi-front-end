@@ -1,5 +1,9 @@
-<h1>Novo paciente</h1>
-
+<div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+  <button mat-icon-button (click)="location.back()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1>Novo Paciente</h1>
+</div>
 <form [formGroup]="pacienteForm" fxLayout="column">
   <mat-form-field appearance="outline" fxFlex>
     <mat-label>Nome</mat-label>
@@ -37,22 +41,31 @@
     <mat-label>E-mail</mat-label>
     <input type="email" matInput>
   </mat-form-field>
-  <div fxFlex fxLayout="column">
-    <div fxLayoutGap.gt-xs="8px">
+  <div fxFlex fxLayout="column" formArrayName="telefones" *ngFor="let telefone of fones.controls; let i = index">
+    <div fxLayoutAlign="space-between center">
+      Telefone {{ i + 1 }}
+      <button mat-icon-button color="warn" (click)="removerTelefone(fones.length - 1)" *ngIf="i > 0">
+        <mat-icon>remove</mat-icon>
+      </button>
+    </div>
+    <div fxLayoutGap.gt-xs="8px" [formGroupName]="i">
       <mat-form-field appearance="outline" fxFlex="50">
         <mat-label>Telefone</mat-label>
-        <input type="tel" matInput>
+        <input type="tel" matInput formControlName="numero">
       </mat-form-field>
       <mat-form-field appearance="outline" fxFlex="50">
         <mat-label>Tipo</mat-label>
-        <mat-select>
-          <mat-option>Celular</mat-option>
-          <mat-option>WhatsApp</mat-option>
-          <mat-option>Fixo</mat-option>
+        <mat-select formControlName="tipo">
+          <mat-option [value]="'C'">Celular</mat-option>
+          <mat-option [value]="'W'">WhatsApp</mat-option>
+          <mat-option [value]="'F'">Fixo</mat-option>
         </mat-select>
       </mat-form-field>
+
     </div>
-    <button mat-icon-button color="accent">
+  </div>
+  <div fxLayoutAlign="space-between">
+    <button mat-icon-button color="accent" (click)="addTelefone()">
       <mat-icon>add</mat-icon>
     </button>
   </div>

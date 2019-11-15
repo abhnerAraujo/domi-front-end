@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -13,7 +14,7 @@ export class PacientesListaComponent implements OnInit {
     { nome: 'Matheus Felipe', idade: 3, responsavel: 'Thiago Alves' },
   ];
 
-  constructor() { }
+  constructor(public location: Location) { }
 
   ngOnInit() {
   }

@@ -1,0 +1,5 @@
+<h1>Anamnese</h1>
+<div fxLayout="column" fxLayoutGap="8px">
+  <app-anamnese-item *ngFor="let questao of questoes; let i = index" [index]="i + 1" [questaoResposta]="questao">
+  </app-anamnese-item>
+</div>

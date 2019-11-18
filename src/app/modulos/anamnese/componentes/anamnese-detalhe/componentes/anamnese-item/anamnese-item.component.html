@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-subtitle fxFlex="nogrow">Item {{ index }}</mat-card-subtitle>
+    <mat-card-content fxFlex fxLayoutGap="16px" fxLayout="column">
+      <div fxLayoutGap="8px" fxLayout="row">
+        <div>
+          <strong>Questão:</strong>
+        </div>
+        <div>
+          {{ questaoResposta.questao }}
+        </div>
+      </div>
+      <div fxLayoutGap="8px" fxLayout="row">
+        <div>
+          <strong>Resposta</strong>
+        </div>
+        <div>
+          {{ questaoResposta.resposta }}
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card-header>
+</mat-card>

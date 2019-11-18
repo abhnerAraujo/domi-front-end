@@ -29,6 +29,10 @@ const rotas: Routes = [
         path: 'configuracoes',
         loadChildren: () => import('./componentes/atendimento-configuracao/atendimento-configuracao.module')
           .then(m => m.AtendimentoConfiguracaoModule)
+      },
+      {
+        path: 'anamnese',
+        loadChildren: () => import('../anamnese/anamnese.module').then(m => m.AnamneseModule)
       }
     ]
   }

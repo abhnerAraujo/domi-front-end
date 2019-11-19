@@ -4,6 +4,7 @@ import {
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material';
+import { CurrencyMaskConfig } from 'ng2-currency-mask/src/currency-mask.config';
 
 @Component({
   selector: 'app-atendimento-configuracao',
@@ -13,8 +14,20 @@ import { MatDialog } from '@angular/material';
 export class AtendimentoConfiguracaoComponent implements OnInit {
 
   diasAtendimento: DadosDialogDiaAtendimento[];
+  valorSessao: number;
+  moedaOptions: CurrencyMaskConfig;
 
-  constructor(public location: Location, public dialog: MatDialog) { }
+  constructor(public location: Location, public dialog: MatDialog) {
+    this.moedaOptions = {
+      align: 'left',
+      allowNegative: true,
+      decimal: ',',
+      thousands: '.',
+      prefix: 'R$ ',
+      suffix: '',
+      precision: 2,
+    };
+  }
 
 
   ngOnInit() {

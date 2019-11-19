@@ -1,40 +1,57 @@
-<div fxLayoutAlign="space-between center">
-  <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
-    <button mat-icon-button (click)="location.back()">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <h1>Configuração</h1>
+<div fxLayout="column" style="height: 100%;">
+  <div fxLayoutAlign="space-between center" fxFlex="nogrow">
+    <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+      <button mat-icon-button (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Configuração</h1>
+    </div>
   </div>
-</div>
-<div>
-  <h3>Atender nos(as)</h3>
-  <div fxLayoutGap="8px" fxLayout="column">
-    <div fxLayout="row" class="header-atender-dias">
-      <div>
-        Dia/
-      </div>
-      <div>
-        Hora/
-      </div>
-      <div>
-        Duração/
-      </div>
-      <div>
-        Sessões
+  <div fxLayout="row wrap" fxFlex fxLayoutGap.gt-xs="16px">
+    <div fxFlex="30" fxFlex.lt-sm="100">
+      <h3>Atender nos(as)</h3>
+      <div fxLayoutGap="8px" fxLayout="column">
+        <div fxLayout="row" class="header-atender-dias">
+          <div>
+            Dia/
+          </div>
+          <div>
+            Hora/
+          </div>
+          <div>
+            Duração/
+          </div>
+          <div>
+            Sessões
+          </div>
+        </div>
+        <div *ngFor="let diaAtendimento of diasAtendimento; let i = index">
+          <mat-chip-list>
+            <mat-chip color="accent" selected (click)="abrirDialog(i)">
+              {{ diaAtendimento.diaSemana }} /
+              {{ diaAtendimento.hora }} /
+              {{ diaAtendimento.duracao }} (min) /
+              {{ diaAtendimento.qtdSessoes }}
+            </mat-chip>
+            <button mat-icon-button color="warn" (click)="this.diasAtendimento.splice(i, 1)">
+              <mat-icon>remover</mat-icon>
+            </button>
+          </mat-chip-list>
+        </div>
+        <button mat-icon-button color="accent" (click)="abrirDialog(-1)">
+          <mat-icon>add</mat-icon>
+        </button>
       </div>
     </div>
-    <div *ngFor="let diaAtendimento of diasAtendimento; let i = index">
-      <mat-chip-list>
-        <mat-chip color="accent" selected (click)="abrirDialog(i)">
-          {{ diaAtendimento.diaSemana }} /
-          {{ diaAtendimento.hora }} /
-          {{ diaAtendimento.duracao }} (min) /
-          {{ diaAtendimento.qtdSessoes }}
-        </mat-chip>
-      </mat-chip-list>
+    <mat-divider fxHide.lt-sm [vertical]="true"></mat-divider>
+    <div fxFlex fxFlex.lt-sm="100" fxLayout="column">
+      <h3>Valor da sessão</h3>
+      <div>
+        <mat-form-field appearance="outline" fxFlex.lt-sm>
+          <mat-label>Valor</mat-label>
+          <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" [options]="moedaOptions">
+        </mat-form-field>
+      </div>
     </div>
-    <button mat-icon-button color="accent" (click)="abrirDialog(-1)">
-      <mat-icon>add</mat-icon>
-    </button>
   </div>
 </div>

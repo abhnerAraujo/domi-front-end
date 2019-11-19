@@ -11,7 +11,7 @@
       <mat-button-toggle value="SAB"> S </mat-button-toggle>
     </mat-button-toggle-group>
     <mat-form-field appearance="outline" fxFlex>
-      <mat-label>Começarei as</mat-label>
+      <mat-label>Horário</mat-label>
       <input matInput [ngxTimepicker]="pickerInicio" [disableClick]="true" [format]="24" formControlName="hora"
         readonly>
       <ngx-material-timepicker [theme]="temaPrimario" #pickerInicio></ngx-material-timepicker>
@@ -36,7 +36,7 @@
     <div fxLayoutGap="8px" fxLayout="column">
       <div fxLayoutAlign="space-between center">
         <div style="font-weight: 600;">
-          Duração da sessão (min):
+          Duração por sessão (min):
         </div>
         <div>
           {{ horarioForm.get('duracao').value }}

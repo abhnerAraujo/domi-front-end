@@ -1,5 +1,15 @@
-<h1>Anamnese</h1>
+<div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+  <button mat-icon-button (click)="location.back()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1>Anamnese</h1>
+</div>
 <div fxLayout="column" fxLayoutGap="8px">
-  <app-anamnese-item *ngFor="let questao of questoes; let i = index" [index]="i + 1" [questaoResposta]="questao">
+  <app-anamnese-item *ngFor="let questao of questoes; let i = index" [index]="i + 1" [questaoResposta]="questao"
+    (remover)="questoes.splice(i, 1)">
   </app-anamnese-item>
 </div>
+
+<button mat-fab color="accent" (click)="questoes.push({questao: '', resposta: ''})">
+  <mat-icon>add</mat-icon>
+</button>

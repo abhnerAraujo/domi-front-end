@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule, MatCardModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AnamneseRoutingModule } from './anamnese-routing.module';
@@ -16,7 +17,8 @@ import { AnamneseItemComponent } from './componentes/anamnese-detalhe/componente
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
+    ReactiveFormsModule
   ],
   exports: [
     AnamneseDetalheComponent

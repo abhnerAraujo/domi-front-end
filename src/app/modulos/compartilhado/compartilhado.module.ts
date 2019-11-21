@@ -4,7 +4,7 @@ import { ContainerPrincipalWrapperComponent } from './componentes/container-prin
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ToolbarComponent } from './componentes/container-principal-wrapper/componentes/toolbar/toolbar.component';
-import { MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule } from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule, MatListModule } from '@angular/material';
 import {
   NavegacaoMenuComponent
 } from './componentes/container-principal-wrapper/componentes/navegacao-menu/navegacao-menu.component';
@@ -18,7 +18,8 @@ import {
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatListModule
   ],
   exports: [
     ContainerPrincipalWrapperComponent

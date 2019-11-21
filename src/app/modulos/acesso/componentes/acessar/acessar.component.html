@@ -1,3 +1,39 @@
-<div>
-  <button mat-raised-button (click)="entrar()" color="primary">ENTRAR</button>
+<div class="container-principal" fxLayoutAlign="center center">
+  <div fxFlex="50">
+    <mat-card fxFlex="100" fxLayoutGap="16px" fxLayout="column">
+      <mat-card-header fxLayout="column" fxLayoutAlign="center">
+        <mat-card-title fxLayoutAlign="center">
+          Domi - Fonoaudiologia
+        </mat-card-title>
+        <mat-card-subtitle fxLayoutAlign="center">
+          Digite seu e-mail e senha para acessar ao sistema.
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content fxLayoutAlign="center center">
+        <div fxFlex="60" fxLayout="column">
+          <mat-form-field appearance="outline">
+            <mat-label>E-mail</mat-label>
+            <input matInput>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Senha</mat-label>
+            <input matInput type="password">
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center center">
+        <div fxFlex="40" fxLayout="column" fxLayoutGap="8px">
+          <div>
+            <button mat-raised-button fxFlex="100" (click)="entrar()" color="accent">ENTRAR</button>
+          </div>
+          <div>
+            <button mat-stroked-button fxFlex="100" (click)="entrar()" color="accent">CADASTRAR</button>
+          </div>
+          <div>
+            <button mat-button fxFlex="100" (click)="entrar()" color="accent">Esqueci minha senha</button>
+          </div>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

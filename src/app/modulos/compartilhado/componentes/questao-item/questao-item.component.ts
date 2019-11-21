@@ -4,16 +4,18 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export interface QuestaoResposta {
   questao: string; resposta: string;
 }
+
 @Component({
-  selector: 'app-anamnese-item',
-  templateUrl: './anamnese-item.component.html',
-  styleUrls: ['./anamnese-item.component.scss']
+  selector: 'app-questao-item',
+  templateUrl: './questao-item.component.html',
+  styleUrls: ['./questao-item.component.scss']
 })
-export class AnamneseItemComponent implements OnInit {
+export class QuestaoItemComponent implements OnInit {
 
   @Input() index: number;
   @Input() questaoResposta: QuestaoResposta;
   @Output() remover: EventEmitter<void>;
+  @Output() adicionarQuestao: EventEmitter<void>;
 
   formQuestao: FormGroup;
   naoSalvo: boolean;
@@ -21,13 +23,16 @@ export class AnamneseItemComponent implements OnInit {
   constructor(public fb: FormBuilder) {
     this.naoSalvo = true;
     this.remover = new EventEmitter();
+    this.adicionarQuestao = new EventEmitter();
   }
 
   ngOnInit() {
-    this.formQuestao = this.fb.group({
-      questao: [this.questaoResposta.questao],
-      resposta: [this.questaoResposta.resposta]
-    });
+    if (this.questaoResposta) {
+      this.formQuestao = this.fb.group({
+        questao: [this.questaoResposta.questao],
+        resposta: [this.questaoResposta.resposta]
+      });
+    }
   }
 
 }

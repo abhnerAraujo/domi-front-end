@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-anamnese-detalhe',
-  templateUrl: './anamnese-detalhe.component.html',
-  styleUrls: ['./anamnese-detalhe.component.scss']
+  selector: 'app-avaliacao-detalhe',
+  templateUrl: './avaliacao-detalhe.component.html',
+  styleUrls: ['./avaliacao-detalhe.component.scss']
 })
-export class AnamneseDetalheComponent implements OnInit {
+export class AvaliacaoDetalheComponent implements OnInit {
 
   questoes: QuestaoResposta[] = [];
 

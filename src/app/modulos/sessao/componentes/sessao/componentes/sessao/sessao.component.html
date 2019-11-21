@@ -1,1 +1,30 @@
-<p>sessao works!</p>
+<div fxLayout="column">
+  <div fxLayoutAlign="space-between center" fxLayout="row" fxFlex="100">
+    <div fxLayoutGap="8px" fxFlex>
+      <button mat-icon-button (click)="iniciar(45)" [disabled]="!parado" color="accent">
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+      <button mat-icon-button [disabled]="parado" (click)="pausar()" color="accent">
+        <mat-icon>pause</mat-icon>
+      </button>
+      <button mat-icon-button [disabled]="!interval" (click)="parar()" color="warn">
+        <mat-icon>stop</mat-icon>
+      </button>
+    </div>
+    <h2 [ngClass]="{'extrapolou': extrapolou, 'animate-flicker': parado && counter > 0}">
+      {{ countDown }}
+    </h2>
+  </div>
+  <mat-progress-bar *ngIf="limite" [color]="extrapolou ? 'warn' : 'primary'" mode="determinate"
+    [value]="(counter*100)/limite"></mat-progress-bar>
+  <div fxFlex="100">
+    <mat-divider></mat-divider>
+  </div>
+  <div>
+    <h3>Atividade</h3>
+  </div>
+</div>
+
+<button mat-fab color="accent" (click)="adicionarArtefato()">
+  <mat-icon>add</mat-icon>
+</button>

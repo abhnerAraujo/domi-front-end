@@ -1,0 +1,66 @@
+<mat-card fxLayout="column">
+  <ng-container *ngIf="questaoResposta; else adicionarNovo">
+    <mat-card-content fxFlex fxLayoutGap="8px" fxLayout="column">
+      <ng-container *ngIf="naoSalvo; else visualizacao">
+        <form [formGroup]="formQuestao">
+          <div fxLayoutGap="8px" fxLayout="row">
+            <div fxFlex="100">
+              <mat-form-field fxFlex appearance="outline">
+                <mat-label>Questão</mat-label>
+                <input matInput formControlName="questao">
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayoutGap="8px" fxLayout="row">
+            <div fxFlex="100">
+              <mat-form-field fxFlex appearance="outline">
+                <mat-label>Resposta</mat-label>
+                <input matInput formControlName="resposta">
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+      <ng-template #visualizacao>
+        <div fxFlex fxLayoutGap="8px" fxLayout="column">
+          <div fxLayoutGap="8px" fxLayout="row">
+            <div>
+              <strong>Questão:</strong>
+            </div>
+            <div>
+              {{ formQuestao.get('questao').value }}
+            </div>
+          </div>
+          <div fxLayoutGap="8px" fxLayout="row">
+            <div>
+              <strong>Resposta</strong>
+            </div>
+            <div>
+              {{ formQuestao.get('resposta').value }}
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <ng-container></ng-container>
+      <button mat-button color="warn" (click)="remover.emit()">
+        REMOVER
+      </button>
+      <button mat-button color="accent" *ngIf="naoSalvo" (click)="naoSalvo = !naoSalvo">
+        SALVAR
+      </button>
+      <button mat-button color="accent" *ngIf="!naoSalvo" (click)="naoSalvo = !naoSalvo">
+        EDITAR
+      </button>
+    </mat-card-actions>
+  </ng-container>
+  <ng-template #adicionarNovo>
+    <div>
+      <button mat-button (click)="adicionarQuestao.emit()" color="accent">
+        <mat-icon>add_circle_outline</mat-icon>
+        Adicionar questao
+      </button>
+    </div>
+  </ng-template>
+</mat-card>

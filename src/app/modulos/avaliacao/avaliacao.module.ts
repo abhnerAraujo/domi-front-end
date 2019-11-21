@@ -1,17 +1,17 @@
 import { QuestaoItemModule } from '../../modulos/compartilhado/componentes/questao-item/questao-item.module';
+import { AvaliacaoRoutingModule } from './avaliacao-routing.module';
+import { AvaliacaoDetalheComponent } from './componentes/avaliacao-detalhe/avaliacao-detalhe.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule, MatCardModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AnamneseRoutingModule } from './anamnese-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AnamneseDetalheComponent } from './componentes/anamnese-detalhe/anamnese-detalhe.component';
 
 @NgModule({
-  declarations: [AnamneseDetalheComponent],
+  declarations: [AvaliacaoDetalheComponent],
   imports: [
     CommonModule,
-    AnamneseRoutingModule,
+    AvaliacaoRoutingModule,
     FlexLayoutModule,
     MatButtonModule,
     MatIconModule,
@@ -20,9 +20,6 @@ import { AnamneseDetalheComponent } from './componentes/anamnese-detalhe/anamnes
     MatCardModule,
     ReactiveFormsModule,
     QuestaoItemModule
-  ],
-  exports: [
-    AnamneseDetalheComponent
   ]
 })
-export class AnamneseModule { }
+export class AvaliacaoModule { }

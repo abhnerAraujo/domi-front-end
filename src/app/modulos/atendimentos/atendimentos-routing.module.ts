@@ -33,6 +33,10 @@ const rotas: Routes = [
       {
         path: 'anamnese',
         loadChildren: () => import('../anamnese/anamnese.module').then(m => m.AnamneseModule)
+      },
+      {
+        path: 'avaliacao',
+        loadChildren: () => import('../avaliacao/avaliacao.module').then(m => m.AvaliacaoModule)
       }
     ]
   }

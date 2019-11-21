@@ -30,3 +30,9 @@
    -o-animation: flickerAnimation 1s infinite;
     animation: flickerAnimation 1s infinite;
 }
+
+.mat-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 32px;
+}

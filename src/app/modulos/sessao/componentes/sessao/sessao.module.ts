@@ -1,3 +1,4 @@
+import { BottomSheetNavegacaoModule } from './../../../compartilhado/componentes/bottom-sheet-navegacao/bottom-sheet-navegacao.module';
 import { MatButtonModule, MatIconModule, MatDividerModule, MatProgressBarModule, MatBottomSheetModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SessaoRoutingModule } from './sessao-routing.module';
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     MatDividerModule,
     MatProgressBarModule,
-    MatBottomSheetModule
+    BottomSheetNavegacaoModule
   ]
 })
 export class SessaoModule { }

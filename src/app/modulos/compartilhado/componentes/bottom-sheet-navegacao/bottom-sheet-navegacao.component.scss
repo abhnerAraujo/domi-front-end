@@ -1,0 +1,10 @@
+@import '../../../../styles/variables.scss';
+
+a {
+  color: $accent;
+  text-align: start;
+  mat-icon {
+    margin-right: 8px;
+  }
+  font-weight: 600;
+}

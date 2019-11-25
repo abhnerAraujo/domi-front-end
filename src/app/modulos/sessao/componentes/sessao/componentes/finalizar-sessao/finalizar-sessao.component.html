@@ -91,7 +91,7 @@
     </form>
   </div>
   <div mat-dialog-actions align="end">
-    <button mat-button color="accent">CANCELAR</button>
-    <button mat-button color="accent">FINALIZAR</button>
+    <button mat-button color="accent" [mat-dialog-close]="null">CANCELAR</button>
+    <button mat-button color="accent" [mat-dialog-close]="true">FINALIZAR</button>
   </div>
 </div>

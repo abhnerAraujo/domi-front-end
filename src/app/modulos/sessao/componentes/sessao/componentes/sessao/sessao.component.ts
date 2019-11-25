@@ -1,4 +1,5 @@
-import { MatBottomSheet } from '@angular/material';
+import { FinalizarSessaoComponent, FinalizarSessaoDados } from './../finalizar-sessao/finalizar-sessao.component';
+import { MatBottomSheet, MatDialog } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
@@ -15,6 +16,9 @@ moment.locale('pt-BR');
 })
 export class SessaoComponent implements OnInit {
 
+  qtdSessoes: number;
+  tempoSessao: number;
+
   countDown: string;
   counter: number;
   limite: number;
@@ -22,26 +26,29 @@ export class SessaoComponent implements OnInit {
   parado: boolean;
   extrapolou: boolean;
 
-  constructor(public bottomSheet: MatBottomSheet) {
+  constructor(public bottomSheet: MatBottomSheet
+    , public dialog: MatDialog) {
     this.counter = 0;
     this.parado = true;
     this.extrapolou = false;
+    this.qtdSessoes = 1;
+    this.tempoSessao = 45;
   }
 
   ngOnInit() {
-    this.countDown = '00 : 00 : 00';
+    this.countDown = '00:00:00';
   }
 
   atualizarTempo() {
-    this.countDown = moment().hours(0).minutes(0).seconds(this.counter++).format('HH : mm : ss');
+    this.countDown = moment().hours(0).minutes(0).seconds(this.counter++).format('HH:mm:ss');
     this.extrapolou = this.counter > this.limite;
   }
 
-  iniciar(event: number) {
+  iniciar() {
     this.parado = false;
     if (this.counter === 0) {
-      this.limite = event * 60;
-      this.countDown = '00 : 00 : 00';
+      this.limite = this.tempoSessao * this.qtdSessoes * 60;
+      this.countDown = '00:00:00';
     }
     this.interval = setInterval(() => this.atualizarTempo(), 1000);
   }
@@ -54,9 +61,10 @@ export class SessaoComponent implements OnInit {
   parar() {
     this.parado = true;
     clearInterval(this.interval);
-    this.counter = 0;
-    this.countDown = '00 : 00 : 00';
-    setTimeout(() => this.interval = null, 500);
+    setTimeout(() => {
+      this.interval = null;
+      this.finalizar();
+    }, 500);
   }
 
   adicionarArtefato() {
@@ -70,6 +78,28 @@ export class SessaoComponent implements OnInit {
         { url: '/atendimentos/1/anamnese/nova', icon: 'assignment_ind', texto: 'ANAMNESE' },
       ],
       closeOnNavigation: true
+    });
+  }
+
+  finalizar() {
+    const sessaoQuantidade = this.counter < this.tempoSessao
+      ? 1
+      : Math.ceil(this.counter / this.tempoSessao);
+    const data: FinalizarSessaoDados = {
+      sessao_id: 1,
+      sessao_duracao: this.countDown,
+      sessao_quantidade: sessaoQuantidade,
+      sessao_data: new Date().toISOString(),
+      sessao_responsavel: 'Abhner Araujo',
+      sessao_email_responsavel: 'abhnerfelipe@gmail.com',
+      sessao_envia_email_responsavel: true,
+      sessao_orientacoes: 'Treinar mais o /k/ durante a semana.',
+      sessao_valor: 80 * sessaoQuantidade,
+      sessao_paga: false
+    };
+    const dialogRef = this.dialog.open(FinalizarSessaoComponent, {
+      data,
+      minWidth: 320
     });
   }
 }

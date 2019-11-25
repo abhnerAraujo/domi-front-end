@@ -1,19 +1,22 @@
 <div fxLayout="column">
   <div fxLayoutAlign="space-between center" fxLayout="row" fxFlex="100">
-    <div fxLayoutGap="8px" fxFlex>
-      <button mat-icon-button (click)="iniciar(45)" [disabled]="!parado" color="accent">
-        <mat-icon>play_arrow</mat-icon>
+    <div fxLayoutGap="8px" fxFlex="nogrow" fxLayoutAlign="center center">
+      <button mat-button (click)="iniciar()" *ngIf="parado" color="accent">
+        {{ counter > 0 ? 'CONTINUAR' : 'INICIAR'}}
       </button>
-      <button mat-icon-button [disabled]="parado" (click)="pausar()" color="accent">
-        <mat-icon>pause</mat-icon>
-      </button>
-      <button mat-icon-button [disabled]="!interval" (click)="parar()" color="warn">
-        <mat-icon>stop</mat-icon>
+      <button mat-button *ngIf="!parado" (click)="pausar()" color="accent">
+        PAUSAR
       </button>
     </div>
-    <h2 [ngClass]="{'extrapolou': extrapolou, 'animate-flicker': parado && counter > 0}">
+    <h3 fxFlex fxLayoutAlign="center center"
+      [ngClass]="{'extrapolou': extrapolou, 'animate-flicker': parado && counter > 0}">
       {{ countDown }}
-    </h2>
+    </h3>
+    <div fxFlex="nogrow" fxLayoutAlign="center center">
+      <button mat-button [disabled]="!interval" (click)="parar()" color="warn">
+        FINALIZAR
+      </button>
+    </div>
   </div>
   <mat-progress-bar *ngIf="limite" [color]="extrapolou ? 'warn' : 'primary'" mode="determinate"
     [value]="(counter*100)/limite"></mat-progress-bar>

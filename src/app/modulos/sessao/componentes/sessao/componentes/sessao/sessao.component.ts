@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { FinalizarSessaoComponent, FinalizarSessaoDados } from './../finalizar-sessao/finalizar-sessao.component';
 import { MatBottomSheet, MatDialog } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
@@ -27,7 +28,8 @@ export class SessaoComponent implements OnInit {
   extrapolou: boolean;
 
   constructor(public bottomSheet: MatBottomSheet
-    , public dialog: MatDialog) {
+    , public dialog: MatDialog
+    , private router: Router) {
     this.counter = 0;
     this.parado = true;
     this.extrapolou = false;
@@ -100,6 +102,12 @@ export class SessaoComponent implements OnInit {
     const dialogRef = this.dialog.open(FinalizarSessaoComponent, {
       data,
       minWidth: 320
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado) {
+        this.router.navigate(['/atendimentos/1/sessoes']);
+      }
     });
   }
 }

@@ -1,8 +1,9 @@
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BottomSheetNavegacaoModule } from './../../../compartilhado/componentes/bottom-sheet-navegacao/bottom-sheet-navegacao.module';
 import {
   MatButtonModule, MatIconModule, MatDividerModule, MatProgressBarModule,
-  MatFormFieldModule, MatInputModule, MatCheckboxModule, MatExpansionModule, MatDialogModule
+  MatFormFieldModule, MatInputModule, MatCheckboxModule, MatExpansionModule, MatDialogModule, MatSliderModule, MatDatepickerModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SessaoRoutingModule } from './sessao-routing.module';
@@ -27,7 +28,10 @@ import { FinalizarSessaoComponent } from './componentes/finalizar-sessao/finaliz
     MatCheckboxModule,
     MatExpansionModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    CurrencyMaskModule
   ],
   entryComponents: [FinalizarSessaoComponent]
 })

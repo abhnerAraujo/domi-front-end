@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Component, OnInit, Inject } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+import { CurrencyMaskConfig } from 'ng2-currency-mask/src/currency-mask.config';
 moment.locale('pt-BR');
 
 export interface FinalizarSessaoDados {
@@ -26,6 +27,8 @@ export interface FinalizarSessaoDados {
 export class FinalizarSessaoComponent implements OnInit {
 
   resumoSessaoForm: FormGroup;
+  moedaOptions: CurrencyMaskConfig;
+
   constructor(public dialogRef: MatDialogRef<FinalizarSessaoComponent>,
     @Inject(MAT_DIALOG_DATA) private data: FinalizarSessaoDados,
     fb: FormBuilder) {
@@ -33,7 +36,7 @@ export class FinalizarSessaoComponent implements OnInit {
       sessao_id: [data.sessao_id],
       sessao_duracao: [data.sessao_duracao],
       sessao_quantidade: [data.sessao_quantidade],
-      sessao_data: [moment(data.sessao_data).format('LL')],
+      sessao_data: [data.sessao_data],
       sessao_responsavel: [data.sessao_responsavel],
       sessao_email_responsavel: [data.sessao_email_responsavel],
       sessao_envia_email_responsavel: [data.sessao_envia_email_responsavel],
@@ -41,9 +44,20 @@ export class FinalizarSessaoComponent implements OnInit {
       sessao_valor: [data.sessao_valor],
       sessao_paga: [data.sessao_paga]
     });
+    this.moedaOptions = {
+      align: 'left',
+      allowNegative: true,
+      decimal: ',',
+      thousands: '.',
+      prefix: 'R$ ',
+      suffix: '',
+      precision: 2,
+    };
   }
 
   ngOnInit() {
   }
+
+  formatarData = (valor: string, formato: string) => moment(valor).format(formato);
 
 }

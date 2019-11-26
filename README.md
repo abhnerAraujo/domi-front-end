@@ -1,27 +1,15 @@
-# DomiFrontEnd
+# Domi - Fonoaudiologia
+Sistema para acompanhamento e gerenciamento de terapias para fonoaudiólogos. Foi desenvolvido pensado em mobile first, pois é desejável que seja utilizado tanto em ambiente clínico quanto em atendimento em domicílio.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
+## Como rodar
 
-## Development server
+**DEV**
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Clonar o projeto;
+2. Instalar dependências com:
+`npm install` ou `yarn install`
+3. ng serve (irá rodar na porta 4300)
 
-## Code scaffolding
+**PROD**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Atualmente, após merge na master, automaticamente está sendo feito deploy no heroku em [Domi - Fonoaudiologia](http://domi-fono.herokuapp.com/).

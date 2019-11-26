@@ -1,31 +1,27 @@
 <div>
   <div>
-    <h1 mat-dialog-title>Finalizar atendimento</h1>
+    <h1 mat-dialog-title>Finalização de atendimento</h1>
   </div>
   <div mat-dialog-content>
     <form [formGroup]="resumoSessaoForm">
       <mat-accordion style="margin: 0 8px;">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              Duração
-            </mat-panel-title>
-            <mat-panel-description>
+            <mat-panel-title> Duração </mat-panel-title>
+            <mat-panel-description fxLayoutAlign="end">
               {{ resumoSessaoForm.get('sessao_duracao').value }}
             </mat-panel-description>
           </mat-expansion-panel-header>
           <mat-form-field appearance="outline">
-            <mat-label>Valor</mat-label>
+            <mat-label>Tempo</mat-label>
             <input matInput formControlName="sessao_duracao">
             <mat-hint>hh:mm:ss ou hhmmss</mat-hint>
           </mat-form-field>
         </mat-expansion-panel>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              Quantidade
-            </mat-panel-title>
-            <mat-panel-description>
+            <mat-panel-title> Quantidade </mat-panel-title>
+            <mat-panel-description fxLayoutAlign="end">
               {{ resumoSessaoForm.get('sessao_quantidade').value }}
             </mat-panel-description>
           </mat-expansion-panel-header>
@@ -35,15 +31,13 @@
         </mat-expansion-panel>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              Data
-            </mat-panel-title>
-            <mat-panel-description>
+            <mat-panel-title> Data </mat-panel-title>
+            <mat-panel-description fxLayoutAlign="end">
               {{ formatarData(resumoSessaoForm.get('sessao_data').value, 'll') }}
             </mat-panel-description>
           </mat-expansion-panel-header>
           <mat-form-field appearance="outline">
-            <mat-label>Valor</mat-label>
+            <mat-label>Dia</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="sessao_data" readonly>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker disabled="false"></mat-datepicker>
@@ -51,12 +45,8 @@
         </mat-expansion-panel>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              Responsável
-            </mat-panel-title>
-            <mat-panel-description>
-              Ver mais
-            </mat-panel-description>
+            <mat-panel-title> Responsável </mat-panel-title>
+            <mat-panel-description fxLayoutAlign="end"> Ver mais </mat-panel-description>
           </mat-expansion-panel-header>
           <div fxLayout="column">
             <mat-form-field appearance="outline">
@@ -72,26 +62,32 @@
         </mat-expansion-panel>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              Cobrança
-            </mat-panel-title>
-            <mat-panel-description>
-              Ver mais
-            </mat-panel-description>
+            <mat-panel-title> Valor </mat-panel-title>
+            <mat-panel-description fxLayoutAlign="end"> Ver mais </mat-panel-description>
           </mat-expansion-panel-header>
           <div fxLayout="column">
             <mat-form-field appearance="outline">
-              <mat-label>Valor</mat-label>
+              <mat-label>Preço</mat-label>
               <input matInput formControlName="sessao_valor" currencyMask autocomplete="off" [options]="moedaOptions">
             </mat-form-field>
-            <mat-checkbox formControlName="sessao_paga">Paga</mat-checkbox>
+            <mat-checkbox formControlName="sessao_paga">Pago</mat-checkbox>
           </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Orientações </mat-panel-title>
+            <mat-panel-description fxLayoutAlign="end"> Ver mais </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Texto</mat-label>
+            <textarea matInput formControlName="sessao_orientacoes"></textarea>
+          </mat-form-field>
         </mat-expansion-panel>
       </mat-accordion>
     </form>
   </div>
   <div mat-dialog-actions align="end">
     <button mat-button color="accent" [mat-dialog-close]="null">CANCELAR</button>
-    <button mat-button color="accent" [mat-dialog-close]="true">FINALIZAR</button>
+    <button mat-button color="accent" [mat-dialog-close]="true">CONFIRMAR</button>
   </div>
 </div>

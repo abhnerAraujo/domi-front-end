@@ -55,24 +55,24 @@
     <div fxFlex="60" fxLayout="column">
       <div fxLayoutGap="16px" class="lista-cards" fxFlex="nogrow">
         <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
-          <h2 fxFlex>
-            {{ atendimento.total_sessoes }}
+          <h2 fxFlex [countUp]="atendimento.total_sessoes" [options]="countUpOptions">
+            0
           </h2>
           <div fxFlex="nogrow" class="titulo">
             Sessões
           </div>
         </div>
         <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
-          <h2 fxFlex class="informacao-numerica">
-            {{ atendimento.total_recebido | moeda:true }}
+          <h2 fxFlex class="informacao-numerica" [options]="countUpOptionsMoeda" [countUp]="atendimento.total_recebido">
+            0
           </h2>
           <div fxFlex="nogrow" class="titulo">
             Recebidos
           </div>
         </div>
         <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
-          <h2 fxFlex>
-            {{ atendimento.total_receber | moeda:true }}
+          <h2 fxFlex [countUp]="atendimento.total_receber" [options]="countUpOptionsMoeda">
+            0
           </h2>
           <div fxFlex="nogrow" class="titulo">
             A receber

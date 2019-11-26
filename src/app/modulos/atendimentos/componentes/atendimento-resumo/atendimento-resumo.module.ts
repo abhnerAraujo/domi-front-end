@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AtendimentoResumoComponent } from './componentes/atendimento-resumo/atendimento-resumo.component';
 import { MatDividerModule, MatCardModule, MatButtonModule, MatIconModule, MatListModule } from '@angular/material';
+import { CountUpModule } from 'countup.js-angular2';
 
 @NgModule({
   declarations: [AtendimentoResumoComponent],
@@ -17,7 +18,8 @@ import { MatDividerModule, MatCardModule, MatButtonModule, MatIconModule, MatLis
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    PipesModule
+    PipesModule,
+    CountUpModule
   ]
 })
 export class AtendimentoResumoModule { }

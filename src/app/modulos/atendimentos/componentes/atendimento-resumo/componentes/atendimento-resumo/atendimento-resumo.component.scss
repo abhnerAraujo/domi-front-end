@@ -16,19 +16,6 @@ mat-nav-list {
   }
 }
 
-.lista-cards {
-  .card-info-numero {
-    padding: 0 16px;
-    h2 {
-      font-size: 1.4em;
-    }
-   .titulo {
-     font-weight: 600;
-     opacity: 0.8;
-   } 
-  }
-}
-
 .ocultar-evolucao {
   white-space: nowrap;
   overflow: hidden;
@@ -37,6 +24,7 @@ mat-nav-list {
 
 .ultimos-acontecimentos {
   overflow-y: auto;
+  height: 200px;
   .container-esquerdo {
     height: 100%;
     .timeline-circulo {
@@ -53,21 +41,5 @@ mat-nav-list {
     font-weight: 600;
     font-size: 16px;
     color: $accent;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  
-  .lista-cards {
-    .card-info-numero {
-      padding: 8px;
-      h2 {
-        font-size: 16px;
-      }
-    .titulo {
-      font-weight: 600;
-      opacity: 0.8;
-    } 
-    }
   }
 }

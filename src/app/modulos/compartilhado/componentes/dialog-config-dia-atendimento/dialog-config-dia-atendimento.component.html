@@ -20,18 +20,19 @@
       </ngx-material-timepicker-toggle>
       <mat-error *ngIf="horarioForm.get('hora').getError('required')">Este campo é obrigatório</mat-error>
     </mat-form-field>
-    <div fxLayoutGap="8px" fxLayout="column">
-      <div fxLayoutAlign="space-between center">
-        <div style="font-weight: 600;">
-          Sessões:
-        </div>
-        <div>
-          {{ horarioForm.get('qtdSessoes').value }}
-        </div>
-      </div>
-      <div>
-        <mat-slider formControlName="qtdSessoes" [min]="1" [max]="5" [step]="1" [thumbLabel]="true" fxFlex></mat-slider>
-      </div>
+    <div fxLayoutGap="8px" fxLayoutAlign="space-between center">
+      <button mat-icon-button color="accent" [disabled]="horarioForm.get('qtdSessoes').value <= 1"
+        (click)="horarioForm.patchValue({qtdSessoes: horarioForm.get('qtdSessoes').value - 1})">
+        <mat-icon>remove</mat-icon>
+      </button>
+      <mat-form-field appearance="outline" fxFlex="50">
+        <mat-label>Sessões</mat-label>
+        <input style="text-align: center;" matInput formControlName="qtdSessoes" [min]="1" [max]="5" readonly required>
+      </mat-form-field>
+      <button mat-icon-button color="accent" [disabled]="horarioForm.get('qtdSessoes').value >= 5"
+        (click)="horarioForm.patchValue({qtdSessoes: horarioForm.get('qtdSessoes').value + 1})">
+        <mat-icon>add</mat-icon>
+      </button>
     </div>
     <div fxLayoutGap="8px" fxLayout="column">
       <div fxLayoutAlign="space-between center">

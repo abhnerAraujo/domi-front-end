@@ -38,7 +38,7 @@ export class DialogConfigDiaAtendimentoComponent implements OnInit {
         id: this.data.id,
         diaSemana: this.data.diaSemana,
         hora: this.data.hora,
-        qtdSessoes: this.data.qtdSessoes,
+        qtdSessoes: this.data.qtdSessoes ? this.data.qtdSessoes : 1,
         duracao: this.data.duracao
       });
     }

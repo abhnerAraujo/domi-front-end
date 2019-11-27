@@ -1,5 +1,7 @@
 import { Subscription } from 'rxjs';
-import { DialogConfigDiaAtendimentoComponent } from './../../../../../compartilhado/componentes/dialog-config-dia-atendimento/dialog-config-dia-atendimento.component';
+import {
+  DialogConfigDiaAtendimentoComponent
+} from './../../../../../compartilhado/componentes/dialog-config-dia-atendimento/dialog-config-dia-atendimento.component';
 import { DiaAtendimento } from './../../../../../atendimentos/interfaces/dia-atendimento.interface';
 import { AtendimentoConfiguracao } from './../../../../../atendimentos/interfaces/atendimento-configuracao.interface';
 import { Router } from '@angular/router';
@@ -181,6 +183,7 @@ export class SessaoComponent implements OnInit {
         outroDia.selecionado = false;
       } else {
         dia.selecionado = !dia.selecionado;
+        this.novoDiaAtendimento.selecionado = false;
       }
     });
   }

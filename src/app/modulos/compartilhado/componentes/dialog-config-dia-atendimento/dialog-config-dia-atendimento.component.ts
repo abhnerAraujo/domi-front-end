@@ -1,17 +1,9 @@
-import { TEMA_PRIMARIO } from '../../../../../../constantes/time-picker';
+import { DiaAtendimento } from '../../../atendimentos/interfaces/dia-atendimento.interface';
+import { TEMA_PRIMARIO } from '../../../../constantes/time-picker';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
-import * as moment from 'moment';
-
-export interface DadosDialogDiaAtendimento {
-  id: number;
-  diaSemana: string;
-  hora: string;
-  qtdSessoes: number;
-  duracao: number;
-}
 
 @Component({
   selector: 'app-dialog-config-dia-atendimento',
@@ -29,10 +21,10 @@ export class DialogConfigDiaAtendimentoComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogConfigDiaAtendimentoComponent>,
     formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: DadosDialogDiaAtendimento) {
+    @Inject(MAT_DIALOG_DATA) public data: DiaAtendimento) {
     this.horarioForm = formBuilder.group({
       id: [''],
-      diaSemana: [''],
+      diaSemana: [null],
       hora: ['', Validators.required],
       qtdSessoes: [1],
       duracao: [40]
@@ -41,7 +33,7 @@ export class DialogConfigDiaAtendimentoComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.data && this.data.id) {
+    if (this.data) {
       this.horarioForm.patchValue({
         id: this.data.id,
         diaSemana: this.data.diaSemana,

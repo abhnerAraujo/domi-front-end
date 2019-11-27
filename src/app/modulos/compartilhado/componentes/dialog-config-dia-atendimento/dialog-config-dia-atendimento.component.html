@@ -2,13 +2,13 @@
 <div mat-dialog-content>
   <form fxLayout="column" [formGroup]="horarioForm" autocomplete="off">
     <mat-button-toggle-group formControlName="diaSemana">
-      <mat-button-toggle value="DOM"> D </mat-button-toggle>
-      <mat-button-toggle value="SEG"> S </mat-button-toggle>
-      <mat-button-toggle value="TER"> T </mat-button-toggle>
-      <mat-button-toggle value="QUA"> Q </mat-button-toggle>
-      <mat-button-toggle value="QUI"> Q </mat-button-toggle>
-      <mat-button-toggle value="SEX"> S </mat-button-toggle>
-      <mat-button-toggle value="SAB"> S </mat-button-toggle>
+      <mat-button-toggle [value]="0" [disabled]="data.travarBotoes"> D </mat-button-toggle>
+      <mat-button-toggle [value]="1" [disabled]="data.travarBotoes"> S </mat-button-toggle>
+      <mat-button-toggle [value]="2" [disabled]="data.travarBotoes"> T </mat-button-toggle>
+      <mat-button-toggle [value]="3" [disabled]="data.travarBotoes"> Q </mat-button-toggle>
+      <mat-button-toggle [value]="4" [disabled]="data.travarBotoes"> Q </mat-button-toggle>
+      <mat-button-toggle [value]="5" [disabled]="data.travarBotoes"> S </mat-button-toggle>
+      <mat-button-toggle [value]="6" [disabled]="data.travarBotoes"> S </mat-button-toggle>
     </mat-button-toggle-group>
     <mat-form-field appearance="outline" fxFlex>
       <mat-label>Horário</mat-label>

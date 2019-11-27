@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { Location } from '@angular/common';
+import { CountUpOptions } from 'countup.js';
 
 moment.locale('pt-BR');
 
@@ -33,6 +34,19 @@ export class AtendimentoResumoComponent implements OnInit {
     total_sessoes: number;
     queixa: string;
     ultimos_acontecimentos: { tipo: number; descricao: string; data: string }[]
+  };
+
+  countUpOptionsMoeda: CountUpOptions = {
+    decimalPlaces: 2,
+    useGrouping: true,
+    separator: '.',
+    decimal: ',',
+    prefix: 'R$ '
+  };
+
+  countUpOptions: CountUpOptions = {
+    useGrouping: true,
+    separator: '.'
   };
 
   evolucaoOcultada = true;

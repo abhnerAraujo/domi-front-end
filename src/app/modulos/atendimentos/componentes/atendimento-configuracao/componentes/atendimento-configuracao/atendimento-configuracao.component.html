@@ -28,7 +28,7 @@
         <div *ngFor="let diaAtendimento of diasAtendimento; let i = index">
           <mat-chip-list>
             <mat-chip color="accent" selected (click)="abrirDialog(i)">
-              {{ diaAtendimento.diaSemana }} /
+              {{ diaAtendimento.diaSemana | diaSemana:true }} /
               {{ diaAtendimento.hora }} /
               {{ diaAtendimento.duracao }} (min) /
               {{ diaAtendimento.qtdSessoes }}

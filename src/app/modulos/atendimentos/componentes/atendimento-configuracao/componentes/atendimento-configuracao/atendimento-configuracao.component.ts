@@ -1,10 +1,11 @@
 import {
-  DialogConfigDiaAtendimentoComponent, DadosDialogDiaAtendimento
-} from './../dialog-config-dia-atendimento/dialog-config-dia-atendimento.component';
+  DialogConfigDiaAtendimentoComponent
+} from '../../../../../compartilhado/componentes/dialog-config-dia-atendimento/dialog-config-dia-atendimento.component';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material';
 import { CurrencyMaskConfig } from 'ng2-currency-mask/src/currency-mask.config';
+import { DiaAtendimento } from '../../../../interfaces/dia-atendimento.interface';
 
 @Component({
   selector: 'app-atendimento-configuracao',
@@ -13,7 +14,7 @@ import { CurrencyMaskConfig } from 'ng2-currency-mask/src/currency-mask.config';
 })
 export class AtendimentoConfiguracaoComponent implements OnInit {
 
-  diasAtendimento: DadosDialogDiaAtendimento[];
+  diasAtendimento: DiaAtendimento[];
   valorSessao: number;
   moedaOptions: CurrencyMaskConfig;
 
@@ -33,12 +34,13 @@ export class AtendimentoConfiguracaoComponent implements OnInit {
   ngOnInit() {
     this.diasAtendimento = [];
     this.diasAtendimento.push(
-      { id: 1, diaSemana: 'SEG', hora: '10:00', qtdSessoes: 2, duracao: 45 },
+      { id: 1, diaSemana: 1, hora: '10:00', qtdSessoes: 2, duracao: 45 },
     );
   }
 
   abrirDialog(index: number) {
-    let dados = {
+    let dados: DiaAtendimento = {
+      id: null,
       diaSemana: null,
       hora: null,
       qtdSessoes: null,
@@ -50,7 +52,7 @@ export class AtendimentoConfiguracaoComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogConfigDiaAtendimentoComponent, {
       data: dados
     });
-    dialogRef.afterClosed().subscribe((retorno: DadosDialogDiaAtendimento) => {
+    dialogRef.afterClosed().subscribe((retorno: DiaAtendimento) => {
       if (retorno) {
         if (retorno.id) {
           this.diasAtendimento[index] = retorno;

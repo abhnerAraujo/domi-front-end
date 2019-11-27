@@ -1,3 +1,5 @@
+@import '../../../../../../styles/variables.scss';
+
 a {
   text-align: start;
   mat-icon {
@@ -5,4 +7,8 @@ a {
   }
   font-weight: 600;
   opacity: 0.8;
+}
+
+.active-link {
+  color: $primary !important;
 }

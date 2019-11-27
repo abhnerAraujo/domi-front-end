@@ -23,9 +23,56 @@
   <div fxFlex="100">
     <mat-divider></mat-divider>
   </div>
-  <div>
-    <h3>Atividade</h3>
-  </div>
+  <ng-container *ngIf="prontoParaComecar; else configurarAtendimento">
+    <div>
+      <h3>Atividade</h3>
+    </div>
+  </ng-container>
+  <ng-template #configurarAtendimento>
+    <div>
+      <h3>Configurar atendimento</h3>
+      <p> {{ mensagemConfiguracao }} </p>
+      <div *ngIf="configuracaoAtendimentoSalva.atendimento_dias.length" fxLayoutGap="8px" fxLayout="column">
+        <div fxLayout="row" class="header-atender-dias">
+          <div>
+            Dia/
+          </div>
+          <div>
+            Hora/
+          </div>
+          <div>
+            Duração/
+          </div>
+          <div>
+            Sessões
+          </div>
+        </div>
+        <mat-chip-list fxLayoutGap="8px">
+          <mat-chip *ngFor="let dia of configuracaoAtendimentoSalva.atendimento_dias" [selectable]="true"
+            [selected]="dia.selecionado" color="accent" (click)="chipSelecao(dia)">
+            {{ dia.diaSemana | diaSemana:true }} /
+            {{ dia.hora | hora }} /
+            {{ dia.duracao }} (min) /
+            {{ dia.qtdSessoes }}
+          </mat-chip>
+          <mat-chip (click)="novaConfiguracaoDia()" *ngIf="novoDiaAtendimento"
+            [selected]="novoDiaAtendimento?.selecionado" color="accent">
+            {{ novoDiaAtendimento.diaSemana | diaSemana:true }} /
+            {{ novoDiaAtendimento.hora | hora }} /
+            {{ novoDiaAtendimento.duracao }} (min) /
+            {{ novoDiaAtendimento.qtdSessoes }}
+          </mat-chip>
+          <mat-chip (click)="novaConfiguracaoDia()" *ngIf=" !novoDiaAtendimento">NOVA</mat-chip>
+        </mat-chip-list>
+      </div>
+      <p>
+        <mat-form-field appearance="outline" fxFlex.xs="100">
+          <mat-label>Valor por sessão</mat-label>
+          <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" [options]="moedaOptions">
+        </mat-form-field>
+      </p>
+    </div>
+  </ng-template>
 </div>
 
 <button mat-fab color="accent" (click)="adicionarArtefato()">

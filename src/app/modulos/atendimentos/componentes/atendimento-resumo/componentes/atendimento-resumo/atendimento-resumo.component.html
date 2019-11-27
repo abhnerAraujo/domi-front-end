@@ -1,11 +1,11 @@
-<div fxLayout="column" style="height: 100%;">
+<div fxLayout="column" style="min-height: 100%;">
   <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
     <button mat-icon-button (click)="location.back()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h1>Atendimento</h1>
   </div>
-  <div fxFlex fxLayoutGap="16px" fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex fxLayoutGap="16px" fxLayout="row" fxLayout.lt-md="column">
     <div fxFlex>
       <mat-card class="card-paciente">
         <mat-card-header>
@@ -31,6 +31,8 @@
             AGORA</button>
         </mat-card-actions>
       </mat-card>
+      <app-informacao-numerica fxHide.gt-sm [sessoes]="atendimento.total_sessoes"
+        [recebido]="atendimento.total_recebido" [receber]=atendimento.total_receber></app-informacao-numerica>
       <p>
         <mat-nav-list>
           <a mat-list-item [routerLink]="['/atendimentos/1/sessoes']">
@@ -53,32 +55,8 @@
     </div>
     <mat-divider fxHide.xs [vertical]="true"></mat-divider>
     <div fxFlex="60" fxLayout="column">
-      <div fxLayoutGap="16px" class="lista-cards" fxFlex="nogrow">
-        <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
-          <h2 fxFlex>
-            {{ atendimento.total_sessoes }}
-          </h2>
-          <div fxFlex="nogrow" class="titulo">
-            Sessões
-          </div>
-        </div>
-        <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
-          <h2 fxFlex class="informacao-numerica">
-            {{ atendimento.total_recebido | moeda:true }}
-          </h2>
-          <div fxFlex="nogrow" class="titulo">
-            Recebidos
-          </div>
-        </div>
-        <div fxFlex fxLayout="column" class="card-info-numero" fxLayoutAlign="center center">
-          <h2 fxFlex>
-            {{ atendimento.total_receber | moeda:true }}
-          </h2>
-          <div fxFlex="nogrow" class="titulo">
-            A receber
-          </div>
-        </div>
-      </div>
+      <app-informacao-numerica fxHide.lt-md [sessoes]="atendimento.total_sessoes"
+        [recebido]="atendimento.total_recebido" [receber]=atendimento.total_receber></app-informacao-numerica>
       <div fxHide.xs fxLayout="column" fxFlex>
         <div fxLayoutAlign="start center" fxLayoutGap="8px" fxFlex="nogrow">
           <mat-icon>trending_up</mat-icon>
@@ -102,7 +80,7 @@
           <mat-icon>timeline</mat-icon>
           <h3>Últimos acontecimentos</h3>
         </div>
-        <div fxFlex class="ultimos-acontecimentos" fxLayout="column" fxLayoutGap="8px">
+        <div class="ultimos-acontecimentos" fxLayout="column" fxLayoutGap="8px">
           <div *ngFor="let evento of atendimento.ultimos_acontecimentos" fxLayout="row" fxLayoutAlign="start start"
             fxLayoutGap="8px" fxFlex="45px">
             <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="center center">

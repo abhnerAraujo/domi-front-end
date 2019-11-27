@@ -1,9 +1,11 @@
-import { DialogConfigDiaAtendimentoComponent } from './componentes/dialog-config-dia-atendimento/dialog-config-dia-atendimento.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { PipesModule } from './../../../../pipes/pipes.module';
+import {
+  DialogConfigDiaAtendimentoModule
+} from './../../../compartilhado/componentes/dialog-config-dia-atendimento/dialog-config-dia-atendimento.module';
+import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
-  MatButtonModule, MatIconModule, MatChipsModule, MatSliderModule, MatSnackBarModule, MatDialogModule,
+  MatButtonModule, MatIconModule, MatChipsModule, MatSnackBarModule,
   MatInputModule, MatFormFieldModule, MatButtonToggleModule, MatDividerModule
 } from '@angular/material';
 import { AtendimentoConfiguracaoRoutingModule } from './atendimento-configuracao-routing.module';
@@ -13,7 +15,7 @@ import { AtendimentoConfiguracaoComponent } from './componentes/atendimento-conf
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 @NgModule({
-  declarations: [AtendimentoConfiguracaoComponent, DialogConfigDiaAtendimentoComponent],
+  declarations: [AtendimentoConfiguracaoComponent],
   imports: [
     CommonModule,
     AtendimentoConfiguracaoRoutingModule,
@@ -23,18 +25,13 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
     MatChipsModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule,
-    MatDialogModule,
     MatSnackBarModule,
-    MatSliderModule,
-    NgxMaterialTimepickerModule.setLocale('pt-BR'),
     MatButtonToggleModule,
     MatDividerModule,
     CurrencyMaskModule,
-    FormsModule
-  ],
-  entryComponents: [
-    DialogConfigDiaAtendimentoComponent
+    FormsModule,
+    DialogConfigDiaAtendimentoModule,
+    PipesModule
   ]
 })
 export class AtendimentoConfiguracaoModule { }

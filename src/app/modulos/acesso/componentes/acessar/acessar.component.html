@@ -1,5 +1,5 @@
-<div class="container-principal" fxLayoutAlign="center center">
-  <div fxFlex="50">
+<div class="container-principal" fxLayoutAlign="center center" fxLayout.xs="column">
+  <div fxFlex="50" fxFlex.xs="100">
     <mat-card fxFlex="100" fxLayoutGap="16px" fxLayout="column">
       <mat-card-header fxLayout="column" fxLayoutAlign="center">
         <mat-card-title fxLayoutAlign="center">
@@ -10,7 +10,7 @@
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content fxLayoutAlign="center center">
-        <div fxFlex="60" fxLayout="column">
+        <div fxFlex="60" fxFlex.xs="100" fxLayout="column">
           <mat-form-field appearance="outline">
             <mat-label>E-mail</mat-label>
             <input matInput>
@@ -22,7 +22,7 @@
         </div>
       </mat-card-content>
       <mat-card-actions fxLayoutAlign="center center">
-        <div fxFlex="40" fxLayout="column" fxLayoutGap="8px">
+        <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
           <div>
             <button mat-raised-button fxFlex="100" (click)="entrar()" color="accent">ENTRAR</button>
           </div>

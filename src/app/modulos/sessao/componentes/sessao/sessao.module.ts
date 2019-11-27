@@ -1,9 +1,14 @@
+import { PipesModule } from './../../../../pipes/pipes.module';
+import {
+  DialogConfigDiaAtendimentoModule
+} from './../../../compartilhado/componentes/dialog-config-dia-atendimento/dialog-config-dia-atendimento.module';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BottomSheetNavegacaoModule } from './../../../compartilhado/componentes/bottom-sheet-navegacao/bottom-sheet-navegacao.module';
 import {
   MatButtonModule, MatIconModule, MatDividerModule, MatProgressBarModule,
-  MatFormFieldModule, MatInputModule, MatCheckboxModule, MatExpansionModule, MatDialogModule, MatSliderModule, MatDatepickerModule
+  MatFormFieldModule, MatInputModule, MatCheckboxModule, MatExpansionModule, MatDialogModule
+  , MatSliderModule, MatDatepickerModule, MatChipsModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SessaoRoutingModule } from './sessao-routing.module';
@@ -31,6 +36,11 @@ import { FinalizarSessaoComponent } from './componentes/finalizar-sessao/finaliz
     MatDialogModule,
     MatSliderModule,
     MatDatepickerModule,
+    CurrencyMaskModule,
+    DialogConfigDiaAtendimentoModule,
+    MatChipsModule,
+    PipesModule,
+    FormsModule,
     CurrencyMaskModule
   ],
   entryComponents: [FinalizarSessaoComponent]

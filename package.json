@@ -6,7 +6,7 @@
     "start": "node server.js",
     "postinstall": "ng build --output-path domi-front-end --aot --prod",
     "heroku-postbuild": "ng build --prod",
-    "build": "ng build",
+    "build": "ng build --aot --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -31,7 +31,9 @@
     "@angular/material-moment-adapter": "^8.2.0",
     "@angular/platform-browser": "^8.2.7",
     "@angular/platform-browser-dynamic": "^8.2.7",
+    "@angular/pwa": "^0.803.20",
     "@angular/router": "^8.2.7",
+    "@angular/service-worker": "^8.2.7",
     "@fullcalendar/angular": "^4.3.1",
     "@fullcalendar/core": "^4.3.1",
     "@fullcalendar/daygrid": "^4.3.0",

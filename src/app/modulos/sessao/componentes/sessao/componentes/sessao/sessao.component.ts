@@ -233,4 +233,8 @@ export class SessaoComponent implements OnInit {
       }
     });
   }
+
+  arquivoEscolhido(evento) {
+    console.log(evento);
+  }
 }

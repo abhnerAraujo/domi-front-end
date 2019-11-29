@@ -26,6 +26,9 @@
   <ng-container *ngIf="prontoParaComecar; else configurarAtendimento">
     <div>
       <h3>Atividade</h3>
+      <mat-form-field>
+        <input type="file" (change)="arquivoEscolhido($event)">
+      </mat-form-field>
     </div>
   </ng-container>
   <ng-template #configurarAtendimento>

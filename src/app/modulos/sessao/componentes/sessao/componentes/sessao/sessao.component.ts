@@ -1,3 +1,4 @@
+import { Agendamento } from './../../../../../atendimentos/interfaces/agendamento.interface';
 import { Subscription } from 'rxjs';
 import {
   DialogConfigDiaAtendimentoComponent
@@ -37,6 +38,16 @@ export class SessaoComponent implements OnInit {
   parado: boolean;
   extrapolou: boolean;
 
+  agendamento: Agendamento =
+    {
+      agendamento_id: 1,
+      agendamento_data: new Date().toISOString(),
+      hora_inicio_sessao: '1000',
+      tempo_sessao: 45,
+      quantidade_sessoes: 2,
+      paciente_id: 1,
+      atendimento_id: 1
+    };
   diaAtendimentoSelecionado: DiaAtendimento;
   novoDiaAtendimento: DiaAtendimento;
   configuracaoAtendimentoSalva: AtendimentoConfiguracao = {
@@ -62,8 +73,6 @@ export class SessaoComponent implements OnInit {
     this.counter = 0;
     this.parado = true;
     this.extrapolou = false;
-    this.qtdSessoes = 1;
-    this.tempoSessao = 45;
     this.prontoParaComecar = false;
     this.moedaOptions = {
       align: 'left',
@@ -82,7 +91,21 @@ export class SessaoComponent implements OnInit {
   }
 
   prepararConfiguracao() {
-    if (this.configuracaoAtendimentoSalva && this.configuracaoAtendimentoSalva.atendimento_dias.length) {
+    if (this.agendamento) {
+      this.mensagemConfiguracao =
+        'Existe um agendamento para esta sessão. Clique na configuração para alterar ou selecione a de outro dia.';
+      this.novoDiaAtendimento = {
+        id: null,
+        diaSemana: moment(this.agendamento.agendamento_data).weekday(),
+        hora: this.agendamento.hora_inicio_sessao,
+        qtdSessoes: this.agendamento.quantidade_sessoes,
+        duracao: this.agendamento.tempo_sessao,
+        selecionado: true
+      };
+      this.diaAtendimentoSelecionado = this.novoDiaAtendimento;
+      this.chipSelecao(this.diaAtendimentoSelecionado);
+      this.configuracaoAtendimentoSalva.atendimento_dias.sort(this.ordenarChips);
+    } else if (this.configuracaoAtendimentoSalva.atendimento_dias && this.configuracaoAtendimentoSalva.atendimento_dias.length) {
       const diaAtendimento = this.configuracaoParaHoje(this.configuracaoAtendimentoSalva.atendimento_dias);
       if (diaAtendimento) {
         diaAtendimento.selecionado = true;
@@ -91,13 +114,7 @@ export class SessaoComponent implements OnInit {
         this.mensagemConfiguracao = 'Não foi encontrada uma configuração para hoje. Utilize a de outro dia ou crie uma nova.';
         this.diaAtendimentoSelecionado = null;
       }
-      this.configuracaoAtendimentoSalva.atendimento_dias.sort((a, b) => {
-        if (a.selecionado === true || a.diaSemana < b.diaSemana) {
-          return -1;
-        } else {
-          return 1;
-        }
-      });
+      this.configuracaoAtendimentoSalva.atendimento_dias.sort(this.ordenarChips);
     } else {
       this.mensagemConfiguracao = 'Não existe nenhuma configuração salva, crie uma nova';
       this.diaAtendimentoSelecionado = null;
@@ -110,10 +127,12 @@ export class SessaoComponent implements OnInit {
     this.extrapolou = this.counter > this.limite;
   }
 
+  ordenarChips = (a: DiaAtendimento, b: DiaAtendimento) =>
+    (a.selecionado === true || a.diaSemana < b.diaSemana) ? -1 : 1
+
   iniciar() {
     this.parado = false;
     if (this.counter === 0) {
-      this.limite = this.tempoSessao * this.qtdSessoes * 60;
       this.countDown = '00:00:00';
     }
     this.interval = setInterval(() => this.atualizarTempo(), 1000);
@@ -133,6 +152,11 @@ export class SessaoComponent implements OnInit {
     }, 500);
   }
 
+  aplicarConfiguracoes() {
+    this.limite = this.diaAtendimentoSelecionado.duracao * this.diaAtendimentoSelecionado.qtdSessoes * 60;
+    this.prontoParaComecar = true;
+  }
+
   adicionarArtefato() {
     const bottomSheetRef = this.bottomSheet.open(BottomSheetNavegacaoComponent, {
       data: [
@@ -148,9 +172,9 @@ export class SessaoComponent implements OnInit {
   }
 
   finalizar() {
-    const sessaoQuantidade = this.counter < this.tempoSessao
+    const sessaoQuantidade = this.counter < this.diaAtendimentoSelecionado.duracao
       ? 1
-      : Math.ceil(this.counter / this.tempoSessao);
+      : Math.round(this.counter / (this.diaAtendimentoSelecionado.duracao * 60));
     const data: FinalizarSessaoDados = {
       sessao_id: 1,
       sessao_duracao: this.countDown,
@@ -184,6 +208,7 @@ export class SessaoComponent implements OnInit {
       } else {
         dia.selecionado = !dia.selecionado;
         this.novoDiaAtendimento.selecionado = false;
+        this.diaAtendimentoSelecionado = dia;
       }
     });
   }
@@ -200,9 +225,12 @@ export class SessaoComponent implements OnInit {
       }
     });
     this.dialogSubscription = dialogRef.afterClosed().subscribe((resultado: DiaAtendimento) => {
-      this.novoDiaAtendimento = resultado;
-      this.novoDiaAtendimento.selecionado = true;
-      this.chipSelecao(this.novoDiaAtendimento);
+      if (resultado) {
+        this.novoDiaAtendimento = resultado;
+        this.novoDiaAtendimento.selecionado = true;
+        this.diaAtendimentoSelecionado = this.novoDiaAtendimento;
+        this.chipSelecao(this.novoDiaAtendimento);
+      }
     });
   }
 }

@@ -1,3 +1,4 @@
+/// <reference types="@types/dom-mediacapture-record" />
 import { Agendamento } from './../../../../../atendimentos/interfaces/agendamento.interface';
 import { Subscription } from 'rxjs';
 import {
@@ -66,6 +67,7 @@ export class SessaoComponent implements OnInit {
   prontoParaComecar: boolean;
   valorSessao: number;
 
+  files: File[] = [];
 
   constructor(public bottomSheet: MatBottomSheet
     , public dialog: MatDialog
@@ -236,5 +238,29 @@ export class SessaoComponent implements OnInit {
 
   arquivoEscolhido(evento) {
     console.log(evento);
+    this.files.push(...evento.addedFiles);
   }
+
+  aoRemover(file: File) {
+    this.files.splice(this.files.indexOf(file), 1);
+  }
+
+  gravar() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(this.success)
+      .catch(this.error);
+  }
+
+  success = (stream) => {
+    const mediaRecorder = new MediaRecorder(stream);
+    console.log(mediaRecorder)
+    mediaRecorder.ondataavailable = (blob) => {
+      console.log(blob);
+    };
+  }
+
+  error = (e) => {
+    console.log(e)
+  }
+
 }

@@ -26,7 +26,18 @@
   <ng-container *ngIf="prontoParaComecar; else configurarAtendimento">
     <div>
       <h3>Atividade</h3>
-      <input type="file" accept="image/*" (change)="arquivoEscolhido($event)">
+      <!-- <ngx-dropzone (change)="arquivoEscolhido($event)">
+        <ngx-dropzone-label>
+          <mat-icon>cloud</mat-icon>>
+        </ngx-dropzone-label>
+        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="aoRemover(f)">
+          <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </ngx-dropzone> -->
+      <div fxLayoutGap="8px">
+        <button mat-raised-button color="primary" (click)="gravar()">GRAVAR</button>
+        <!-- <button mat-raised-button color="primary" (click)="pararGravacao()">PARAR</button> -->
+      </div>
     </div>
   </ng-container>
   <ng-template #configurarAtendimento>

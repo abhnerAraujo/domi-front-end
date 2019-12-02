@@ -26,6 +26,7 @@
   <ng-container *ngIf="prontoParaComecar; else configurarAtendimento">
     <div>
       <h3>Atividade</h3>
+      <input type="file" accept="image/*" (change)="arquivoEscolhido($event)">
     </div>
   </ng-container>
   <ng-template #configurarAtendimento>

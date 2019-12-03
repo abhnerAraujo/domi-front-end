@@ -16,6 +16,7 @@ import { SessaoComponent } from './componentes/sessao/sessao.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FinalizarSessaoComponent } from './componentes/finalizar-sessao/finalizar-sessao.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
   declarations: [SessaoComponent, FinalizarSessaoComponent],
@@ -41,7 +42,8 @@ import { FinalizarSessaoComponent } from './componentes/finalizar-sessao/finaliz
     MatChipsModule,
     PipesModule,
     FormsModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    NgxDropzoneModule
   ],
   entryComponents: [FinalizarSessaoComponent]
 })

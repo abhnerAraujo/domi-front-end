@@ -1,3 +1,4 @@
+/// <reference types="@types/dom-mediacapture-record" />
 import { Agendamento } from './../../../../../atendimentos/interfaces/agendamento.interface';
 import { Subscription } from 'rxjs';
 import {
@@ -66,6 +67,10 @@ export class SessaoComponent implements OnInit {
   prontoParaComecar: boolean;
   valorSessao: number;
 
+  files: File[] = [];
+  recordedChunks: any[];
+  mediaRecorder: MediaRecorder;
+  recordedVideo = document.querySelector('video#recorded');
 
   constructor(public bottomSheet: MatBottomSheet
     , public dialog: MatDialog
@@ -236,5 +241,43 @@ export class SessaoComponent implements OnInit {
 
   arquivoEscolhido(evento) {
     console.log(evento);
+    this.files.push(...evento.addedFiles);
   }
+
+  aoRemover(file: File) {
+    this.files.splice(this.files.indexOf(file), 1);
+  }
+
+  start() {
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+          this.mediaRecorder = new MediaRecorder(stream);
+          this.mediaRecorder.ondataavailable = (event => {
+            const audio: any = document.querySelector('audio#gum');
+            const audioURL = window.URL.createObjectURL(event.data);
+            audio.src = audioURL;
+            stream.getTracks().forEach(track => track.stop());
+          });
+          this.mediaRecorder.start();
+        })
+        .catch(error => console.log(error));
+    }
+  }
+
+  stop() {
+    if (this.mediaRecorder) {
+      this.mediaRecorder.stop();
+      this.mediaRecorder = null;
+    }
+  }
+
+  pause() {
+    this.mediaRecorder.pause();
+  }
+
+  resume() {
+    this.mediaRecorder.resume();
+  }
+
 }

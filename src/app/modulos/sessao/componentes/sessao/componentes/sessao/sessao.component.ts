@@ -68,6 +68,9 @@ export class SessaoComponent implements OnInit {
   valorSessao: number;
 
   files: File[] = [];
+  recordedChunks: any[];
+  mediaRecorder: MediaRecorder;
+  recordedVideo = document.querySelector('video#recorded');
 
   constructor(public bottomSheet: MatBottomSheet
     , public dialog: MatDialog
@@ -245,22 +248,36 @@ export class SessaoComponent implements OnInit {
     this.files.splice(this.files.indexOf(file), 1);
   }
 
-  gravar() {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(this.success)
-      .catch(this.error);
+  start() {
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+          this.mediaRecorder = new MediaRecorder(stream);
+          this.mediaRecorder.ondataavailable = (event => {
+            const audio: any = document.querySelector('audio#gum');
+            const audioURL = window.URL.createObjectURL(event.data);
+            audio.src = audioURL;
+            stream.getTracks().forEach(track => track.stop());
+          });
+          this.mediaRecorder.start();
+        })
+        .catch(error => console.log(error));
+    }
   }
 
-  success = (stream) => {
-    const mediaRecorder = new MediaRecorder(stream);
-    console.log(mediaRecorder)
-    mediaRecorder.ondataavailable = (blob) => {
-      console.log(blob);
-    };
+  stop() {
+    if (this.mediaRecorder) {
+      this.mediaRecorder.stop();
+      this.mediaRecorder = null;
+    }
   }
 
-  error = (e) => {
-    console.log(e)
+  pause() {
+    this.mediaRecorder.pause();
+  }
+
+  resume() {
+    this.mediaRecorder.resume();
   }
 
 }

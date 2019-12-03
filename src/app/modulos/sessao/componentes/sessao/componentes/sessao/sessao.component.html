@@ -26,17 +26,32 @@
   <ng-container *ngIf="prontoParaComecar; else configurarAtendimento">
     <div>
       <h3>Atividade</h3>
-      <!-- <ngx-dropzone (change)="arquivoEscolhido($event)">
+      <ngx-dropzone (change)="arquivoEscolhido($event)">
         <ngx-dropzone-label>
-          <mat-icon>cloud</mat-icon>>
+          <mat-icon>cloud</mat-icon>
         </ngx-dropzone-label>
         <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="aoRemover(f)">
           <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
         </ngx-dropzone-preview>
-      </ngx-dropzone> -->
-      <div fxLayoutGap="8px">
-        <button mat-raised-button color="primary" (click)="gravar()">GRAVAR</button>
-        <!-- <button mat-raised-button color="primary" (click)="pararGravacao()">PARAR</button> -->
+      </ngx-dropzone>
+      <div fxLayoutGap="8px" fxLayoutAlign="start center" fxLayout.xs="column">
+        <div fxLayoutGap="8px">
+          <button mat-icon-button color="primary" (click)="start()">
+            <mat-icon>mic</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="pause()">
+            <mat-icon>pause</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="resume()">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="stop()">
+            <mat-icon>stop</mat-icon>
+          </button>
+        </div>
+        <!-- <button mat-raised-button color="primary" (click)="play()">PLAY</button> -->
+        <audio id="gum" controls></audio>
+        <!-- <audio id="recorded" playsinline loop></audio> -->
       </div>
     </div>
   </ng-container>

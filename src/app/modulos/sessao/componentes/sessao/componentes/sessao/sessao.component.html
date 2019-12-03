@@ -1,114 +1,93 @@
 <div fxLayout="column">
-  <div fxLayoutAlign="space-between center" fxLayout="row" fxFlex="100">
-    <div fxLayoutGap="8px" fxFlex="nogrow" fxLayoutAlign="center center">
-      <button mat-button (click)="iniciar()" *ngIf="parado" color="accent" [disabled]="!prontoParaComecar">
-        {{ counter > 0 ? 'CONTINUAR' : 'INICIAR'}}
-      </button>
-      <button mat-button *ngIf="!parado" (click)="pausar()" color="accent">
-        PAUSAR
-      </button>
-    </div>
-    <h3 fxFlex fxLayoutAlign="center center"
-      [ngClass]="{'extrapolou': extrapolou, 'animate-flicker': parado && counter > 0}">
-      {{ countDown }}
-    </h3>
-    <div fxFlex="nogrow" fxLayoutAlign="center center">
-      <button mat-button [disabled]="!interval" (click)="parar()" color="warn">
-        FINALIZAR
-      </button>
-    </div>
-  </div>
-  <mat-progress-bar *ngIf="limite" [color]="extrapolou ? 'warn' : 'primary'" mode="determinate"
-    [value]="(counter*100)/limite"></mat-progress-bar>
-  <div fxFlex="100">
-    <mat-divider></mat-divider>
-  </div>
-  <ng-container *ngIf="prontoParaComecar; else configurarAtendimento">
-    <div>
-      <h3>Atividade</h3>
-      <ngx-dropzone (change)="arquivoEscolhido($event)">
-        <ngx-dropzone-label>
-          <mat-icon>cloud</mat-icon>
-        </ngx-dropzone-label>
-        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="aoRemover(f)">
-          <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-        </ngx-dropzone-preview>
-      </ngx-dropzone>
-      <div fxLayoutGap="8px" fxLayoutAlign="start center" fxLayout.xs="column">
-        <div fxLayoutGap="8px">
-          <button mat-icon-button color="primary" (click)="start()">
-            <mat-icon>mic</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="pause()">
-            <mat-icon>pause</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="resume()">
-            <mat-icon>play_arrow</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="stop()">
-            <mat-icon>stop</mat-icon>
-          </button>
-        </div>
-        <!-- <button mat-raised-button color="primary" (click)="play()">PLAY</button> -->
-        <audio id="gum" controls></audio>
-        <!-- <audio id="recorded" playsinline loop></audio> -->
+  <div fxLayout="column" *ngIf="prontoParaComecar">
+    <div fxLayoutAlign="space-between center" fxLayout="row" fxFlex="100">
+      <div fxLayoutGap="8px" fxFlex="nogrow" fxLayoutAlign="center center">
+        <button mat-button (click)="iniciar()" *ngIf="parado" color="accent" [disabled]="!prontoParaComecar">
+          {{ counter > 0 ? 'CONTINUAR' : 'INICIAR'}}
+        </button>
+        <button mat-button *ngIf="!parado" (click)="pausar()" color="accent">
+          PAUSAR
+        </button>
+      </div>
+      <h3 fxFlex fxLayoutAlign="center center"
+        [ngClass]="{'extrapolou': extrapolou, 'animate-flicker': parado && counter > 0}">
+        {{ countDown }}
+      </h3>
+      <div fxFlex="nogrow" fxLayoutAlign="center center">
+        <button mat-button [disabled]="!interval" (click)="parar()" color="warn">
+          FINALIZAR
+        </button>
       </div>
     </div>
-  </ng-container>
-  <ng-template #configurarAtendimento>
-    <div>
-      <h3>Configurar atendimento</h3>
-      <p> {{ mensagemConfiguracao }} </p>
-      <div *ngIf="configuracaoAtendimentoSalva.atendimento_dias.length" fxLayoutGap="8px" fxLayout="column">
-        <div fxLayout="row" class="header-atender-dias">
-          <div>
-            Dia/
-          </div>
-          <div>
-            Hora/
-          </div>
-          <div>
-            Duração/
-          </div>
-          <div>
-            Sessões
-          </div>
-        </div>
-        <div fxLayoutAlign="start">
-          <mat-chip-list class="mat-chip-list-stacked" fxLayoutGap="8px">
-            <mat-chip *ngFor="let dia of configuracaoAtendimentoSalva.atendimento_dias" [selectable]="true"
-              [selected]="dia.selecionado" color="accent" (click)="chipSelecao(dia)">
-              {{ dia.diaSemana | diaSemana:true }} /
-              {{ dia.hora | hora }} /
-              {{ dia.duracao }} (min) /
-              {{ dia.qtdSessoes }}
-            </mat-chip>
-            <h4 *ngIf="agendamento?.agendamento_id">Agendamento</h4>
-            <mat-chip *ngIf="novoDiaAtendimento" [selected]="novoDiaAtendimento?.selecionado" color="accent"
-              (click)="novaConfiguracaoDia()">
-              <mat-icon>edit</mat-icon>
-              {{ novoDiaAtendimento.diaSemana | diaSemana:true }} /
-              {{ novoDiaAtendimento.hora | hora }} /
-              {{ novoDiaAtendimento.duracao }} (min) /
-              {{ novoDiaAtendimento.qtdSessoes }}
-            </mat-chip>
-            <mat-chip (click)="novaConfiguracaoDia()" *ngIf=" !novoDiaAtendimento">NOVA</mat-chip>
-          </mat-chip-list>
-        </div>
-      </div>
-      <p>
-        <mat-form-field appearance="outline" fxFlex.xs="100">
-          <mat-label>Valor por sessão</mat-label>
-          <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" [options]="moedaOptions">
-        </mat-form-field>
-      </p>
-      <p>
-        <button mat-raised-button color="accent" (click)="aplicarConfiguracoes();"
-          [disabled]="!diaAtendimentoSelecionado || !valorSessao">TUDO
-          PRONTO</button>
-      </p>
+    <mat-progress-bar *ngIf="limite" [color]="extrapolou ? 'warn' : 'primary'" mode="determinate"
+      [value]="(counter*100)/limite"></mat-progress-bar>
+    <div fxFlex="100">
+      <mat-divider></mat-divider>
     </div>
-  </ng-template>
+  </div>
+  <div [ngSwitch]="tipoArtefatoAdd">
+    <app-salvar-arquivo *ngSwitchCase="2" (cancelado)="tipoArtefatoAdd = null"></app-salvar-arquivo>
+    <app-gravar-audio *ngSwitchCase="3" (cancelado)="tipoArtefatoAdd = null"></app-gravar-audio>
+    <div *ngSwitchCase="0">
+      <div>
+        <h3>Configurar atendimento</h3>
+        <p> {{ mensagemConfiguracao }} </p>
+        <div *ngIf="configuracaoAtendimentoSalva.atendimento_dias.length" fxLayoutGap="8px" fxLayout="column">
+          <div fxLayout="row" class="header-atender-dias">
+            <div>
+              Dia/
+            </div>
+            <div>
+              Hora/
+            </div>
+            <div>
+              Duração/
+            </div>
+            <div>
+              Sessões
+            </div>
+          </div>
+          <div fxLayoutAlign="start">
+            <mat-chip-list class="mat-chip-list-stacked" fxLayoutGap="8px">
+              <mat-chip *ngFor="let dia of configuracaoAtendimentoSalva.atendimento_dias" [selectable]="true"
+                [selected]="dia.selecionado" color="accent" (click)="chipSelecao(dia)">
+                {{ dia.diaSemana | diaSemana:true }} /
+                {{ dia.hora | hora }} /
+                {{ dia.duracao }} (min) /
+                {{ dia.qtdSessoes }}
+              </mat-chip>
+              <h4 *ngIf="agendamento?.agendamento_id">Agendamento</h4>
+              <mat-chip *ngIf="novoDiaAtendimento" [selected]="novoDiaAtendimento?.selecionado" color="accent"
+                (click)="novaConfiguracaoDia()">
+                <mat-icon>edit</mat-icon>
+                {{ novoDiaAtendimento.diaSemana | diaSemana:true }} /
+                {{ novoDiaAtendimento.hora | hora }} /
+                {{ novoDiaAtendimento.duracao }} (min) /
+                {{ novoDiaAtendimento.qtdSessoes }}
+              </mat-chip>
+              <mat-chip (click)="novaConfiguracaoDia()" *ngIf=" !novoDiaAtendimento">NOVA</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <p>
+          <mat-form-field appearance="outline" fxFlex.xs="100">
+            <mat-label>Valor por sessão</mat-label>
+            <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" [options]="moedaOptions">
+          </mat-form-field>
+        </p>
+        <p>
+          <button mat-raised-button color="accent" (click)="aplicarConfiguracoes();"
+            [disabled]="!diaAtendimentoSelecionado || !valorSessao">TUDO
+            PRONTO</button>
+        </p>
+      </div>
+    </div>
+    <div *ngSwitchDefault>
+      <div>
+        <h3>Atividade</h3>
+      </div>
+    </div>
+  </div>
 </div>
 
 <button mat-fab color="accent" (click)="adicionarArtefato()" *ngIf="prontoParaComecar">

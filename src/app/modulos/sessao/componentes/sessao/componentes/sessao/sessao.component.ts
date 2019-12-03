@@ -1,4 +1,5 @@
 /// <reference types="@types/dom-mediacapture-record" />
+import { ARTEFATO_TIPO } from './../../../../../../constantes/artefato-tipo';
 import { Agendamento } from './../../../../../atendimentos/interfaces/agendamento.interface';
 import { Subscription } from 'rxjs';
 import {
@@ -67,10 +68,7 @@ export class SessaoComponent implements OnInit {
   prontoParaComecar: boolean;
   valorSessao: number;
 
-  files: File[] = [];
-  recordedChunks: any[];
-  mediaRecorder: MediaRecorder;
-  recordedVideo = document.querySelector('video#recorded');
+  tipoArtefatoAdd: number;
 
   constructor(public bottomSheet: MatBottomSheet
     , public dialog: MatDialog
@@ -93,6 +91,7 @@ export class SessaoComponent implements OnInit {
   ngOnInit() {
     this.countDown = '00:00:00';
     this.prepararConfiguracao();
+    this.tipoArtefatoAdd = 0;
   }
 
   prepararConfiguracao() {
@@ -160,20 +159,21 @@ export class SessaoComponent implements OnInit {
   aplicarConfiguracoes() {
     this.limite = this.diaAtendimentoSelecionado.duracao * this.diaAtendimentoSelecionado.qtdSessoes * 60;
     this.prontoParaComecar = true;
+    this.tipoArtefatoAdd = null;
   }
 
   adicionarArtefato() {
     const bottomSheetRef = this.bottomSheet.open(BottomSheetNavegacaoComponent, {
       data: [
-        { url: '/atendimentos/1/notas/nova', icon: 'note_add', texto: 'NOTA' },
-        { url: '/atendimentos/1/imagens/nova', icon: 'add_a_photo', texto: 'IMAGEM' },
-        { url: '/atendimentos/1/videos/nova', icon: 'video_call', texto: 'VÍDEO' },
-        { url: '/atendimentos/1/imagens/nova', icon: 'mic', texto: 'ÁUDIO' },
-        { url: '/atendimentos/1/avaliacao/nova', icon: 'assessment', texto: 'AVALIAÇÃO' },
-        { url: '/atendimentos/1/anamnese/nova', icon: 'assignment_ind', texto: 'ANAMNESE' },
+        { tipo: ARTEFATO_TIPO.nota, icon: 'note_add', texto: 'NOTA' },
+        { tipo: ARTEFATO_TIPO.imagem, icon: 'add_a_photo', texto: 'FOTO OU VÍDEO' },
+        { tipo: ARTEFATO_TIPO.audio, icon: 'mic', texto: 'ÁUDIO' },
+        { tipo: ARTEFATO_TIPO.avaliacao, icon: 'assessment', texto: 'AVALIAÇÃO' },
+        { tipo: ARTEFATO_TIPO.anamnese, icon: 'assignment_ind', texto: 'ANAMNESE' },
       ],
       closeOnNavigation: true
     });
+    bottomSheetRef.afterDismissed().subscribe(resultado => this.tipoArtefatoAdd = resultado);
   }
 
   finalizar() {
@@ -237,47 +237,6 @@ export class SessaoComponent implements OnInit {
         this.chipSelecao(this.novoDiaAtendimento);
       }
     });
-  }
-
-  arquivoEscolhido(evento) {
-    console.log(evento);
-    this.files.push(...evento.addedFiles);
-  }
-
-  aoRemover(file: File) {
-    this.files.splice(this.files.indexOf(file), 1);
-  }
-
-  start() {
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then((stream) => {
-          this.mediaRecorder = new MediaRecorder(stream);
-          this.mediaRecorder.ondataavailable = (event => {
-            const audio: any = document.querySelector('audio#gum');
-            const audioURL = window.URL.createObjectURL(event.data);
-            audio.src = audioURL;
-            stream.getTracks().forEach(track => track.stop());
-          });
-          this.mediaRecorder.start();
-        })
-        .catch(error => console.log(error));
-    }
-  }
-
-  stop() {
-    if (this.mediaRecorder) {
-      this.mediaRecorder.stop();
-      this.mediaRecorder = null;
-    }
-  }
-
-  pause() {
-    this.mediaRecorder.pause();
-  }
-
-  resume() {
-    this.mediaRecorder.resume();
   }
 
 }

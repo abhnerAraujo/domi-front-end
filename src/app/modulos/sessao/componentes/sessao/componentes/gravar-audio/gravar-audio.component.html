@@ -1,0 +1,22 @@
+<h3>Adicionar áudio</h3>
+<div fxLayoutGap="8px" fxLayoutAlign="start center" fxLayout.xs="column">
+  <div fxLayoutGap="8px">
+    <button mat-icon-button color="primary" (click)="start()">
+      <mat-icon>mic</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="pause()">
+      <mat-icon>pause</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="resume()">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="stop()">
+      <mat-icon>stop</mat-icon>
+    </button>
+  </div>
+  <audio id="gum" controls></audio>
+</div>
+<p fxLayoutGap="8px">
+  <button mat-raised-button (click)="salvar.emit()" color="accent">SALVAR</button>
+  <button mat-button (click)="cancelado.emit()" color="accent">CANCELAR</button>
+</p>

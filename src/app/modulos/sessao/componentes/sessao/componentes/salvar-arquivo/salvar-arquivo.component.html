@@ -1,0 +1,13 @@
+<h3>Adicionar imagem ou vídeo</h3>
+<ngx-dropzone (change)="arquivoEscolhido($event)">
+  <ngx-dropzone-label>
+    <mat-icon>cloud</mat-icon>
+  </ngx-dropzone-label>
+  <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="aoRemover(f)">
+    <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+  </ngx-dropzone-preview>
+</ngx-dropzone>
+<p fxLayoutGap="8px">
+  <button mat-raised-button (click)="salvar.emit()" color="accent">SALVAR</button>
+  <button mat-button (click)="cancelado.emit()" color="accent">CANCELAR</button>
+</p>

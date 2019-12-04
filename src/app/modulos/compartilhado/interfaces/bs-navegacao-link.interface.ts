@@ -1,5 +1,5 @@
 export interface BsNavegacaoLink {
   icon: string;
-  url: string;
+  tipo: number;
   texto: string;
 }

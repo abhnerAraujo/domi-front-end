@@ -1,5 +1,5 @@
-/// <reference types="@types/dom-mediacapture-record" />
-import { ARTEFATO_TIPO } from './../../../../../../constantes/artefato-tipo';
+import { Artefato } from './../../../../interfaces/atividade.interface';
+import { ARTEFATO_TIPO, ARTEFATO_TIPO_DESCRICAO } from './../../../../../../constantes/artefato-tipo';
 import { Agendamento } from './../../../../../atendimentos/interfaces/agendamento.interface';
 import { Subscription } from 'rxjs';
 import {
@@ -9,7 +9,7 @@ import { DiaAtendimento } from './../../../../../atendimentos/interfaces/dia-ate
 import { AtendimentoConfiguracao } from './../../../../../atendimentos/interfaces/atendimento-configuracao.interface';
 import { Router } from '@angular/router';
 import { FinalizarSessaoComponent, FinalizarSessaoDados } from './../finalizar-sessao/finalizar-sessao.component';
-import { MatBottomSheet, MatDialog, MatChip } from '@angular/material';
+import { MatBottomSheet, MatDialog } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
@@ -69,6 +69,8 @@ export class SessaoComponent implements OnInit {
   valorSessao: number;
 
   tipoArtefatoAdd: number;
+  atividades: Artefato[];
+  timeline: any[];
 
   constructor(public bottomSheet: MatBottomSheet
     , public dialog: MatDialog
@@ -137,9 +139,12 @@ export class SessaoComponent implements OnInit {
   iniciar() {
     this.parado = false;
     if (this.counter === 0) {
+      this.atividades = [{ id: 1, tipo: 'Início do Atendimento', tipo_id: null, data_criacao: new Date().toISOString() }];
       this.countDown = '00:00:00';
     }
     this.interval = setInterval(() => this.atualizarTempo(), 1000);
+    this.atualizarTimeLine();
+    this.criarArtefatoAleatorio();
   }
 
   pausar() {
@@ -237,6 +242,32 @@ export class SessaoComponent implements OnInit {
         this.chipSelecao(this.novoDiaAtendimento);
       }
     });
+  }
+
+  criarArtefatoAleatorio() {
+    setInterval(() => {
+      const randomTimes = Math.floor(Math.random() * 4) + 1;
+      const dataHora = new Date().toISOString();
+      for (let i = 0; i < randomTimes; i++) {
+        const random = Math.floor(Math.random() * 4) + 1;
+        this.atividades.push({
+          id: this.atividades.length + 1,
+          tipo_id: random,
+          tipo: ARTEFATO_TIPO_DESCRICAO[random],
+          data_criacao: dataHora
+        });
+        this.atualizarTimeLine();
+      }
+    }, 60000);
+  }
+
+  atualizarTimeLine() {
+    const group = this.atividades.reduce(
+      (entryMap, e) => entryMap.set(moment(e.data_criacao).format('LT'), [...entryMap.get(moment(e.data_criacao).format('LT')) || [], e]),
+      new Map()
+    );
+    this.timeline = Array.from(group.entries());
+    console.log(this.timeline);
   }
 
 }

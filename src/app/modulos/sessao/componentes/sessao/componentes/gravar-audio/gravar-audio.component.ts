@@ -1,3 +1,4 @@
+/// <reference types="@types/dom-mediacapture-record" />
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({

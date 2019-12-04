@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { MoedaPipe } from './moeda/moeda.pipe';
 import { DiaSemanaPipe } from './dia-semana/dia-semana.pipe';
 import { HoraPipe } from './hora/hora.pipe';
+import { TipoArtefatoPipe } from './tipo-artefato/tipo-artefato.pipe';
 
 @NgModule({
   declarations: [
     MoedaPipe,
     DiaSemanaPipe,
-    HoraPipe
+    HoraPipe,
+    TipoArtefatoPipe
   ],
   imports: [
     CommonModule

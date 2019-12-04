@@ -5,3 +5,11 @@ export const ARTEFATO_TIPO = {
   avaliacao: 4,
   anamnese: 5
 };
+
+export const ARTEFATO_TIPO_DESCRICAO = {
+  1: 'Nota',
+  2: 'Imagem ou Vídeo',
+  3: 'Áudio',
+  4: 'Avaliação',
+  5: 'Anamnese'
+};

@@ -85,9 +85,23 @@
     <div *ngSwitchDefault>
       <div>
         <h3>Atividade</h3>
-        <div fxLayout="column" fxLayoutGap="16px">
-          <div *ngFor="let atividade of timeline">
-            {{ atividade[0] }} - {{ atividade[1].length }}
+        <div *ngIf="timeline" fxLayout="column" fxLayoutGap="8px" class="ultimos-acontecimentos">
+          <div *ngFor="let grupo of timeline.slice().reverse(); let i = index" fxLayout="row"
+            fxLayoutAlign="start start" fxLayoutGap="8px" fxFlex="45px">
+            <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="start center">
+              <div class="timeline-circulo" fxFlex="nogrow"></div>
+              <div fxFlex class="timeline-traco" *ngIf="i !== timeline.length - 1"></div>
+            </div>
+            <div fxLayout="column" fxFlex>
+              <div class="evento-descricao">
+                {{ grupo[0] }}
+              </div>
+              <div fxLayoutGap="8px" fxLayout="row">
+                <div *ngFor="let atividade of grupo[1]">
+                  {{ atividade.tipo }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -267,7 +267,6 @@ export class SessaoComponent implements OnInit {
       new Map()
     );
     this.timeline = Array.from(group.entries());
-    console.log(this.timeline);
   }
 
 }

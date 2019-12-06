@@ -1,0 +1,11 @@
+<div fxLayout="column">
+  <mat-form-field appearance="outline">
+    <mat-label>Nota</mat-label>
+    <textarea matInput [(ngModel)]="nota" (keydown)="notaChange.emit(nota)" placeholder="Texto"></textarea>
+  </mat-form-field>
+
+  <p fxLayoutGap="8px">
+    <button mat-raised-button (click)="salvar.emit()" color="accent">SALVAR</button>
+    <button mat-button (click)="cancelado.emit()" color="accent">CANCELAR</button>
+  </p>
+</div>

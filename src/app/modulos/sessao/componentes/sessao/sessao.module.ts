@@ -19,9 +19,10 @@ import { FinalizarSessaoComponent } from './componentes/finalizar-sessao/finaliz
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { GravarAudioComponent } from './componentes/gravar-audio/gravar-audio.component';
 import { SalvarArquivoComponent } from './componentes/salvar-arquivo/salvar-arquivo.component';
+import { SalvarNotaComponent } from './componentes/salvar-nota/salvar-nota.component';
 
 @NgModule({
-  declarations: [SessaoComponent, FinalizarSessaoComponent, GravarAudioComponent, SalvarArquivoComponent],
+  declarations: [SessaoComponent, FinalizarSessaoComponent, GravarAudioComponent, SalvarArquivoComponent, SalvarNotaComponent],
   imports: [
     CommonModule,
     SessaoRoutingModule,

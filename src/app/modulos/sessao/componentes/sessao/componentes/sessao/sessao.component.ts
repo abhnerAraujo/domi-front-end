@@ -68,6 +68,7 @@ export class SessaoComponent implements OnInit {
   prontoParaComecar: boolean;
   valorSessao: number;
 
+  novaNota: string;
   tipoArtefatoAdd: number;
   atividades: Artefato[];
   timeline: any[];

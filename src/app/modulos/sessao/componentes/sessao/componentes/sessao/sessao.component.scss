@@ -41,3 +41,25 @@
   font-weight: 600;
   font-size: 13px;
 }
+
+.ultimos-acontecimentos {
+  overflow-y: auto;
+  height: 300px;
+  .container-esquerdo {
+    height: 100%;
+    .timeline-circulo {
+      border-radius: 50%;
+      background-color: $primary;
+      padding: 8px;
+    }
+    .timeline-traco {
+      width: 1.6px;
+      background-color: #bbb;
+    }
+  }
+  .evento-descricao {
+    font-weight: 600;
+    font-size: 16px;
+    color: $accent;
+  }
+}

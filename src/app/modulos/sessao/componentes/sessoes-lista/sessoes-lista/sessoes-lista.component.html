@@ -1,8 +1,8 @@
 <div fxLayout="column" style="height: 100%;" fxLayoutGap="16px">
-  <div fxLayoutAlign="center" style="position: relative;" fxFlex.xs="40">
+  <div fxLayoutAlign="center" style="position: relative;" fxFlex="30">
     <p-chart type="doughnut" height="100%" [data]="data" [options]="options"></p-chart>
     <div class="donut-inner" fxLayout="column" fxLayoutAlign="center center">
-      <h5>{{ totalPago | moeda:true }}</h5>
+      <h5>{{ total | moeda:true }}</h5>
       <span>Faltam receber</span>
       <span>{{ total - totalPago | moeda:true }}</span>
     </div>
@@ -10,15 +10,15 @@
   <div fxLayoutAlign="center center" fxLayoutGap="24px" fxLayout="row">
     <div fxFlex fxLayoutAlign="start center" fxLayout="column" class="informacoes">
       <h3>{{ totalSessoes }}</h3>
-      <h4>Sessões</h4>
+      <h4>{{ totalSessoes > 1 ? 'Sessões' : 'Sessão'}}</h4>
     </div>
     <div fxFlex fxLayoutAlign="start center" fxLayout="column" class="informacoes">
-      <h3>{{ total | moeda }}</h3>
-      <h4>Reais</h4>
+      <h3>{{ totalPago | moeda }}</h3>
+      <h4>Reais recebidos</h4>
     </div>
   </div>
   <mat-divider></mat-divider>
   <div fxFlex>
-
+    <app-timeline [timeline]="timeLine" [options]="timeLineConfig"></app-timeline>
   </div>
 </div>

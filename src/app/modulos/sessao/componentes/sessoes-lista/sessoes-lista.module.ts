@@ -1,3 +1,5 @@
+import { MomentService } from './../../../compartilhado/services/moment/moment.service';
+import { TimelineModule } from './../../../compartilhado/componentes/timeline/timeline.module';
 import { PipesModule } from './../../../../pipes/pipes.module';
 import { ChartModule } from 'primeng/chart';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -16,7 +18,11 @@ import { MatProgressSpinnerModule, MatDividerModule } from '@angular/material';
     MatProgressSpinnerModule,
     ChartModule,
     PipesModule,
-    MatDividerModule
+    MatDividerModule,
+    TimelineModule
+  ],
+  providers: [
+    MomentService
   ]
 })
 export class SessoesListaModule { }

@@ -1,0 +1,10 @@
+<ng-container *ngIf="itens && itens.length; else vazio">
+  <div fxLayout="column" fxLayoutGap="8px" class="timeline-wrapper">
+    <div *ngFor="let item of itens.slice().reverse(); let i = index">
+      <app-timeline-item [item]="item" [config]="config" [primeiro]="i === 0"></app-timeline-item>
+    </div>
+  </div>
+</ng-container>
+<ng-template #vazio>
+  <h4>{{ config.mensagemVazio }}</h4>
+</ng-template>

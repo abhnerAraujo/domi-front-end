@@ -10,7 +10,7 @@ export class TimelineItemComponent implements OnInit {
 
   @Input() item: TimeLineItem;
   @Input() config: TimeLineConfig;
-  @Input() primeiro: boolean;
+  @Input() ultimo: boolean;
 
   hover: boolean;
 

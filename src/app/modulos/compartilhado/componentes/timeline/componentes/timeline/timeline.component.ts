@@ -50,7 +50,12 @@ export class TimelineComponent implements OnInit {
 
   ordenar() {
     this.itens.sort((a, b) => {
-      console.log(this.moment.momentBr(b.data).diff(a.data));
+      if (this.moment.momentBr(b.data).diff(a.data) > 1) {
+        return -1;
+      }
+      if (this.moment.momentBr(b.data).diff(a.data) < 1) {
+        return 1;
+      }
       return 0;
     });
   }

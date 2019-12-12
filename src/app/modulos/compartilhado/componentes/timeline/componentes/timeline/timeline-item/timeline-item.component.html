@@ -1,9 +1,8 @@
 <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px" fxFlex="45px" (mouseover)="hover = true"
   (mouseleave)="hover = false" fxFlex>
   <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="start center">
-    <div class="timeline-circulo" fxFlex="nogrow"
-      [ngStyle]="{'border': hover ? '1px solid ' + config.cores.principal : 'none'}"></div>
-    <div fxFlex class="timeline-traco" *ngIf="!primeiro"></div>
+    <div class="timeline-circulo" [style.background-color]="hover ? config : '0'" fxFlex="nogrow"></div>
+    <div fxFlex class="timeline-traco" *ngIf="!ultimo"></div>
   </div>
   <div fxLayout="column" fxFlex>
     <div class="evento-titulo">

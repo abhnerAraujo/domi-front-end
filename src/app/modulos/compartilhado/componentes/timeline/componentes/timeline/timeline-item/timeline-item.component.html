@@ -11,11 +11,11 @@
       <div class="evento-titulo" [style.color]="hover ? config.cores.secundaria : config.cores.principal">
         {{ item.titulo }}
       </div>
-      <div fxLayoutGap="8px" fxLayout="row">
+      <div fxLayoutGap="8px" class="discreto" fxLayout="row">
         {{ item.descricao }}
       </div>
     </div>
-    <div *ngIf="config.mostrarData" style="text-align: end;" fxFlex="120px">
+    <div *ngIf="config.mostrarData" style="text-align: end;" class="discreto" fxFlex="120px">
       {{ item.data | dataHora:'LL' }}
     </div>
   </div>

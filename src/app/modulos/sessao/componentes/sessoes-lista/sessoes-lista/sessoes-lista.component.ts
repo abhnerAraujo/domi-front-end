@@ -1,3 +1,4 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { MomentService } from './../../../../compartilhado/services/moment/moment.service';
 import { CORES } from './../../../../../constantes/valores';
 import { Component, OnInit } from '@angular/core';
@@ -15,14 +16,17 @@ export class SessoesListaComponent implements OnInit {
   totalSessoes: number;
   timeLine: TimeLineItem[];
   timeLineConfig: TimeLineConfig;
+  atendimentoId: number;
 
   data: any;
   options: any;
 
-  constructor(private moment: MomentService) {
+  constructor(private moment: MomentService, private router: Router, private route: ActivatedRoute) {
+    this.atendimentoId = Number.parseInt(this.route.snapshot.params.id_atendimento, 10);
     this.timeLineConfig = {
       cores: {
         principal: CORES.primaria,
+        secundaria: CORES.acento_dark,
         inicio: CORES.acento,
         linha: ''
       },
@@ -32,26 +36,40 @@ export class SessoesListaComponent implements OnInit {
       mostrarData: true
     };
     this.timeLine = [
-      { titulo: 'Início do atendimento', data: new Date().toISOString(), descricao: '' },
       {
+        id: null,
+        titulo: 'Início do atendimento', data: new Date().toISOString(),
+        descricao: ''
+      },
+      {
+        id: 1,
         titulo: '1ª sessão',
-        data: this.moment.momentBr(new Date().toISOString()).subtract(1, 'days').toISOString(), descricao: 'R$ 80.00'
+        data: this.moment.momentBr(new Date().toISOString()).subtract(1, 'days').toISOString(),
+        descricao: 'R$ 80.00'
       },
       {
+        id: 2,
         titulo: '2ª sessão',
-        data: this.moment.momentBr(new Date().toISOString()).subtract(2, 'days').toISOString(), descricao: 'R$ 80.00'
+        data: this.moment.momentBr(new Date().toISOString()).subtract(2, 'days').toISOString(),
+        descricao: 'R$ 80.00'
       },
       {
+        id: 3,
         titulo: '3ª sessão',
-        data: this.moment.momentBr(new Date().toISOString()).subtract(3, 'days').toISOString(), descricao: 'R$ 80.00'
+        data: this.moment.momentBr(new Date().toISOString()).subtract(3, 'days').toISOString(),
+        descricao: 'R$ 80.00'
       },
       {
+        id: 4,
         titulo: '4ª sessão',
-        data: this.moment.momentBr(new Date().toISOString()).subtract(4, 'days').toISOString(), descricao: 'R$ 80.00'
+        data: this.moment.momentBr(new Date().toISOString()).subtract(4, 'days').toISOString(),
+        descricao: 'R$ 80.00'
       },
       {
+        id: 5,
         titulo: '5ª sessão',
-        data: this.moment.momentBr(new Date().toISOString()).subtract(5, 'days').toISOString(), descricao: 'R$ 80.00'
+        data: this.moment.momentBr(new Date().toISOString()).subtract(5, 'days').toISOString(),
+        descricao: 'R$ 80.00'
       },
     ];
   }
@@ -86,6 +104,10 @@ export class SessoesListaComponent implements OnInit {
           ]
         }],
     };
+  }
+
+  sessaoResumo(item: TimeLineItem) {
+    this.router.navigate([`/atendimentos/${this.atendimentoId}/sessoes/${item.id}`]);
   }
 
 }

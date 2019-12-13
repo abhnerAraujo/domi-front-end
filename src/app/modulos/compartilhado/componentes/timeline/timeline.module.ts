@@ -1,3 +1,4 @@
+import { PipesModule } from './../../../../pipes/pipes.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TimelineComponent } from './componentes/timeline/timeline.component';
 import { NgModule } from '@angular/core';
@@ -8,7 +9,8 @@ import { TimelineItemComponent } from './componentes/timeline/timeline-item/time
   declarations: [TimelineComponent, TimelineItemComponent],
   imports: [
     CommonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    PipesModule
   ],
   exports: [TimelineComponent]
 })

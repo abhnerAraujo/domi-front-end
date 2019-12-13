@@ -19,6 +19,6 @@
   </div>
   <mat-divider></mat-divider>
   <div fxFlex>
-    <app-timeline [timeline]="timeLine" [options]="timeLineConfig"></app-timeline>
+    <app-timeline [timeline]="timeLine" [options]="timeLineConfig" (selecao)="sessaoResumo($event)"></app-timeline>
   </div>
 </div>

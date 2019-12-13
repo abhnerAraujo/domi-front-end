@@ -1,6 +1,6 @@
 <ng-container *ngIf="itens && itens.length; else vazio">
   <div fxLayout="column" fxLayoutGap="8px" class="timeline-wrapper">
-    <div *ngFor="let item of itens; let i = index">
+    <div *ngFor="let item of itens; let i = index" (click)="selecao.emit(item)">
       <app-timeline-item [item]="item" [config]="config" [ultimo]="i === itens?.length - 1"></app-timeline-item>
     </div>
   </div>

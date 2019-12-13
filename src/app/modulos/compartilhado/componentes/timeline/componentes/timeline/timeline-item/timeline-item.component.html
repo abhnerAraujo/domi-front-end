@@ -1,15 +1,22 @@
 <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px" fxFlex="45px" (mouseover)="hover = true"
-  (mouseleave)="hover = false" fxFlex>
+  (mouseleave)="hover = false" fxFlex class="timeline-item">
   <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="start center">
-    <div class="timeline-circulo" [style.background-color]="hover ? config : '0'" fxFlex="nogrow"></div>
+    <div class="timeline-circulo" [style.background-color]="hover ? config.cores.secundaria : config.cores.principal"
+      fxFlex="nogrow">
+    </div>
     <div fxFlex class="timeline-traco" *ngIf="!ultimo"></div>
   </div>
-  <div fxLayout="column" fxFlex>
-    <div class="evento-titulo">
-      {{ item.titulo }}
+  <div fxFlex fxLayout="row" fxLayoutAlign="space-between start">
+    <div fxLayout="column" fxFlex>
+      <div class="evento-titulo" [style.color]="hover ? config.cores.secundaria : config.cores.principal">
+        {{ item.titulo }}
+      </div>
+      <div fxLayoutGap="8px" fxLayout="row">
+        {{ item.descricao }}
+      </div>
     </div>
-    <div fxLayoutGap="8px" fxLayout="row">
-      {{ item.descricao }}
+    <div *ngIf="config.mostrarData" style="text-align: end;" fxFlex="120px">
+      {{ item.data | dataHora:'LL' }}
     </div>
   </div>
 </div>

@@ -2,6 +2,7 @@ import { MomentService } from './../../../../services/moment/moment.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 export interface TimeLineItem {
+  id: number;
   titulo: string;
   descricao: string;
   data: string;
@@ -10,6 +11,7 @@ export interface TimeLineItem {
 export interface TimeLineConfig {
   cores: {
     principal: string;
+    secundaria: string;
     inicio: string;
     linha: string;
   };
@@ -39,10 +41,10 @@ export class TimelineComponent implements OnInit {
     this.config = value;
   }
 
-  @Output() click: EventEmitter<void>;
+  @Output() selecao: EventEmitter<TimeLineItem>;
 
   constructor(private moment: MomentService) {
-    this.click = new EventEmitter();
+    this.selecao = new EventEmitter();
   }
 
   ngOnInit() {

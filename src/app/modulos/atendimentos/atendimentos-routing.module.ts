@@ -15,7 +15,7 @@ const rotas: Routes = [
     loadChildren: () => import('./componentes/atendimento-novo/atendimento-novo.module').then(m => m.AtendimentoNovoModule)
   },
   {
-    path: ':id',
+    path: ':id_atendimento',
     children: [
       {
         path: '',

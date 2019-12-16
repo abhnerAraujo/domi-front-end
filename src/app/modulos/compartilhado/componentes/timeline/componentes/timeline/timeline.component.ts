@@ -19,6 +19,7 @@ export interface TimeLineConfig {
   height: number;
   mensagemVazio: string;
   descendente: boolean;
+  clicavel: boolean;
 }
 
 @Component({
@@ -52,10 +53,10 @@ export class TimelineComponent implements OnInit {
 
   ordenar() {
     this.itens.sort((a, b) => {
-      if (this.moment.momentBr(b.data).diff(a.data) > 1) {
+      if (this.moment.momentBr(a.data).diff(b.data) > 1) {
         return -1;
       }
-      if (this.moment.momentBr(b.data).diff(a.data) < 1) {
+      if (this.moment.momentBr(a.data).diff(b.data) < 1) {
         return 1;
       }
       return 0;

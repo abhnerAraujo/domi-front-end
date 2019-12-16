@@ -1,13 +1,16 @@
-.donut-inner {
-  position: absolute;
-  top: calc(50% - 30px);
-  h5 {
-    margin: 0;
-    font-size: 1.2em;
-  }
-  span {
-    font-size: 1em;
-    font-weight: 500;
+.donut-wrapper {
+  position: relative;
+  .donut-inner {
+    position: absolute;
+    top: calc(50% - 30px);
+    h5 {
+      margin: 0;
+      font-size: 1.2em;
+    }
+    span {
+      font-size: 1em;
+      font-weight: 500;
+    }
   }
 }
 

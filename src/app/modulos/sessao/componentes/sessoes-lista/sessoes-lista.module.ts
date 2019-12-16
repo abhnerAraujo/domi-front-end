@@ -1,3 +1,5 @@
+import { MoedaPipe } from './../../../../pipes/moeda/moeda.pipe';
+import { SessaoService } from './../../services/sessao/sessao.service';
 import { MomentService } from './../../../compartilhado/services/moment/moment.service';
 import { TimelineModule } from './../../../compartilhado/componentes/timeline/timeline.module';
 import { PipesModule } from './../../../../pipes/pipes.module';
@@ -19,10 +21,13 @@ import { MatProgressSpinnerModule, MatDividerModule } from '@angular/material';
     ChartModule,
     PipesModule,
     MatDividerModule,
-    TimelineModule
+    TimelineModule,
+    MatProgressSpinnerModule
   ],
   providers: [
-    MomentService
+    MomentService,
+    SessaoService,
+    MoedaPipe
   ]
 })
 export class SessoesListaModule { }

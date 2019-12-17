@@ -4,13 +4,15 @@ import { MoedaPipe } from './moeda/moeda.pipe';
 import { DiaSemanaPipe } from './dia-semana/dia-semana.pipe';
 import { HoraPipe } from './hora/hora.pipe';
 import { TipoArtefatoPipe } from './tipo-artefato/tipo-artefato.pipe';
+import { DataHoraPipe } from './data-hora/data-hora.pipe';
 
 @NgModule({
   declarations: [
     MoedaPipe,
     DiaSemanaPipe,
     HoraPipe,
-    TipoArtefatoPipe
+    TipoArtefatoPipe,
+    DataHoraPipe
   ],
   imports: [
     CommonModule
@@ -18,7 +20,8 @@ import { TipoArtefatoPipe } from './tipo-artefato/tipo-artefato.pipe';
   exports: [
     MoedaPipe,
     DiaSemanaPipe,
-    HoraPipe
+    HoraPipe,
+    DataHoraPipe
   ]
 })
 export class PipesModule { }

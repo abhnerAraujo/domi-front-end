@@ -9,7 +9,7 @@ import { SessoesListaRoutingModule } from './sessoes-lista-routing.module';
 import { SessoesListaComponent } from './sessoes-lista/sessoes-lista.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule, MatDividerModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatDividerModule, MatIconModule, MatButtonModule, MatTooltipModule } from '@angular/material';
 
 @NgModule({
   declarations: [SessoesListaComponent],
@@ -22,7 +22,9 @@ import { MatProgressSpinnerModule, MatDividerModule } from '@angular/material';
     PipesModule,
     MatDividerModule,
     TimelineModule,
-    MatProgressSpinnerModule
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule
   ],
   providers: [
     MomentService,

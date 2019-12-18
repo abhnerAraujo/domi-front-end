@@ -1,0 +1,13 @@
+@import '../../../../../styles/variables.scss';
+
+.resumo-item {
+  .item-descricao {
+    margin: 16px 8px;
+    font-weight: 600;
+    color: $accent;
+  }
+}
+
+.resumo-item:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}

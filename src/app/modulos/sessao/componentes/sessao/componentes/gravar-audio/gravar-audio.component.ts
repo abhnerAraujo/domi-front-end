@@ -14,6 +14,10 @@ export class GravarAudioComponent implements OnInit {
   mediaRecorder: MediaRecorder;
   recordedVideo = document.querySelector('video#recorded');
 
+  gravando: boolean;
+  pausado: boolean;
+  mostrarGravacao: boolean;
+
   constructor() {
     this.cancelado = new EventEmitter();
     this.salvar = new EventEmitter();
@@ -24,6 +28,8 @@ export class GravarAudioComponent implements OnInit {
 
   start() {
     if (navigator.mediaDevices.getUserMedia) {
+      this.gravando = true;
+      this.pausado = false;
       navigator.mediaDevices.getUserMedia({ audio: true })
         .then((stream) => {
           this.mediaRecorder = new MediaRecorder(stream);
@@ -41,6 +47,9 @@ export class GravarAudioComponent implements OnInit {
 
   stop() {
     if (this.mediaRecorder) {
+      this.gravando = false;
+      this.pausado = false;
+      this.mostrarGravacao = true;
       this.mediaRecorder.stop();
       this.mediaRecorder = null;
     }
@@ -48,10 +57,12 @@ export class GravarAudioComponent implements OnInit {
 
   pause() {
     this.mediaRecorder.pause();
+    this.pausado = true;
   }
 
   resume() {
     this.mediaRecorder.resume();
+    this.pausado = false;
   }
 
 }

@@ -1,4 +1,4 @@
-<div fxLayout="column">
+<div fxLayout="column" fxLayoutGap="16px">
   <div fxLayout="column" *ngIf="prontoParaComecar">
     <div fxLayoutAlign="space-between center" fxLayout="row" fxFlex="100">
       <div fxLayoutGap="8px" fxFlex="nogrow" fxLayoutAlign="center center">
@@ -26,6 +26,7 @@
     </div>
   </div>
   <div [ngSwitch]="tipoArtefatoAdd">
+    <app-salvar-nota *ngSwitchCase="1" [(nota)]="novaNota" (cancelado)="tipoArtefatoAdd = null"></app-salvar-nota>
     <app-salvar-arquivo *ngSwitchCase="2" (cancelado)="tipoArtefatoAdd = null"></app-salvar-arquivo>
     <app-gravar-audio *ngSwitchCase="3" (cancelado)="tipoArtefatoAdd = null"></app-gravar-audio>
     <div *ngSwitchCase="0">

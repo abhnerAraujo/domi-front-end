@@ -20,6 +20,7 @@ export class SessoesListaComponent implements OnInit {
   timeLine: TimeLineItem[];
   timeLineConfig: TimeLineConfig;
   atendimentoId: number;
+  mostrarGraficos: boolean;
 
   sessoes: Sessao[];
   carregando: boolean;
@@ -48,6 +49,7 @@ export class SessoesListaComponent implements OnInit {
       mostrarData: true,
       clicavel: true
     };
+    this.mostrarGraficos = true;
   }
 
   carregarLista() {

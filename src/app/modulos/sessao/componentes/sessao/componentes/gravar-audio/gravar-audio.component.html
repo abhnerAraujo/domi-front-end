@@ -1,20 +1,20 @@
 <h3>Adicionar áudio</h3>
 <div fxLayoutGap="8px" fxLayoutAlign="start center" fxLayout.xs="column">
   <div fxLayoutGap="8px">
-    <button mat-icon-button color="primary" (click)="start()">
+    <button mat-icon-button color="accent" (click)="start()" *ngIf="!gravando">
       <mat-icon>mic</mat-icon>
     </button>
-    <button mat-icon-button color="primary" (click)="pause()">
+    <button mat-icon-button color="accent" (click)="pause()" *ngIf="gravando && !pausado">
       <mat-icon>pause</mat-icon>
     </button>
-    <button mat-icon-button color="primary" (click)="resume()">
+    <button mat-icon-button color="accent" (click)="resume()" *ngIf="pausado">
       <mat-icon>play_arrow</mat-icon>
     </button>
-    <button mat-icon-button color="warn" (click)="stop()">
+    <button mat-icon-button color="warn" (click)="stop()" [disabled]="!gravando">
       <mat-icon>stop</mat-icon>
     </button>
   </div>
-  <audio id="gum" controls></audio>
+  <audio *ngIf="mostrarGravacao" id="gum" controls autoplay></audio>
 </div>
 <p fxLayoutGap="8px">
   <button mat-raised-button (click)="salvar.emit()" color="accent">SALVAR</button>

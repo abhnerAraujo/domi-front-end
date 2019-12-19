@@ -1,1 +1,100 @@
-<p>sessao-resumo works!</p>
+<div fxLayout="column" style="height: 100%" fxLayoutGap="16px">
+  <ng-container *ngIf="sessao">
+    <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px" fxFlex="nogrow">
+      <button mat-icon-button (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Resumo da sessão</h1>
+    </div>
+    <div fxFlex fxLayout="column">
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Data</span>
+          <button mat-button color="accent">{{ sessao.sessao_data | dataHora:'LL' }}</button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Hora início</span>
+          <button mat-button color="accent">{{ sessao.sessao_hora_inicio | hora }}</button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Hora final</span>
+          <button mat-button color="accent">{{ sessao.sessao_hora_fim | hora }}</button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Quantidade de sessões</span>
+          <button mat-button color="accent">{{ sessao.sessao_quantidade }}</button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Tempo total</span>
+          <button mat-button color="accent">{{ calculaTempoTotal(sessao) }} minutos</button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Valor</span>
+          <button mat-button color="accent">{{ sessao.sessao_valor | moeda:true }}</button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Valor pago</span>
+          <button mat-button color="accent">{{ sessao.sessao_valor_pago | moeda:true }}</button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Pago</span>
+          <button mat-icon-button color="accent">
+            <mat-icon>{{ sessao.sessao_pago ? 'done' : 'close' }}</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Planejamento</span>
+          <button mat-icon-button color="accent">
+            <mat-icon>create</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Evolução</span>
+          <button mat-icon-button color="accent">
+            <mat-icon>create</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-descricao" fxLayoutAlign="space-between center">
+          <span>Mídias</span>
+          <button mat-icon-button color="accent">
+            <mat-icon>collections</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #carregando>
+    <h4>carregando...</h4>
+  </ng-template>
+</div>

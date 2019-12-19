@@ -4,10 +4,6 @@
   .item-descricao {
     margin: 16px 8px;
     font-weight: 600;
-    color: $accent;
+    color: rgba($color: #000000, $alpha: .64);
   }
-}
-
-.resumo-item:hover {
-  background-color: rgba(0, 0, 0, 0.08);
 }

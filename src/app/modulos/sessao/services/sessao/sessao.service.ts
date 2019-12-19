@@ -1,6 +1,7 @@
 import { MomentService } from './../../../compartilhado/services/moment/moment.service';
 import { Sessao } from './../../interfaces/sessao-lista-response.interface';
 import { Injectable } from '@angular/core';
+import { SessaoDetalhe } from '../../interfaces/sessao-detalhe';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +59,28 @@ export class SessaoService {
         }
       }
     ];
+  }
+
+  sessao(id: number): SessaoDetalhe {
+    const sessao = this.sessoes().find(s => s.sessao_id === id);
+    return {
+      sessao_id: sessao.sessao_id,
+      sessao_data: sessao.sessao_data,
+      sessao_hora_inicio: '1209',
+      sessao_hora_fim: '1336',
+      sessao_quantidade: 2,
+      sessao_duracao: 45,
+      sessao_pago: true,
+      sessao_valor: 80.00,
+      sessao_valor_pago: 80.00,
+      sessao_responsavel: {
+        sessao_responsavel_email: 'responsavel@email.com',
+        sessao_responsavel_nome: 'João da Silva',
+        sessao_responsavel_id: 1,
+        sessao_responsavel_telefone: '81999998888'
+      },
+      planejamento_id: 1,
+      evolucao_id: 1
+    };
   }
 }

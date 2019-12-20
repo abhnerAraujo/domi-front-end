@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
     MatCardModule,
     ReactiveFormsModule,
     QuestaoItemModule
-  ]
+  ],
+  exports: [AvaliacaoDetalheComponent]
 })
 export class AvaliacaoModule { }

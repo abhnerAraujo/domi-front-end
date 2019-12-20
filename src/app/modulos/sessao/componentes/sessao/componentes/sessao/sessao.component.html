@@ -25,10 +25,13 @@
       <mat-divider></mat-divider>
     </div>
   </div>
-  <div [ngSwitch]="tipoArtefatoAdd">
+  <div [ngSwitch]="tipoArtefatoAdd" fxFlex>
     <app-salvar-nota *ngSwitchCase="1" [(nota)]="novaNota" (cancelado)="tipoArtefatoAdd = null"></app-salvar-nota>
     <app-salvar-arquivo *ngSwitchCase="2" (cancelado)="tipoArtefatoAdd = null"></app-salvar-arquivo>
     <app-gravar-audio *ngSwitchCase="3" (cancelado)="tipoArtefatoAdd = null"></app-gravar-audio>
+    <app-avaliacao-detalhe *ngSwitchCase="4" (cancelado)="tipoArtefatoAdd = null" [sessao]="true">
+    </app-avaliacao-detalhe>
+    <app-anamnese-detalhe *ngSwitchCase="5" (cancelado)="tipoArtefatoAdd = null" [sessao]="true"></app-anamnese-detalhe>
     <div *ngSwitchCase="0">
       <div>
         <h3>Configurar atendimento</h3>
@@ -98,9 +101,7 @@
                 {{ grupo[0] }}
               </div>
               <div fxLayoutGap="8px" fxLayout="row">
-                <div *ngFor="let atividade of grupo[1]">
-                  {{ atividade.tipo }}
-                </div>
+                {{ grupo[1].length }} {{ grupo[1].length > 1 ? 'itens' : 'item' }}
               </div>
             </div>
           </div>
@@ -110,6 +111,6 @@
   </div>
 </div>
 
-<button mat-fab color="accent" (click)="adicionarArtefato()" *ngIf="prontoParaComecar">
+<button mat-fab color="accent" (click)="adicionarArtefato()" *ngIf="prontoParaComecar && tipoArtefatoAdd === null">
   <mat-icon>add</mat-icon>
 </button>

@@ -1,3 +1,5 @@
+import { AvaliacaoModule } from './../../../avaliacao/avaliacao.module';
+import { AnamneseModule } from './../../../anamnese/anamnese.module';
 import { PipesModule } from './../../../../pipes/pipes.module';
 import {
   DialogConfigDiaAtendimentoModule
@@ -46,7 +48,9 @@ import { SalvarNotaComponent } from './componentes/salvar-nota/salvar-nota.compo
     PipesModule,
     FormsModule,
     CurrencyMaskModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    AnamneseModule,
+    AvaliacaoModule
   ],
   entryComponents: [FinalizarSessaoComponent]
 })

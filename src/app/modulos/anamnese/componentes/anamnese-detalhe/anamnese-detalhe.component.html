@@ -1,6 +1,6 @@
 <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
-  <button mat-icon-button (click)="location.back()">
-    <mat-icon>arrow_back</mat-icon>
+  <button mat-icon-button (click)="sessao ? cancelado.emit() : location.back()">
+    <mat-icon>{{ sessao ? 'close' : 'arrow_back' }}</mat-icon>
   </button>
   <h1>Anamnese</h1>
 </div>
@@ -8,8 +8,7 @@
   <app-questao-item *ngFor="let questao of questoes; let i = index" [index]="i + 1" [questaoResposta]="questao"
     (remover)="questoes.splice(i, 1)">
   </app-questao-item>
+  <app-questao-item [index]="-1" [questaoResposta]="null"
+    (adicionarQuestao)="questoes.push({questao: '', resposta: ''})">
+  </app-questao-item>
 </div>
-
-<button mat-fab color="accent" (click)="questoes.push({questao: '', resposta: ''})">
-  <mat-icon>add</mat-icon>
-</button>

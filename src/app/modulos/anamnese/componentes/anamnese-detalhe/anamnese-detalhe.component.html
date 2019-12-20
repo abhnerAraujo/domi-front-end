@@ -1,6 +1,6 @@
 <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
-  <button mat-icon-button (click)="location.back()">
-    <mat-icon>arrow_back</mat-icon>
+  <button mat-icon-button (click)="sessao ? cancelado.emit() : location.back()">
+    <mat-icon>{{ sessao ? 'close' : 'arrow_back' }}</mat-icon>
   </button>
   <h1>Anamnese</h1>
 </div>

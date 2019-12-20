@@ -1,5 +1,5 @@
 import { QuestaoResposta } from '../../../compartilhado/componentes/questao-item/questao-item.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
@@ -9,9 +9,14 @@ import { Location } from '@angular/common';
 })
 export class AvaliacaoDetalheComponent implements OnInit {
 
+  @Input() sessao: boolean;
+  @Output() cancelado: EventEmitter<void>;
+
   questoes: QuestaoResposta[] = [];
 
-  constructor(public location: Location) { }
+  constructor(public location: Location) {
+    this.cancelado = new EventEmitter();
+  }
 
   ngOnInit() {
     this.questoes = [

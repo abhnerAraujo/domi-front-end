@@ -7,11 +7,9 @@ body {
   margin: 0px;
 }
 
-@media screen and (max-width: 480px) {
-  .titulo-pagina {
-    h1 {
-      font-size: 24px;
-    }
+.titulo-pagina {
+  h1 {
+    font-size: 24px;
   }
 }
 

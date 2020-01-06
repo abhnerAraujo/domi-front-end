@@ -6,6 +6,7 @@ import { MomentService } from './../../../../compartilhado/services/moment/momen
 import { CORES } from './../../../../../constantes/valores';
 import { Component, OnInit } from '@angular/core';
 import { TimeLineItem, TimeLineConfig } from 'src/app/modulos/compartilhado/componentes/timeline/componentes/timeline/timeline.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-sessoes-lista',
@@ -34,7 +35,8 @@ export class SessoesListaComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private sessaoService: SessaoService,
-    private moedaPipe: MoedaPipe) {
+    private moedaPipe: MoedaPipe,
+    public location: Location) {
     this.atendimentoId = Number.parseInt(this.route.snapshot.params.id_atendimento, 10);
     this.timeLineConfig = {
       cores: {

@@ -29,6 +29,7 @@ export class SessoesListaComponent implements OnInit {
   dataDonut: any;
   optionsDonut: any;
   dataLinha: any;
+  optionsLinha: any;
 
   constructor(
     private moment: MomentService,
@@ -128,6 +129,30 @@ export class SessoesListaComponent implements OnInit {
           borderColor: CORES.primaria
         }
       ]
+    };
+    this.optionsLinha = {
+      scales: {
+        xAxes: [{
+          ticks: {
+            display: false
+          },
+          gridLines: {
+            color: 'rgba(0, 0, 0, 0)',
+            display: false,
+            drawBorder: false
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            display: false
+          },
+          gridLines: {
+            color: 'rgba(0, 0, 0, 0)',
+            display: false,
+            drawBorder: false
+          }
+        }]
+      }
     };
     let ultimoIndicador = 0;
     this.sessoes.forEach((sessao, index) => {

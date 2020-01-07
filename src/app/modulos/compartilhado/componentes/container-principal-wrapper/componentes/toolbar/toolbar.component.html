@@ -8,11 +8,12 @@
         DOMI
       </div>
     </div>
-    <div fxflex fxLayoutAlign="center center">
-      <button mat-button [routerLink]="['/atendimentos/novo']">NOVO ATENDIMENTO</button>
-    </div>
-    <div fxHide.xs fxFlex fxLayoutAlign="end center">
-      <button mat-button>Abhner Araujo</button>
+    <div fxFlex fxLayoutAlign="end center">
+      <button mat-button [matMenuTriggerFor]="menu">Abhner Araujo</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Perfil</button>
+        <button mat-menu-item>Sair</button>
+      </mat-menu>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

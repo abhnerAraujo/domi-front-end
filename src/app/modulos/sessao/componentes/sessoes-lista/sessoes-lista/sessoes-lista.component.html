@@ -1,11 +1,19 @@
 <div fxLayout="column" style="height: 100%;" fxLayoutGap="16px">
   <ng-container *ngIf="!carregando; else spinner">
-    <div fxLayoutAlign="end">
-      <button mat-icon-button [matTooltip]="mostrarGraficos ? 'Esconder gráficos' : 'Mostrar gráficos'"
-        [matTooltipPosition]="'left'" matTooltipHideDelay="100000" (click)="mostrarGraficos = !mostrarGraficos"
-        color="accent">
-        <mat-icon>show_chart</mat-icon>
-      </button>
+    <div fxLayoutAlign="space-between center">
+      <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px" fxFlex="nogrow">
+        <button mat-icon-button (click)="location.back()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1>Sessões</h1>
+      </div>
+      <div fxLayoutAlign="end">
+        <button mat-icon-button [matTooltip]="mostrarGraficos ? 'Esconder gráficos' : 'Mostrar gráficos'"
+          [matTooltipPosition]="'left'" matTooltipHideDelay="100000" (click)="mostrarGraficos = !mostrarGraficos"
+          color="accent">
+          <mat-icon>show_chart</mat-icon>
+        </button>
+      </div>
     </div>
     <div fxLayout="row" fxFlex="40" fxLayoutAlign="center" fxLayoutGap="32px" *ngIf="mostrarGraficos">
       <div fxLayout="column" fxFlex>
@@ -30,7 +38,7 @@
       </div>
       <div fxLayout="column" fxFlex fxHide.xs>
         <div fxLayoutAlign="center" fxFlex>
-          <p-chart type="line" [data]="dataLinha" height="100%"></p-chart>
+          <p-chart type="line" [data]="dataLinha" [options]="optionsLinha" height="100%"></p-chart>
         </div>
       </div>
     </div>

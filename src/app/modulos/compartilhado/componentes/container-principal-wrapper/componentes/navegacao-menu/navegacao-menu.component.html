@@ -1,11 +1,32 @@
-<mat-nav-list>
-  <a mat-list-item routerLinkActive="active-link" routerLink="/home">
-    <mat-icon>home</mat-icon> INÍCIO
-  </a>
-  <a mat-list-item routerLinkActive="active-link" routerLink="/atendimentos">
-    <mat-icon>perm_contact_calendar</mat-icon> ATENDIMENTOS
-  </a>
-  <a mat-list-item routerLinkActive="active-link" routerLink="/cadastros">
-    <mat-icon>account_circle</mat-icon> CADASTROS
-  </a>
-</mat-nav-list>
+<div fxLayout="column" fxLayoutGap="16px">
+  <div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="opacity: 0.72;">
+      <h6 style="margin: 0; opacity: 0.72;">ESPAÇO ATUAL</h6>
+      <button mat-icon-button color="accent" [matMenuTriggerFor]="menuEspacos"
+        (click)="$event.stopPropagation(); carregarEspacos()">
+        <mat-icon>swap_horizontal_circle</mat-icon>
+      </button>
+    </div>
+    <h3 style="opacity: 0.88;">{{ espacoAtual }}</h3>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-nav-list>
+    <a mat-list-item routerLinkActive="active-link" routerLink="/home">
+      <mat-icon>home</mat-icon> INÍCIO
+    </a>
+    <a mat-list-item routerLinkActive="active-link" routerLink="/atendimentos">
+      <mat-icon>perm_contact_calendar</mat-icon> ATENDIMENTOS
+    </a>
+    <a mat-list-item routerLinkActive="active-link" routerLink="/cadastros">
+      <mat-icon>account_circle</mat-icon> CADASTROS
+    </a>
+  </mat-nav-list>
+</div>
+<mat-menu #menuEspacos="matMenu">
+  <ng-container *ngIf="espacos?.length && !carregandoEspacos; else progressCarregamentoEspacos">
+    <button mat-menu-item *ngFor="let espaco of espacos" (click)="espacoAtual = espaco"> {{ espaco }} </button>
+  </ng-container>
+  <ng-template #progressCarregamentoEspacos>
+    <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+  </ng-template>
+</mat-menu>

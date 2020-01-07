@@ -9,6 +9,10 @@ const rotas: Routes = [
   {
     path: 'pacientes',
     loadChildren: () => import('./componentes/paciente/paciente.module').then(m => m.PacienteModule)
+  },
+  {
+    path: 'espacos',
+    loadChildren: () => import('./componentes/espacos/espacos.module').then(m => m.EspacosModule)
   }
 ];
 

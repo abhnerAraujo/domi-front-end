@@ -6,6 +6,7 @@ import { MomentService } from './../../../../compartilhado/services/moment/momen
 import { CORES } from './../../../../../constantes/valores';
 import { Component, OnInit } from '@angular/core';
 import { TimeLineItem, TimeLineConfig } from 'src/app/modulos/compartilhado/componentes/timeline/componentes/timeline/timeline.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-sessoes-lista',
@@ -28,13 +29,15 @@ export class SessoesListaComponent implements OnInit {
   dataDonut: any;
   optionsDonut: any;
   dataLinha: any;
+  optionsLinha: any;
 
   constructor(
     private moment: MomentService,
     private router: Router,
     private route: ActivatedRoute,
     private sessaoService: SessaoService,
-    private moedaPipe: MoedaPipe) {
+    private moedaPipe: MoedaPipe,
+    public location: Location) {
     this.atendimentoId = Number.parseInt(this.route.snapshot.params.id_atendimento, 10);
     this.timeLineConfig = {
       cores: {
@@ -126,6 +129,30 @@ export class SessoesListaComponent implements OnInit {
           borderColor: CORES.primaria
         }
       ]
+    };
+    this.optionsLinha = {
+      scales: {
+        xAxes: [{
+          ticks: {
+            display: false
+          },
+          gridLines: {
+            color: 'rgba(0, 0, 0, 0)',
+            display: false,
+            drawBorder: false
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            display: false
+          },
+          gridLines: {
+            color: 'rgba(0, 0, 0, 0)',
+            display: false,
+            drawBorder: false
+          }
+        }]
+      }
     };
     let ultimoIndicador = 0;
     this.sessoes.forEach((sessao, index) => {

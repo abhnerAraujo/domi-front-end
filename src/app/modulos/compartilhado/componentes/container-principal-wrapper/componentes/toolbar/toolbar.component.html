@@ -9,10 +9,10 @@
       </div>
     </div>
     <div fxFlex fxLayoutAlign="end center">
-      <button mat-button [matMenuTriggerFor]="menu">Abhner Araujo</button>
+      <button mat-button [matMenuTriggerFor]="menu">{{ usuario.primeiro_nome }}</button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>Perfil</button>
-        <button mat-menu-item>Sair</button>
+        <button mat-menu-item (click)="sair()">Sair</button>
       </mat-menu>
     </div>
   </mat-toolbar-row>

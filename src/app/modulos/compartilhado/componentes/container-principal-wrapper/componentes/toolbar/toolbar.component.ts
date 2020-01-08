@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { Usuario } from './../../../../../acesso/interfaces/usuario.interface';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -9,11 +11,19 @@ export class ToolbarComponent implements OnInit {
 
   @Output() toggleSidenav: EventEmitter<void>;
 
-  constructor() {
+  usuario: Usuario;
+
+  constructor(private router: Router) {
     this.toggleSidenav = new EventEmitter();
   }
 
   ngOnInit() {
+    this.usuario = JSON.parse(localStorage.getItem('x-user-data'));
+  }
+
+  sair() {
+    localStorage.clear();
+    this.router.navigate(['/acessar']);
   }
 
 }

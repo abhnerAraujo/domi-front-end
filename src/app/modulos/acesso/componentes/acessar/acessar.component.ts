@@ -16,6 +16,7 @@ export class AcessarComponent implements OnInit, OnDestroy {
   requestSubscription: Subscription;
   loginForm: FormGroup;
   entrando: boolean;
+  criarUsuario: boolean;
 
   constructor(
     private router: Router
@@ -68,6 +69,10 @@ export class AcessarComponent implements OnInit, OnDestroy {
     if (this.requestSubscription) {
       this.requestSubscription.unsubscribe();
     }
+  }
+
+  cadastrar() {
+
   }
 
 }

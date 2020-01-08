@@ -3,5 +3,17 @@
 .container-principal {
   width: 100vw;
   height: 100vh;
-  background-color: rgba($color: $primary, $alpha: 0.64);
+  background-color: rgba($color: $primary, $alpha: 1);
+  .titulo {
+    text-align: center;
+    color: white;
+    h1 {
+      margin: 16px 0 0 0;
+      font-family: 'Damion', cursive;
+    }
+    h4 {
+      margin: 8px 0;
+      font-weight: 500;
+    }
+  }
 }

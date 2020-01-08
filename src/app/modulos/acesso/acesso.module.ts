@@ -3,7 +3,8 @@ import { AcessoRoutingModule } from './acesso-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AcessarComponent } from './componentes/acessar/acessar.component';
-import { MatButtonModule, MatFormFieldModule, MatCardModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatFormFieldModule, MatCardModule, MatInputModule, MatSnackBarModule } from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AcessarComponent],
@@ -14,7 +15,9 @@ import { MatButtonModule, MatFormFieldModule, MatCardModule, MatInputModule } fr
     FlexLayoutModule,
     MatFormFieldModule,
     MatCardModule,
-    MatInputModule
+    MatInputModule,
+    ReactiveFormsModule,
+    MatSnackBarModule
   ]
 })
 export class AcessoModule { }

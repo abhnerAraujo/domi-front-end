@@ -1,3 +1,4 @@
+import { ProgressBarService } from './modulos/compartilhado/componentes/container-principal-wrapper/services/progress-bar/progress-bar.service';
 import { ApiInterceptor } from './interceptors/api-interceptor';
 import { DATE_FORMATS } from './constantes/date-formats';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -32,7 +33,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
     { provide: MAT_DATE_FORMATS, useValue: DATE_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
-    { provide: 'BASE_API_URL', useValue: environment.domi_api }
+    { provide: 'BASE_API_URL', useValue: environment.domi_api },
+    ProgressBarService
   ],
   bootstrap: [AppComponent]
 })

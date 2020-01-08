@@ -1,3 +1,4 @@
+import { ProgressBarService } from './services/progress-bar/progress-bar.service';
 import { Component, OnInit } from '@angular/core';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import { Subscription } from 'rxjs';
@@ -16,7 +17,10 @@ export class ContainerPrincipalWrapperComponent implements OnInit {
   mediaQuerySubscription: Subscription;
   activeMediaQuery: string;
 
-  constructor(private mediaObserver: MediaObserver) {
+  progressBar: boolean;
+  progressBarSubscription: Subscription;
+
+  constructor(private mediaObserver: MediaObserver, private progressBarService: ProgressBarService) {
     this.sidenavEsquerdoAberto = true;
     this.sidenavDireitoAberto = true;
     this.mediaQuerySubscription = this.mediaObserver.asObservable().subscribe(
@@ -35,6 +39,11 @@ export class ContainerPrincipalWrapperComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.progressBarSubscription = this.progressBarService.loaderState.subscribe(
+      (estado) => {
+        this.progressBar = estado;
+      }
+    );
   }
 
   fecharSidenavEsquerdo() {

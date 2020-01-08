@@ -58,6 +58,7 @@ export class AcessarComponent implements OnInit, OnDestroy {
           this.router.navigate(['home']);
         } else {
           this.entrando = false;
+          this.loginForm.get('senha').reset();
           this.snack.open(data.mensagem, 'OK', { duration: 3500 });
         }
       });

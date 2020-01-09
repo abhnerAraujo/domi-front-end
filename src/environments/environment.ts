@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  domi_api: 'http://localhost:3000/v1'
+  domi_api: process.env.DOMI_API
 };
 
 /*

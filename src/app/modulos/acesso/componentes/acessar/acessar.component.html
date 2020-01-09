@@ -23,7 +23,8 @@
             </form>
           </ng-container>
           <ng-template #novoUsuario>
-            <app-criar-usuario fxFlex></app-criar-usuario>
+            <app-criar-usuario fxFlex (valido)="formCriacaoValido = $event" (formChange)="formChange($event)">
+            </app-criar-usuario>
           </ng-template>
         </mat-card-content>
         <mat-card-actions fxLayoutAlign="center center" *ngIf="!criarUsuario">
@@ -44,8 +45,8 @@
         <mat-card-actions fxLayoutAlign="center center" *ngIf="criarUsuario">
           <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
             <div>
-              <button mat-raised-button fxFlex="100" (click)="cadastrar()"
-                color="accent">{{ entrando ? 'Aguarde...' : 'CONFIRMAR' }}</button>
+              <button mat-raised-button fxFlex="100" (click)="cadastrar()" color="accent"
+                [disabled]="!formCriacaoValido || entrando">{{ entrando ? 'Aguarde...' : 'CONFIRMAR' }}</button>
             </div>
             <div fxLayoutAlign="center center" fxLayoutGap="8px">
               <h5 style="opacity: 0.72;">Já possui uma conta?</h5>

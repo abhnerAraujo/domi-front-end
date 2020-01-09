@@ -4,16 +4,16 @@
       <button mat-icon-button (click)="toggleSidenav.emit()">
         <mat-icon>menu</mat-icon>
       </button>
-      <div style="height: 40px; font-size: 24px;" fxLayoutAlign="center center">
-        DOMI
+      <div class="app-titulo" fxLayoutAlign="center center">
+        Domi
       </div>
     </div>
     <div fxFlex fxLayoutAlign="end center">
-      <button mat-button [matMenuTriggerFor]="menu">Abhner Araujo</button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>Perfil</button>
-        <button mat-menu-item>Sair</button>
-      </mat-menu>
+      <button mat-button [matMenuTriggerFor]="menu">{{ usuario.primeiro_nome }}</button>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>Perfil</button>
+  <button mat-menu-item (click)="sair()">Sair</button>
+</mat-menu>

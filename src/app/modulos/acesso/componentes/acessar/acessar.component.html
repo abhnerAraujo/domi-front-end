@@ -1,39 +1,60 @@
-<div class="container-principal" fxLayoutAlign="center center" fxLayout.xs="column">
-  <div fxFlex="50" fxFlex.xs="100">
-    <mat-card fxFlex="100" fxLayoutGap="16px" fxLayout="column">
-      <mat-card-header fxLayout="column" fxLayoutAlign="center">
-        <mat-card-title fxLayoutAlign="center">
-          Domi - Fonoaudiologia
-        </mat-card-title>
-        <mat-card-subtitle fxLayoutAlign="center" style="text-align: center;">
-          Digite seu e-mail e senha para acessar ao sistema.
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content fxLayoutAlign="center center">
-        <div fxFlex="60" fxFlex.xs="100" fxLayout="column">
-          <mat-form-field appearance="outline">
-            <mat-label>E-mail</mat-label>
-            <input matInput>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Senha</mat-label>
-            <input matInput type="password">
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-      <mat-card-actions fxLayoutAlign="center center">
-        <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
-          <div>
-            <button mat-raised-button fxFlex="100" (click)="entrar()" color="accent">ENTRAR</button>
+<div class="container-principal" fxLayoutAlign.gt-xs="center" fxLayout="column">
+  <div fxFlex="nogrow" class="titulo">
+    <h1>Domi</h1>
+    <h4>{{ criarUsuario 
+      ? 'Preencha os campos abaixo para iniciar.'
+      : 'Digite seu e-mail e senha para acessar.'}}
+    </h4>
+  </div>
+  <div fxFlex.xs fxLayout="row">
+    <div fxFlex="100" fxLayoutAlign="center">
+      <mat-card fxFlex.xs="100" fxFlex="50" fxLayoutGap="16px" fxLayout="column">
+        <mat-card-content fxLayoutAlign="center" fxFlex.xs style="overflow-y: auto;">
+          <ng-container *ngIf="!criarUsuario; else novoUsuario">
+            <form [formGroup]="loginForm" fxFlex="60" fxFlex.xs="100" fxLayout="column">
+              <mat-form-field appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input matInput formControlName="email" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Senha</mat-label>
+                <input matInput type="password" formControlName="senha" required>
+              </mat-form-field>
+            </form>
+          </ng-container>
+          <ng-template #novoUsuario>
+            <app-criar-usuario fxFlex (valido)="formCriacaoValido = $event" (formChange)="formChange($event)">
+            </app-criar-usuario>
+          </ng-template>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="center center" *ngIf="!criarUsuario">
+          <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
+            <div>
+              <button mat-raised-button fxFlex="100" (click)="entrar()" color="accent"
+                [disabled]="!loginForm.valid || entrando">{{ entrando ? 'Aguarde...' : 'ENTRAR' }}</button>
+            </div>
+            <div>
+              <button mat-stroked-button fxFlex="100" (click)="criarUsuario = true" color="accent">CADASTRAR</button>
+            </div>
+            <div>
+              <button mat-button fxFlex="100" (click)="entrar()" color="accent">Esqueci minha
+                senha</button>
+            </div>
           </div>
-          <div>
-            <button mat-stroked-button fxFlex="100" (click)="entrar()" color="accent">CADASTRAR</button>
+        </mat-card-actions>
+        <mat-card-actions fxLayoutAlign="center center" *ngIf="criarUsuario">
+          <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
+            <div>
+              <button mat-raised-button fxFlex="100" (click)="cadastrar()" color="accent"
+                [disabled]="!formCriacaoValido || entrando">{{ entrando ? 'Aguarde...' : 'CONFIRMAR' }}</button>
+            </div>
+            <div fxLayoutAlign="center center" fxLayoutGap="8px">
+              <h5 style="opacity: 0.72;">Já possui uma conta?</h5>
+              <button mat-button (click)="criarUsuario = false" color="accent">Entrar</button>
+            </div>
           </div>
-          <div>
-            <button mat-button fxFlex="100" (click)="entrar()" color="accent">Esqueci minha senha</button>
-          </div>
-        </div>
-      </mat-card-actions>
-    </mat-card>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </div>
 </div>

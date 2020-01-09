@@ -1,3 +1,4 @@
+import { Usuario } from './../../../acesso/interfaces/usuario.interface';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,12 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  nomeUsuario: string;
+  usuario: Usuario;
 
   constructor() { }
 
   ngOnInit() {
-    this.nomeUsuario = JSON.parse(localStorage.getItem('usuario')).nome;
+    this.usuario = JSON.parse(localStorage.getItem('x-user-data'));
   }
 
 }

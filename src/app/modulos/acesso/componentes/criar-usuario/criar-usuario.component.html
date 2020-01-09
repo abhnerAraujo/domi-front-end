@@ -1,0 +1,44 @@
+<div fxFlex fxLayoutAlign="center">
+  <form [formGroup]="criarUsuarioForm" fxFlex="60" fxFlex.xs="100" fxLayout="column">
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail</mat-label>
+      <input matInput formControlName="email" required>
+    </mat-form-field>
+    <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
+      <mat-form-field fxFlex.gt-xs appearance="outline">
+        <mat-label>Senha</mat-label>
+        <input matInput type="password" formControlName="senha" required>
+      </mat-form-field>
+      <mat-form-field fxFlex.gt-xs appearance="outline">
+        <mat-label>Repetir senha</mat-label>
+        <input matInput type="password" formControlName="repetir_senha" required>
+      </mat-form-field>
+    </div>
+    <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
+      <mat-form-field fxFlex.gt-xs appearance="outline">
+        <mat-label>Primeiro nome</mat-label>
+        <input matInput formControlName="primeiro_nome" required>
+      </mat-form-field>
+      <mat-form-field fxFlex.gt-xs appearance="outline">
+        <mat-label>Sobrenome</mat-label>
+        <input matInput formControlName="sobrenome" required>
+      </mat-form-field>
+    </div>
+    <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
+      <mat-form-field fxFlex.gt-xs appearance="outline" fxFlex.xs="100" fxFlex required>
+        <mat-label>Sexo</mat-label>
+        <mat-select formControlName="sexo">
+          <mat-option [value]="'M'">Masculino</mat-option>
+          <mat-option [value]="'F'">Feminino</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex.gt-xs appearance="outline" fxFlex fxFlex.lt-md="100">
+        <mat-label>Data de nascimento</mat-label>
+        <input matInput [matDatepicker]="picker" placeholder="Escolha" formControlName="data_nascimento" readonly="true"
+          required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker disabled="false"></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+</div>

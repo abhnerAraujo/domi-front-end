@@ -1,3 +1,4 @@
+import { EspacoService } from './services/espaco/espaco.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContainerPrincipalWrapperComponent } from './componentes/container-principal-wrapper/container-principal-wrapper.component';
@@ -28,6 +29,9 @@ import {
   ],
   exports: [
     ContainerPrincipalWrapperComponent
+  ],
+  providers: [
+    EspacoService
   ]
 })
 export class CompartilhadoModule { }

@@ -7,7 +7,7 @@
         <mat-icon>swap_horizontal_circle</mat-icon>
       </button>
     </div>
-    <h3 style="opacity: 0.88;">{{ espacoAtual }}</h3>
+    <h3 style="opacity: 0.88;">{{ espacoAtual?.dados.descricao || 'Carregando...' }}</h3>
   </div>
   <mat-divider></mat-divider>
   <mat-nav-list>
@@ -24,7 +24,9 @@
 </div>
 <mat-menu #menuEspacos="matMenu">
   <ng-container *ngIf="espacos?.length && !carregandoEspacos; else progressCarregamentoEspacos">
-    <button mat-menu-item *ngFor="let espaco of espacos" (click)="espacoAtual = espaco"> {{ espaco }} </button>
+    <button mat-menu-item *ngFor="let espaco of espacos" (click)="alternarEspaco(espaco)">
+      {{ espaco?.dados?.descricao }}
+    </button>
   </ng-container>
   <ng-template #progressCarregamentoEspacos>
     <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>

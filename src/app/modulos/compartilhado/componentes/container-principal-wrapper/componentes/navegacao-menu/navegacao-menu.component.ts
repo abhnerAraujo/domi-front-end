@@ -1,3 +1,5 @@
+import { Espaco } from './../../../../interfaces/listar-espacos-response.interface';
+import { EspacoService } from './../../../../services/espaco/espaco.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,21 +9,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavegacaoMenuComponent implements OnInit {
 
-  espacos: string[];
+  espacos: Espaco[];
   carregandoEspacos: boolean;
-  espacoAtual = 'Pessoal';
+  espacoAtual: Espaco;
 
-  constructor() { }
+  constructor(private espacoService: EspacoService) { }
 
   ngOnInit() {
+    this.carregarEspacos();
   }
 
   carregarEspacos() {
     this.carregandoEspacos = true;
-    setTimeout(() => {
-      this.espacos = ['Pessoal', 'Morro da Conceição NASF', 'Clínica Domi'];
+    this.espacoService.listar().subscribe(resultado => {
       this.carregandoEspacos = false;
-    }, 1500);
+      this.espacos = resultado.dados;
+      if (!this.espacoAtual) {
+        this.alternarEspaco(this.espacos[0]);
+      }
+    },
+      error => {
+        this.carregandoEspacos = false;
+      });
+  }
+
+  alternarEspaco(espaco: Espaco) {
+    this.espacoAtual = espaco;
+    localStorage.setItem('x-context', espaco.id);
   }
 
 }

@@ -1,6 +1,7 @@
+import { ROUTES_NO_AUTH } from './../constantes/config';
 import { Observable } from 'rxjs';
 import { Injectable, Inject } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
@@ -10,7 +11,15 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const apiReq = request.clone({ url: `${this.baseUrl}/${request.url}` });
-    return next.handle(apiReq);
+    if (ROUTES_NO_AUTH.indexOf(request.url) === -1) {
+      const headers = new HttpHeaders()
+        .set('id', localStorage.getItem('x-access-token'))
+        .set('contexto', localStorage.getItem('x-context') || '');
+      const apiReq = request.clone({ url: `${this.baseUrl}/${request.url}`, headers });
+      return next.handle(apiReq);
+    } else {
+      const apiReq = request.clone({ url: `${this.baseUrl}/${request.url}` });
+      return next.handle(apiReq);
+    }
   }
 }

@@ -8,7 +8,7 @@ export class AcessoGuard implements CanActivate {
   constructor(private router: Router) { }
 
   canActivate(): boolean {
-    if (localStorage.getItem('x-access-token')) {
+    if (localStorage.getItem('token')) {
       return true;
     } else {
       this.router.navigate(['acessar']);

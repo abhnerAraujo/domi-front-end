@@ -47,21 +47,8 @@ export class AcessarComponent implements OnInit, OnDestroy {
     this.requestSubscription = this.acessoService.login(this.loginForm.value)
       .subscribe(data => {
         if (data.sucesso) {
-          const dados = data.dados.dados;
-          const id = data.dados.id;
-          const usuario: Usuario = {
-            email_confirmacao: dados.email_confirmacao,
-            primeiro_nome: dados.primeiro_nome,
-            sobrenome: dados.sobrenome,
-            email: dados.email,
-            id,
-            data_nascimento: dados.data_nascimento,
-            auth_codigo: dados.auth_codigo
-          };
-
-          localStorage.setItem('x-user-data', JSON.stringify(usuario));
-          localStorage.setItem('x-access-token', `${id}`);
-
+          const token = data.dados.token;
+          localStorage.setItem('token', token);
           this.router.navigate(['home']);
         } else {
           this.entrando = false;

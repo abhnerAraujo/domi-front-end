@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 
 @Component({
@@ -28,7 +28,8 @@ export class CriarUsuarioComponent implements OnInit, OnDestroy {
       ])],
       repetir_senha: ['', Validators.compose([
         Validators.required,
-        Validators.pattern(/^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/)
+        Validators.pattern(/^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/),
+        this.repetirSenhaValidador()
       ])],
       primeiro_nome: ['', Validators.compose([
         Validators.required,
@@ -60,6 +61,17 @@ export class CriarUsuarioComponent implements OnInit, OnDestroy {
     if (this.formChangesSubscription) {
       this.formChangesSubscription.unsubscribe();
     }
+  }
+
+  repetirSenhaValidador(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (this.criarUsuarioForm) {
+        if (!this.criarUsuarioForm.get('senha').value || this.criarUsuarioForm.get('senha').value !== control.value) {
+          return { repetirSenha: true };
+        }
+      }
+      return null;
+    };
   }
 
 }

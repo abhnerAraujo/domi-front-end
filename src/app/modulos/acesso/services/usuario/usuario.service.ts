@@ -1,3 +1,4 @@
+import { DadosUsuarioResponse } from './../../interfaces/dados-usuario-response.interface';
 import { CriarUsuarioResponse } from './../../interfaces/criar-usuario-response.interface';
 import { Observable } from 'rxjs';
 import { CriarUsuarioRequest } from './../../interfaces/criar-usuario-request.interface';
@@ -14,5 +15,10 @@ export class UsuarioService {
   login(dados: CriarUsuarioRequest): Observable<CriarUsuarioResponse> {
     return this.http
       .post<CriarUsuarioResponse>('usuarios', dados);
+  }
+
+  dadosUsuario(): Observable<DadosUsuarioResponse> {
+    return this.http
+      .get<DadosUsuarioResponse>('usuarios');
   }
 }

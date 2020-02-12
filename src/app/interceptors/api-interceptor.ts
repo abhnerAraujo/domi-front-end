@@ -13,7 +13,7 @@ export class ApiInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (ROUTES_NO_AUTH.indexOf(request.url) === -1) {
       const headers = new HttpHeaders()
-        .set('id', localStorage.getItem('x-access-token'))
+        .set('token', localStorage.getItem('x-access-token'))
         .set('contexto', localStorage.getItem('x-context') || '');
       const apiReq = request.clone({ url: `${this.baseUrl}/${request.url}`, headers });
       return next.handle(apiReq);

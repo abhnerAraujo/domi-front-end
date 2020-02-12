@@ -37,7 +37,7 @@
               <button mat-stroked-button fxFlex="100" (click)="criarUsuario = true" color="accent">CADASTRAR</button>
             </div>
             <div>
-              <button mat-button fxFlex="100" (click)="entrar()" color="accent">Esqueci minha
+              <button mat-button fxFlex="100" color="accent">Esqueci minha
                 senha</button>
             </div>
           </div>
@@ -50,7 +50,7 @@
             </div>
             <div fxLayoutAlign="center center" fxLayoutGap="8px">
               <h5 style="opacity: 0.72;">Já possui uma conta?</h5>
-              <button mat-button (click)="criarUsuario = false" color="accent">Entrar</button>
+              <button mat-button type="reset" (click)="criarUsuario = false" color="accent">Entrar</button>
             </div>
           </div>
         </mat-card-actions>

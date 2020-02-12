@@ -1,7 +1,6 @@
 import { UsuarioService } from './../../services/usuario/usuario.service';
 import { CriarUsuarioRequest } from './../../interfaces/criar-usuario-request.interface';
 import { MatSnackBar } from '@angular/material';
-import { Usuario } from './../../interfaces/usuario.interface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AcessoService } from './../../services/acesso/acesso.service';
@@ -48,8 +47,15 @@ export class AcessarComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         if (data.sucesso) {
           const token = data.dados.token;
-          localStorage.setItem('token', token);
-          this.router.navigate(['home']);
+          localStorage.setItem('x-access-token', token);
+          this.usuarioService.dadosUsuario().subscribe( usuarioData => {
+            if (usuarioData.sucesso) {
+              localStorage.setItem('x-user-info', JSON.stringify(usuarioData));
+              this.router.navigate(['home']);
+            } else {
+              this.snack.open(usuarioData.mensagem, 'OK', { duration: 3500 });
+            }
+          });
         } else {
           this.entrando = false;
           this.loginForm.get('senha').reset();

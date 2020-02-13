@@ -48,9 +48,9 @@ export class AcessarComponent implements OnInit, OnDestroy {
         if (data.sucesso) {
           const token = data.dados.token;
           localStorage.setItem('x-access-token', token);
-          this.usuarioService.dadosUsuario().subscribe( usuarioData => {
+          this.usuarioService.dadosUsuario().subscribe(usuarioData => {
             if (usuarioData.sucesso) {
-              localStorage.setItem('x-user-info', JSON.stringify(usuarioData));
+              localStorage.setItem('x-user-data', JSON.stringify(usuarioData.dados));
               this.router.navigate(['home']);
             } else {
               this.snack.open(usuarioData.mensagem, 'OK', { duration: 3500 });
@@ -61,7 +61,11 @@ export class AcessarComponent implements OnInit, OnDestroy {
           this.loginForm.get('senha').reset();
           this.snack.open(data.mensagem, 'OK', { duration: 3500 });
         }
-      });
+      },
+        erro => {
+          this.entrando = false;
+          this.snack.open(erro.error.mensagem, 'OK', { duration: 3500 });
+        });
   }
 
   ngOnDestroy() {

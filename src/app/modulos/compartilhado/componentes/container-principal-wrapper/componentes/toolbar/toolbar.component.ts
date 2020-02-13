@@ -1,5 +1,5 @@
+import { DadosUsuario } from './../../../../../acesso/interfaces/dados-usuario-response.interface';
 import { Router } from '@angular/router';
-import { Usuario } from './../../../../../acesso/interfaces/usuario.interface';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -11,14 +11,14 @@ export class ToolbarComponent implements OnInit {
 
   @Output() toggleSidenav: EventEmitter<void>;
 
-  usuario: Usuario;
+  dadosUsuario: DadosUsuario;
 
   constructor(private router: Router) {
     this.toggleSidenav = new EventEmitter();
   }
 
   ngOnInit() {
-    this.usuario = JSON.parse(localStorage.getItem('x-user-data'));
+    this.dadosUsuario = JSON.parse(localStorage.getItem('x-user-data'));
   }
 
   sair() {

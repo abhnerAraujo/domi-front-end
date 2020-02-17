@@ -1,5 +1,4 @@
-import { Espaco } from './../../../../interfaces/listar-espacos-response.interface';
-import { EspacoService } from './../../../../services/espaco/espaco.service';
+import { DadosUsuario, Espaco } from './../../../../../acesso/interfaces/dados-usuario-response.interface';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -11,9 +10,12 @@ export class NavegacaoMenuComponent implements OnInit {
 
   espacos: Espaco[];
   carregandoEspacos: boolean;
-  espacoAtual: Espaco;
+  espacoAtual: Espaco = null;
+  dadosUsuario: DadosUsuario;
 
-  constructor(private espacoService: EspacoService) { }
+  constructor() {
+    this.dadosUsuario = JSON.parse(localStorage.getItem('x-user-data'));
+  }
 
   ngOnInit() {
     this.carregarEspacos();
@@ -21,21 +23,17 @@ export class NavegacaoMenuComponent implements OnInit {
 
   carregarEspacos() {
     this.carregandoEspacos = true;
-    this.espacoService.listar().subscribe(resultado => {
-      this.carregandoEspacos = false;
-      this.espacos = resultado.dados;
-      if (!this.espacoAtual) {
-        this.alternarEspaco(this.espacos[0]);
-      }
-    },
-      error => {
-        this.carregandoEspacos = false;
-      });
+    this.espacos = [];
+    this.dadosUsuario.perfis.forEach(perfil => this.espacos.push(...perfil.espacos));
+    if (this.espacoAtual === null) {
+      this.alternarEspaco(this.espacos[0]);
+    }
+    this.carregandoEspacos = false;
   }
 
   alternarEspaco(espaco: Espaco) {
     this.espacoAtual = espaco;
-    localStorage.setItem('x-context', espaco.id);
+    localStorage.setItem('x-context', `${espaco.espaco_id}`);
   }
 
 }

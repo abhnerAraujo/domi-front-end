@@ -1,3 +1,4 @@
+import { SIGLAS_ESTADOS } from './../../../../constantes/estados';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cadastrar-perfil.component.scss']
 })
 export class CadastrarPerfilComponent implements OnInit {
+
+  estados = SIGLAS_ESTADOS;
 
   constructor() { }
 

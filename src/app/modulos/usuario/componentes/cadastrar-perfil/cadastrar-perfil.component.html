@@ -6,53 +6,66 @@
   <div fxFlex.xs fxLayout="row">
     <div fxFlex="100" fxLayoutAlign="center">
       <mat-card fxFlex.xs="100" fxFlex="50" fxLayoutGap="16px" fxLayout="column">
-        <!-- <mat-card-content fxLayoutAlign="center" fxFlex.xs style="overflow-y: auto;">
-          <ng-container *ngIf="!criarUsuario; else novoUsuario">
-            <form [formGroup]="loginForm" fxFlex="60" fxFlex.xs="100" fxLayout="column" action="submit"
-              (ngSubmit)="entrar()">
+        <mat-horizontal-stepper #stepper="matHorizontalStepper" labelPosition="bottom">
+          <mat-step>
+            <ng-template matStepLabel>Sua profissão</ng-template>
+            <div fxFlex="50">
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Escolha</mat-label>
+                <mat-select placeholder="Escolha">
+                  <mat-option>Fonoaudiologia</mat-option>
+                  <mat-option>Fisioterapia</mat-option>
+                  <mat-option>Terapia Ocupacional</mat-option>
+                  <mat-option>Nutrição</mat-option>
+                  <mat-option>Enfermagem</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-button matStepperNext color="accent">Próximo</button>
+            </div>
+          </mat-step>
+          <mat-step optional>
+            <ng-template matStepLabel>Registro</ng-template>
+            <div fxLayout="column" fxFlex="50">
               <mat-form-field appearance="outline">
-                <mat-label>E-mail</mat-label>
-                <input matInput formControlName="email" required>
+                <mat-label>Nº da inscrição</mat-label>
+                <input matInput>
               </mat-form-field>
               <mat-form-field appearance="outline">
-                <mat-label>Senha</mat-label>
-                <input matInput type="password" formControlName="senha" required>
+                <mat-label>UF da inscrição</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let estado of estados">{{ estado }}</mat-option>
+                </mat-select>
               </mat-form-field>
-            </form>
-          </ng-container>
-          <ng-template #novoUsuario>
-            <app-criar-usuario fxFlex [erros]="erros" (valido)="formCriacaoValido = $event"
-              (formChange)="formChange($event)">
-            </app-criar-usuario>
-          </ng-template>
-        </mat-card-content>
-        <mat-card-actions fxLayoutAlign="center center" *ngIf="!criarUsuario">
-          <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
-            <div>
-              <button mat-raised-button fxFlex="100" (click)="entrar()" color="accent"
-                [disabled]="!loginForm.valid || entrando">{{ entrando ? 'Aguarde...' : 'ENTRAR' }}</button>
+              <mat-form-field appearance="outline">
+                <mat-label>Data da inscrição</mat-label>
+                <input matInput>
+              </mat-form-field>
             </div>
             <div>
-              <button mat-stroked-button fxFlex="100" (click)="criarUsuario = true" color="accent">CADASTRAR</button>
+              <button mat-button matStepperPrevious color="accent">Anterior</button>
+              <button mat-button matStepperNext color="accent">Próximo</button>
+            </div>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Espaços</ng-template>
+            <div fxLayout="column" fxFlex="50">
+              <h4 style="margin: 0 0 8px 0; opacity: .96;">Dê um nome ao seu primeiro espaço</h4>
+              <h5 style="margin: 0 0 16px 0; opacity: .5;">Espaços são o contexto do seu trabalho (ex: Pessoal, Clínica
+                Abc, etc)
+              </h5>
+              <mat-form-field appearance="outline">
+                <mat-label>Nome do espaço</mat-label>
+                <input matInput>
+              </mat-form-field>
             </div>
             <div>
-              <button mat-button fxFlex="100" color="accent">Esqueci minha
-                senha</button>
+              <button mat-button matStepperPrevious color="accent">Anterior</button>
+              <button mat-button color="accent">Finalizar</button>
             </div>
-          </div>
-        </mat-card-actions>
-        <mat-card-actions fxLayoutAlign="center center" *ngIf="criarUsuario">
-          <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
-            <div>
-              <button mat-raised-button fxFlex="100" (click)="cadastrar()" color="accent"
-                [disabled]="!formCriacaoValido || entrando">{{ entrando ? 'Aguarde...' : 'CONFIRMAR' }}</button>
-            </div>
-            <div fxLayoutAlign="center center" fxLayoutGap="8px">
-              <h5 style="opacity: 0.72;">Já possui uma conta?</h5>
-              <button mat-button type="reset" (click)="criarUsuario = false" color="accent">Entrar</button>
-            </div>
-          </div>
-        </mat-card-actions> -->
+          </mat-step>
+        </mat-horizontal-stepper>
       </mat-card>
     </div>
   </div>

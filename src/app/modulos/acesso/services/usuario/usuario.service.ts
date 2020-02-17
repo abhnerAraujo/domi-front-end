@@ -12,13 +12,13 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) { }
 
-  login(dados: CriarUsuarioRequest): Observable<CriarUsuarioResponse> {
+  cadastrar(dados: CriarUsuarioRequest): Observable<CriarUsuarioResponse> {
     return this.http
       .post<CriarUsuarioResponse>('usuarios', dados);
   }
 
-  dadosUsuario(): Observable<DadosUsuarioResponse> {
+  dadosUsuario(id: number): Observable<DadosUsuarioResponse> {
     return this.http
-      .get<DadosUsuarioResponse>('usuarios');
+      .get<DadosUsuarioResponse>(`usuarios/${id}`);
   }
 }

@@ -21,6 +21,7 @@ export class AcessarComponent implements OnInit, OnDestroy {
   criarUsuario: boolean;
   formCriacaoValido: boolean;
   usuarioCriar: CriarUsuarioRequest;
+  erros: any;
 
   constructor(
     private router: Router
@@ -48,20 +49,27 @@ export class AcessarComponent implements OnInit, OnDestroy {
         if (data.sucesso) {
           const token = data.dados.token;
           localStorage.setItem('x-access-token', token);
-          this.usuarioService.dadosUsuario().subscribe( usuarioData => {
-            if (usuarioData.sucesso) {
-              localStorage.setItem('x-user-info', JSON.stringify(usuarioData));
-              this.router.navigate(['home']);
-            } else {
-              this.snack.open(usuarioData.mensagem, 'OK', { duration: 3500 });
-            }
-          });
+          this.usuarioService
+            .dadosUsuario(Number.parseInt(data.dados.token, 10))
+            .subscribe(usuarioData => {
+              if (usuarioData.sucesso) {
+                localStorage.setItem('x-user-info', JSON.stringify(usuarioData));
+                this.router.navigate(['home']);
+              } else {
+                this.snack.open(usuarioData.mensagem, 'OK', { duration: 3500 });
+              }
+            });
         } else {
           this.entrando = false;
           this.loginForm.get('senha').reset();
           this.snack.open(data.mensagem, 'OK', { duration: 3500 });
         }
-      });
+      },
+        erro => {
+          this.entrando = false;
+          this.loginForm.get('senha').reset();
+          this.snack.open(erro.error.mensagem, 'OK', { duration: 3500 });
+        });
   }
 
   ngOnDestroy() {
@@ -84,7 +92,7 @@ export class AcessarComponent implements OnInit, OnDestroy {
   cadastrar() {
     this.entrando = true;
     if (this.formCriacaoValido) {
-      this.requestSubscription = this.usuarioService.login(this.usuarioCriar)
+      this.requestSubscription = this.usuarioService.cadastrar(this.usuarioCriar)
         .subscribe(
           resposta => {
             if (resposta.sucesso && resposta.dados[0].id) {
@@ -97,9 +105,17 @@ export class AcessarComponent implements OnInit, OnDestroy {
             } else {
               this.snack.open(resposta.mensagem, 'OK', { duration: 3500 });
             }
+            console.log(resposta);
             this.entrando = false;
           },
-          error => this.snack.open('Ops! Ocorreu um erro inesperado.', 'OK', { duration: 3500 })
+          erro => {
+            if (erro.status === 409) {
+              this.erros = erro.error.erros;
+            } else {
+              this.snack.open('Ops! Ocorreu um erro inesperado.', 'OK', { duration: 3500 });
+            }
+            this.entrando = false;
+          }
         );
     }
   }

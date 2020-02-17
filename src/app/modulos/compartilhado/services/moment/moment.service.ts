@@ -9,5 +9,5 @@ export class MomentService {
 
   constructor() { }
 
-  momentBr(data?: string): moment.Moment { return moment(data); }
+  momentBr(data?: string | moment.Moment): moment.Moment { return moment(data); }
 }

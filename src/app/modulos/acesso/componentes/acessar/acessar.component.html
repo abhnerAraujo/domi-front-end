@@ -11,7 +11,8 @@
       <mat-card fxFlex.xs="100" fxFlex="50" fxLayoutGap="16px" fxLayout="column">
         <mat-card-content fxLayoutAlign="center" fxFlex.xs style="overflow-y: auto;">
           <ng-container *ngIf="!criarUsuario; else novoUsuario">
-            <form [formGroup]="loginForm" fxFlex="60" fxFlex.xs="100" fxLayout="column">
+            <form [formGroup]="loginForm" fxFlex="60" fxFlex.xs="100" fxLayout="column" action="submit"
+              (ngSubmit)="entrar()">
               <mat-form-field appearance="outline">
                 <mat-label>E-mail</mat-label>
                 <input matInput formControlName="email" required>
@@ -23,7 +24,8 @@
             </form>
           </ng-container>
           <ng-template #novoUsuario>
-            <app-criar-usuario fxFlex (valido)="formCriacaoValido = $event" (formChange)="formChange($event)">
+            <app-criar-usuario fxFlex [erros]="erros" (valido)="formCriacaoValido = $event"
+              (formChange)="formChange($event)">
             </app-criar-usuario>
           </ng-template>
         </mat-card-content>

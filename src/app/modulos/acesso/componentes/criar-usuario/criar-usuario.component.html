@@ -1,65 +1,92 @@
 <div fxFlex fxLayoutAlign="center">
-  <form [formGroup]="criarUsuarioForm" fxFlex="60" fxFlex.xs="100" fxLayout="column">
-    <mat-form-field appearance="outline">
-      <mat-label>E-mail</mat-label>
-      <input matInput formControlName="email" required>
-      <mat-error *ngIf="criarUsuarioForm.get('email').hasError('required')">Este campo é obrigatório</mat-error>
-      <mat-error
-        *ngIf="!criarUsuarioForm.get('email').hasError('required') && criarUsuarioForm.get('email').hasError('email')">
-        E-mail inválido</mat-error>
-    </mat-form-field>
-    <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
-      <mat-form-field fxFlex.gt-xs appearance="outline">
-        <mat-label>Senha</mat-label>
-        <input matInput type="password" formControlName="senha" required>
-        <mat-error *ngIf="criarUsuarioForm.get('senha').hasError('required')">Este campo é obrigatório</mat-error>
-        <mat-error
-          *ngIf="!criarUsuarioForm.get('senha').hasError('required') && criarUsuarioForm.get('senha').hasError('pattern')">
-          Deve conter no mínimo 8 caracteres (letras e números)</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex.gt-xs appearance="outline">
-        <mat-label>Repetir senha</mat-label>
-        <input matInput type="password" formControlName="repetir_senha" required>
-        <mat-error *ngIf="criarUsuarioForm.get('repetir_senha').hasError('required')">Este campo é obrigatório
-        </mat-error>
-        <mat-error
-          *ngIf="!criarUsuarioForm.get('repetir_senha').hasError('required') && criarUsuarioForm.get('repetir_senha').hasError('pattern')">
-          Deve conter no mínimo 8 caracteres (letras e números)</mat-error>
-        <mat-error
-          *ngIf="!criarUsuarioForm.get('repetir_senha').hasError('required') && criarUsuarioForm.get('repetir_senha').hasError('repetirSenha')">
-          As senhas não estão iguais</mat-error>
-      </mat-form-field>
+  <form [formGroup]="criarUsuarioForm" fxLayoutGap="16px" fxFlex="60" fxFlex.xs="100" fxLayout="column">
+    <div fxLayout="column">
+      <div fxFlex>
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" required>
+          <mat-error *ngIf="criarUsuarioForm.get('email').hasError('required')">Este campo é obrigatório</mat-error>
+          <mat-error
+            *ngIf="!criarUsuarioForm.get('email').hasError('required') && criarUsuarioForm.get('email').hasError('email')">
+            E-mail inválido</mat-error>
+          <mat-error
+            *ngIf="!criarUsuarioForm.get('email').hasError('required') && criarUsuarioForm.get('email').hasError('serverValidation')">
+            {{ criarUsuarioForm.get('email').getError('serverValidation').razao }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
+        <mat-form-field fxFlex.gt-xs="48" appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="senha" required>
+          <mat-error *ngIf="criarUsuarioForm.get('senha').hasError('required')">Este campo é obrigatório</mat-error>
+          <mat-error
+            *ngIf="!criarUsuarioForm.get('senha').hasError('required') && criarUsuarioForm.get('senha').hasError('pattern')">
+            Deve conter no mínimo 8 caracteres (letras e números)</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex.gt-xs="48" appearance="outline">
+          <mat-label>Repetir senha</mat-label>
+          <input matInput type="password" formControlName="repetir_senha" required>
+          <mat-error *ngIf="criarUsuarioForm.get('repetir_senha').hasError('required')">Este campo é obrigatório
+          </mat-error>
+          <mat-error
+            *ngIf="!criarUsuarioForm.get('repetir_senha').hasError('required') && criarUsuarioForm.get('repetir_senha').hasError('pattern')">
+            Deve conter no mínimo 8 caracteres (letras e números)</mat-error>
+          <mat-error *ngIf="!criarUsuarioForm.get('repetir_senha').hasError('required') &&
+              criarUsuarioForm.get('repetir_senha').hasError('repetirSenha') && 
+              !criarUsuarioForm.get('repetir_senha').hasError('pattern')">
+            As senhas não estão iguais</mat-error>
+        </mat-form-field>
+      </div>
     </div>
-    <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
-      <mat-form-field fxFlex.gt-xs appearance="outline">
-        <mat-label>Primeiro nome</mat-label>
-        <input matInput formControlName="primeiro_nome" required>
-        <mat-error *ngIf="criarUsuarioForm.get('primeiro_nome').hasError('required')">Este campo é obrigatório
-        </mat-error>
-        <mat-error
-          *ngIf="!criarUsuarioForm.get('primeiro_nome').hasError('required') && criarUsuarioForm.get('primeiro_nome').hasError('minLength')">
-          Deve conter no mínimo 8 caracteres (letras e números)</mat-error>
-      </mat-form-field>
-      <mat-form-field fxFlex.gt-xs appearance="outline">
-        <mat-label>Sobrenome</mat-label>
-        <input matInput formControlName="sobrenome" required>
-      </mat-form-field>
-    </div>
-    <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
-      <mat-form-field fxFlex.gt-xs appearance="outline" fxFlex.xs="100" fxFlex required>
-        <mat-label>Sexo</mat-label>
-        <mat-select formControlName="sexo">
-          <mat-option [value]="'M'">Masculino</mat-option>
-          <mat-option [value]="'F'">Feminino</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field fxFlex.gt-xs appearance="outline" fxFlex fxFlex.lt-md="100">
-        <mat-label>Data de nascimento</mat-label>
-        <input matInput [matDatepicker]="picker" placeholder="Escolha" formControlName="data_nascimento" readonly="true"
-          required>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker disabled="false"></mat-datepicker>
-      </mat-form-field>
+    <div fxLayout="column">
+      <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
+        <mat-form-field fxFlex.gt-xs="48" appearance="outline">
+          <mat-label>Primeiro nome</mat-label>
+          <input matInput formControlName="primeiro_nome" required>
+          <mat-error *ngIf="criarUsuarioForm.get('primeiro_nome').hasError('required')">Este campo é obrigatório
+          </mat-error>
+          <mat-error
+            *ngIf="!criarUsuarioForm.get('primeiro_nome').hasError('required') && criarUsuarioForm.get('primeiro_nome').hasError('minlength')">
+            Mínimo: 3 caracteres</mat-error>
+          <mat-error
+            *ngIf="!criarUsuarioForm.get('primeiro_nome').hasError('required') && criarUsuarioForm.get('primeiro_nome').hasError('pattern')">
+            Apenas letras</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex.gt-xs="48" appearance="outline">
+          <mat-label>Sobrenome</mat-label>
+          <input matInput formControlName="sobrenome" required>
+          <mat-error *ngIf="criarUsuarioForm.get('sobrenome').hasError('required')">Este campo é obrigatório
+          </mat-error>
+          <mat-error
+            *ngIf="!criarUsuarioForm.get('sobrenome').hasError('required') && criarUsuarioForm.get('sobrenome').hasError('minlength')">
+            Mínimo: 3 caracteres</mat-error>
+          <mat-error
+            *ngIf="!criarUsuarioForm.get('sobrenome').hasError('required') && criarUsuarioForm.get('sobrenome').hasError('pattern')">
+            Apenas letras</mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayoutGap.gt-xs="16px" fxLayout.xs="column">
+        <mat-form-field fxFlex.gt-xs="48" appearance="outline" fxFlex.xs="100" fxFlex required>
+          <mat-label>Sexo</mat-label>
+          <mat-select formControlName="sexo">
+            <mat-option [value]="'M'">Masculino</mat-option>
+            <mat-option [value]="'F'">Feminino</mat-option>
+          </mat-select>
+          <mat-error *ngIf="criarUsuarioForm.get('sexo').hasError('required')">Este campo é obrigatório
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex.gt-xs="48" appearance="outline" fxFlex fxFlex.lt-md="100">
+          <mat-label>Data de nascimento</mat-label>
+          <input matInput [matDatepicker]="picker" placeholder="Escolha" formControlName="data_nascimento"
+            readonly="true" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker disabled="false"></mat-datepicker>
+          <mat-error *ngIf="criarUsuarioForm.get('data_nascimento').hasError('required')">Este campo é obrigatório
+          </mat-error>
+          <mat-error *ngIf="!criarUsuarioForm.get('data_nascimento').hasError('required') && 
+            criarUsuarioForm.get('data_nascimento').hasError('idade')">Obrigatório maioridade</mat-error>
+        </mat-form-field>
+      </div>
     </div>
   </form>
 </div>

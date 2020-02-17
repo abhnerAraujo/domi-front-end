@@ -53,7 +53,7 @@ export class AcessarComponent implements OnInit, OnDestroy {
             .dadosUsuario(Number.parseInt(data.dados.token, 10))
             .subscribe(usuarioData => {
               if (usuarioData.sucesso) {
-                localStorage.setItem('x-user-info', JSON.stringify(usuarioData));
+                localStorage.setItem('x-user-info', JSON.stringify(usuarioData.dados));
                 this.router.navigate(['home']);
               } else {
                 this.snack.open(usuarioData.mensagem, 'OK', { duration: 3500 });

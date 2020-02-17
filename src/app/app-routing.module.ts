@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: () => import('./modulos/acesso/acesso.module').then(m => m.AcessoModule)
   },
   {
+    path: 'usuario',
+    loadChildren: () => import('./modulos/usuario/usuario.module').then(m => m.UsuarioModule)
+  },
+  {
     path: '',
     component: ContainerPrincipalWrapperComponent,
     canActivate: [AcessoGuard],

@@ -54,7 +54,11 @@ export class AcessarComponent implements OnInit, OnDestroy {
             .subscribe(usuarioData => {
               if (usuarioData.sucesso) {
                 localStorage.setItem('x-user-data', JSON.stringify(usuarioData.dados));
-                this.router.navigate(['home']);
+                if (usuarioData.dados.perfis && usuarioData.dados.perfis.length) {
+                  this.router.navigate(['home']);
+                } else {
+                  this.router.navigate(['usuario/criar-perfil']);
+                }
               } else {
                 this.snack.open(usuarioData.mensagem, 'OK', { duration: 3500 });
               }

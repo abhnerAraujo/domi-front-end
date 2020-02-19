@@ -6,63 +6,78 @@
   <div fxFlex.xs fxLayout="row">
     <div fxFlex="100" fxLayoutAlign="center">
       <mat-card fxFlex.xs="100" fxFlex="50" fxLayoutGap="16px" fxLayout="column">
-        <mat-horizontal-stepper #stepper="matHorizontalStepper" labelPosition="bottom">
-          <mat-step>
-            <ng-template matStepLabel>Sua profissão</ng-template>
-            <div fxFlex="50">
-              <mat-form-field appearance="outline" fxFlex>
-                <mat-label>Escolha</mat-label>
-                <mat-select placeholder="Escolha">
-                  <mat-option>Fonoaudiologia</mat-option>
-                  <mat-option>Fisioterapia</mat-option>
-                  <mat-option>Terapia Ocupacional</mat-option>
-                  <mat-option>Nutrição</mat-option>
-                  <mat-option>Enfermagem</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
+        <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper" labelPosition="bottom">
+          <mat-step [editable]="!carregando" [stepControl]="profissaoForm">
+            <form [formGroup]="profissaoForm">
+              <ng-template matStepLabel>Sua profissão</ng-template>
+              <div fxFlex="50">
+                <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Escolha</mat-label>
+                  <mat-select placeholder="Escolha" formControlName="profissional_tipo" required>
+                    <mat-option [value]="1">Fonoaudiologia</mat-option>
+                    <mat-option [value]="2">Fisioterapia</mat-option>
+                    <mat-option [value]="3">Terapia Ocupacional</mat-option>
+                    <mat-option [value]="4">Nutrição</mat-option>
+                    <mat-option [value]="5">Enfermagem</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </form>
             <div>
               <button mat-button matStepperNext color="accent">Próximo</button>
             </div>
           </mat-step>
-          <mat-step optional>
-            <ng-template matStepLabel>Registro</ng-template>
-            <div fxLayout="column" fxFlex="50">
-              <mat-form-field appearance="outline">
-                <mat-label>Nº da inscrição</mat-label>
-                <input matInput>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>UF da inscrição</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let estado of estados">{{ estado }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Data da inscrição</mat-label>
-                <input matInput>
-              </mat-form-field>
-            </div>
+          <mat-step [editable]="!carregando" optional [stepControl]="registroForm">
+            <form [formGroup]="registroForm">
+              <ng-template matStepLabel>Registro</ng-template>
+              <div fxLayout="column" fxFlex="50">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nº da inscrição</mat-label>
+                  <input matInput formControlName="numero_inscricao">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>UF da inscrição</mat-label>
+                  <mat-select formControlName="inscricao_uf">
+                    <mat-option *ngFor="let estado of estados" [value]="estado">{{ estado }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Data da inscrição</mat-label>
+                  <input matInput [matDatepicker]="picker" [max]="moment.momentBr()" formControlName="inscricao_data"
+                    readonly="true">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </form>
             <div>
               <button mat-button matStepperPrevious color="accent">Anterior</button>
+              <button mat-button (click)="registroForm.reset()" color="accent">Limpar</button>
               <button mat-button matStepperNext color="accent">Próximo</button>
             </div>
           </mat-step>
-          <mat-step>
+          <mat-step [editable]="!carregando" [stepControl]="espacoForm">
             <ng-template matStepLabel>Espaços</ng-template>
-            <div fxLayout="column" fxFlex="50">
-              <h4 style="margin: 0 0 8px 0; opacity: .96;">Dê um nome ao seu primeiro espaço</h4>
-              <h5 style="margin: 0 0 16px 0; opacity: .5;">Espaços são o contexto do seu trabalho (ex: Pessoal, Clínica
-                Abc, etc)
-              </h5>
-              <mat-form-field appearance="outline">
-                <mat-label>Nome do espaço</mat-label>
-                <input matInput>
-              </mat-form-field>
-            </div>
+            <form [formGroup]="espacoForm" fxLayoutAlign="start center">
+              <div fxLayout="column" fxFlex="50">
+                <h4 style="margin: 0 0 8px 0; opacity: .96;">Dê um nome ao seu primeiro espaço</h4>
+                <h5 style="margin: 0 0 16px 0; opacity: .5;">Espaços são o contexto do seu trabalho
+                  (ex: Pessoal, Clínica Abc, etc)
+                </h5>
+                <mat-form-field appearance="outline">
+                  <mat-label>Nome do espaço</mat-label>
+                  <input matInput formControlName="descricao" required>
+                </mat-form-field>
+              </div>
+              <div fxFlex *ngIf="carregando" fxLayoutAlign="center center">
+                <mat-progress-spinner mode="indeterminate">
+                </mat-progress-spinner>
+              </div>
+            </form>
             <div>
-              <button mat-button matStepperPrevious color="accent">Anterior</button>
-              <button mat-button color="accent">Finalizar</button>
+              <button mat-button matStepperPrevious [disabled]="carregando" color="accent">Anterior</button>
+              <button mat-button color="accent" [disabled]="!espacoForm.valid || carregando"
+                (click)="finalizar()">Finalizar</button>
             </div>
           </mat-step>
         </mat-horizontal-stepper>

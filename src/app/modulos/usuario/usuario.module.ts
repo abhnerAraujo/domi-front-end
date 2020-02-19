@@ -1,6 +1,9 @@
+import { UsuarioService } from './../acesso/services/usuario/usuario.service';
+import { MomentService } from './../compartilhado/services/moment/moment.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
-  MatCardModule, MatSelectModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule, MatStepperModule
+  MatCardModule, MatSelectModule, MatButtonModule, MatIconModule, MatFormFieldModule,
+  MatInputModule, MatStepperModule, MatDatepickerModule, MatSnackBarModule, MatProgressSpinnerModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UsuarioRoutingModule } from './usuario-routing.module';
@@ -21,7 +24,11 @@ import { CadastrarPerfilComponent } from './componentes/cadastrar-perfil/cadastr
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatStepperModule
-  ]
+    MatStepperModule,
+    MatDatepickerModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
+  ],
+  providers: [MomentService, UsuarioService]
 })
 export class UsuarioModule { }

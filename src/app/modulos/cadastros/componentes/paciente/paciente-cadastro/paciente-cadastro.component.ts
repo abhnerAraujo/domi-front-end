@@ -13,16 +13,24 @@ export class PacienteCadastroComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, public location: Location) {
     this.pacienteForm = formBuilder.group({
-      telefones: formBuilder.array([])
+      telefones: formBuilder.array([]),
+      enderecos: formBuilder.array([]),
+      responsaveis: formBuilder.array([])
     });
   }
 
-  ngOnInit() {
-    this.addTelefone();
-  }
+  ngOnInit() { }
 
   get fones() {
     return this.pacienteForm.controls.telefones as FormArray;
+  }
+
+  get enderecos() {
+    return this.pacienteForm.controls.enderecos as FormArray;
+  }
+
+  get responsaveis() {
+    return this.pacienteForm.controls.responsaveis as FormArray;
   }
 
   addTelefone() {
@@ -32,8 +40,37 @@ export class PacienteCadastroComponent implements OnInit {
     }));
   }
 
+  addEndereco() {
+    this.enderecos.push(this.formBuilder.group({
+      endereco_paciente_id: [''],
+      paciente: [''],
+      logradouro: [''],
+      numero: [''],
+      complemento: [''],
+      cep: [''],
+      bairro: [''],
+      cidade: [''],
+      estado: ['']
+    }));
+  }
+
+  addResponsavel() {
+    this.responsaveis.push(this.formBuilder.group({
+      nome_responsavel: [''],
+      telefone_responsavel: [''],
+      tipo_telefone_responsavel: ['']
+    }));
+  }
+
   removerTelefone(index: number) {
     this.fones.removeAt(index);
   }
 
+  removerEndereco(index: number) {
+    this.enderecos.removeAt(index);
+  }
+
+  removerResponsavel(index: number) {
+    this.responsaveis.removeAt(index);
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 
 @Component({
@@ -19,7 +19,9 @@ export class PacienteCadastroComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.pacienteForm.valueChanges.subscribe(value => console.log(value));
+  }
 
   get fones() {
     return this.pacienteForm.controls.telefones as FormArray;
@@ -35,8 +37,12 @@ export class PacienteCadastroComponent implements OnInit {
 
   addTelefone() {
     this.fones.push(this.formBuilder.group({
-      numero: [''],
-      tipo: [0]
+      telefone: ['', Validators.compose([
+        Validators.required, Validators.pattern(/(?:\()[0-9]{2}(?:\))\s?[0-9]{4,5}(?:-)[0-9]{4}$/)
+      ])],
+      tipo: [0, Validators.required],
+      telefone_paciente_id: [0],
+      paciente: [0]
     }));
   }
 

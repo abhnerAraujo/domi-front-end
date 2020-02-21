@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { PacientesListaComponent } from './pacientes-lista/pacientes-lista.component';
 import { PacienteCadastroComponent } from './paciente-cadastro/paciente-cadastro.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [PacientesListaComponent, PacienteCadastroComponent],
@@ -28,7 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
-    MatListModule
+    MatListModule,
+    NgxMaskModule.forRoot(null)
   ],
   providers: []
 })

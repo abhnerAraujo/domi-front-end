@@ -48,7 +48,12 @@
       <div fxLayoutGap.gt-xs="8px" [formGroupName]="i">
         <mat-form-field appearance="outline" fxFlex="50">
           <mat-label>Telefone</mat-label>
-          <input type="tel" matInput formControlName="numero">
+          <input type="tel" matInput formControlName="telefone">
+          <mat-error
+            *ngIf="!telefone.get('telefone').hasError('required') && telefone.get('telefone').hasError('pattern')">
+            Telefone inválido
+          </mat-error>
+          <mat-error *ngIf="telefone.get('telefone').hasError('required')">Este campo é obrigatório</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" fxFlex="50">
           <mat-label>Tipo</mat-label>
@@ -78,16 +83,20 @@
         </div>
         <mat-form-field appearance="outline" fxFlex="100">
           <mat-label>Nome do reponsável</mat-label>
-          <input type="text" matInput>
+          <input type="text" matInput formControlName="nome_responsavel">
         </mat-form-field>
         <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
           <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="50">
             <mat-label>Telefone</mat-label>
-            <input type="text" matInput>
+            <input type="text" matInput formControlName="telefone_responsavel">
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
             <mat-label>Tipo do telefone</mat-label>
-            <input type="text" matInput>
+            <mat-select formControlName="tipo_telefone_responsavel">
+              <mat-option [value]="'C'">Celular</mat-option>
+              <mat-option [value]="'W'">WhatsApp</mat-option>
+              <mat-option [value]="'F'">Fixo</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>

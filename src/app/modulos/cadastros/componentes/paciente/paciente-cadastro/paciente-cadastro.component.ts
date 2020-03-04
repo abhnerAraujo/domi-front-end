@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { SIGLAS_ESTADOS } from './../../../../../constantes/estados';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 
@@ -7,12 +10,22 @@ import { Location } from '@angular/common';
   templateUrl: './paciente-cadastro.component.html',
   styleUrls: ['./paciente-cadastro.component.scss']
 })
-export class PacienteCadastroComponent implements OnInit {
+export class PacienteCadastroComponent implements OnInit, OnDestroy {
 
   pacienteForm: FormGroup;
+  formSubscription: Subscription;
+  estados = SIGLAS_ESTADOS;
 
-  constructor(private formBuilder: FormBuilder, public location: Location) {
+  constructor(private formBuilder: FormBuilder,
+    public location: Location,
+    private route: ActivatedRoute,
+    private router: Router) {
     this.pacienteForm = formBuilder.group({
+      paciente_id: [0],
+      nome_completo: [null, Validators.required],
+      sexo: [null, Validators.required],
+      email: [null, Validators.email],
+      data_nascimento: [null],
       telefones: formBuilder.array([]),
       enderecos: formBuilder.array([]),
       responsaveis: formBuilder.array([])
@@ -20,7 +33,19 @@ export class PacienteCadastroComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pacienteForm.valueChanges.subscribe(value => console.log(value));
+    this.pacienteForm.controls.data_nascimento.disable();
+    const pacienteId = this.route.snapshot.paramMap.get('paciente_id');
+    if (pacienteId) {
+      this.pacienteForm.controls.paciente_id.setValue(
+        Number.parseInt(pacienteId, 10)
+      );
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.formSubscription) {
+      this.formSubscription.unsubscribe();
+    }
   }
 
   get fones() {
@@ -79,4 +104,9 @@ export class PacienteCadastroComponent implements OnInit {
   removerResponsavel(index: number) {
     this.responsaveis.removeAt(index);
   }
+
+  salvar() {
+    this.router.navigate([`cadastros/pacientes/${1}`]);
+  }
+
 }

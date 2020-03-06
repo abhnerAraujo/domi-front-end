@@ -1,8 +1,8 @@
 <div class="container-geral" fxLayout="column">
   <div class="cabecalho" fxFlex="nogrow" fxLayout="column">
     <app-toolbar fxFlex (toggleSidenav)="sidenavEsquerdoAberto = !sidenavEsquerdoAberto"></app-toolbar>
-    <mat-progress-bar *ngIf="progressBar" [mode]="'indeterminate'" color="accent"></mat-progress-bar>
   </div>
+  <app-loader fxFlex="10px"></app-loader>
   <mat-sidenav-container fxFlex>
     <mat-sidenav [(opened)]="sidenavEsquerdoAberto" [mode]="sidenavEsquerdoMode" fxFlex="250px" class="navegacao">
       <app-navegacao-menu (click)="fecharSidenavEsquerdo()"></app-navegacao-menu>

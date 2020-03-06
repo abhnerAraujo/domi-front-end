@@ -15,4 +15,9 @@ export class PacientesService {
     return this.http
       .post<SalvarPacienteResponse>('pacientes', dados);
   }
+
+  listar(filtro: any) {
+    return this.http
+      .get<any>('pacientes', { params: filtro });
+  }
 }

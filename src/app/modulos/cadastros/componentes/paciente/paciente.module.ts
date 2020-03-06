@@ -1,3 +1,5 @@
+import { PipesModule } from './../../../../pipes/pipes.module';
+import { PacientesService } from './services/pacientes/pacientes.service';
 import {
   MatIconModule, MatDividerModule, MatButtonModule, MatFormFieldModule, MatInputModule,
   MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, MatListModule
@@ -29,8 +31,11 @@ import { NgxMaskModule } from 'ngx-mask';
     MatNativeDateModule,
     MatMomentDateModule,
     MatListModule,
+    PipesModule,
     NgxMaskModule.forRoot(null)
   ],
-  providers: []
+  providers: [
+    PacientesService
+  ]
 })
 export class PacienteModule { }

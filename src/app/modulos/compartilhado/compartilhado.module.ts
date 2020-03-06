@@ -11,9 +11,10 @@ import {
 import {
   NavegacaoMenuComponent
 } from './componentes/container-principal-wrapper/componentes/navegacao-menu/navegacao-menu.component';
+import { LoaderComponent } from './componentes/container-principal-wrapper/componentes/loader/loader.component';
 
 @NgModule({
-  declarations: [ContainerPrincipalWrapperComponent, ToolbarComponent, NavegacaoMenuComponent],
+  declarations: [ContainerPrincipalWrapperComponent, ToolbarComponent, NavegacaoMenuComponent, LoaderComponent],
   imports: [
     CommonModule,
     RouterModule,

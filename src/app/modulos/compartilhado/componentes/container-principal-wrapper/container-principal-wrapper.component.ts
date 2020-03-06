@@ -32,7 +32,7 @@ export class ContainerPrincipalWrapperComponent implements OnInit {
           this.sidenavEsquerdoMode = 'over';
         } else {
           this.sidenavEsquerdoMode = 'side';
-          this.sidenavDireitoAberto = true;
+          this.sidenavDireitoAberto = false;
           this.sidenavEsquerdoAberto = true;
         }
       });

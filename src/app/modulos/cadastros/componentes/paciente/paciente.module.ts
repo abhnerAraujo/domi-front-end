@@ -1,8 +1,9 @@
+import { ResponsavelTiposService } from './services/responsavel-tipos/responsavel-tipos.service';
 import { PipesModule } from './../../../../pipes/pipes.module';
 import { PacientesService } from './services/pacientes/pacientes.service';
 import {
   MatIconModule, MatDividerModule, MatButtonModule, MatFormFieldModule, MatInputModule,
-  MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, MatListModule
+  MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, MatListModule, MatSnackBarModule
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -32,10 +33,12 @@ import { NgxMaskModule } from 'ngx-mask';
     MatMomentDateModule,
     MatListModule,
     PipesModule,
-    NgxMaskModule.forRoot(null)
+    NgxMaskModule.forRoot(null),
+    MatSnackBarModule
   ],
   providers: [
-    PacientesService
+    PacientesService,
+    ResponsavelTiposService
   ]
 })
 export class PacienteModule { }

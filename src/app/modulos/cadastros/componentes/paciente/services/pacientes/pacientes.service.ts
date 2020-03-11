@@ -1,3 +1,4 @@
+import { DetalharPacienteResponse } from './../../interfaces/detalher-paciente-response.interface';
 import { SalvarPacienteResponse } from './../../interfaces/salvar-paciente-response.interface';
 import { SalvarPacienteRequest } from './../../interfaces/salvar-paciente-request.interface';
 import { Observable } from 'rxjs';
@@ -19,5 +20,15 @@ export class PacientesService {
   listar(filtro: any) {
     return this.http
       .get<any>('pacientes', { params: filtro });
+  }
+
+  detalhar(pacienteId: number) {
+    return this.http
+      .get<DetalharPacienteResponse>(`pacientes/${pacienteId}`);
+  }
+
+  editar(pacienteId: number, paciente: SalvarPacienteRequest) {
+    return this.http
+      .put<any>(`pacientes/${pacienteId}`, paciente);
   }
 }

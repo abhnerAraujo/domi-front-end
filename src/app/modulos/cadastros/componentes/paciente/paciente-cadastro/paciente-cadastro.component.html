@@ -52,7 +52,8 @@
           <div fxLayoutGap.gt-xs="8px" [formGroupName]="i" fxLayout.xs="column">
             <mat-form-field appearance="outline" fxFlex>
               <mat-label>Telefone</mat-label>
-              <input type="tel" matInput formControlName="telefone">
+              <input type="tel" (keydown)="mascaraTelefones(telefone.get('telefone'))" matInput
+                formControlName="telefone">
               <mat-error
                 *ngIf="!telefone.get('telefone').hasError('required') && telefone.get('telefone').hasError('pattern')">
                 Telefone inválido
@@ -106,7 +107,8 @@
               <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
                 <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="50">
                   <mat-label>Telefone</mat-label>
-                  <input type="text" matInput formControlName="telefone_responsavel">
+                  <input type="text" (keydown)="mascaraTelefones(responsavel.get('telefone_responsavel'))" matInput
+                    formControlName="telefone_responsavel">
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
                   <mat-label>Tipo do telefone</mat-label>

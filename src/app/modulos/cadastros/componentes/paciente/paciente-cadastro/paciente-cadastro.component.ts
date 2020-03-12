@@ -9,7 +9,7 @@ import { SIGLAS_ESTADOS } from './../../../../../constantes/estados';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl } from '@angular/forms';
 import { Location } from '@angular/common';
 
 @Component({
@@ -50,6 +50,14 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       this.carregarPaciente(Number.parseInt(pacienteId, 10));
       this.carregarResponsavelTipos();
     }
+  }
+
+  mascaraTelefones(control: AbstractControl) {
+    let value: string = control.value;
+    value = value.replace(/[\D]/g, '');
+    value = value.replace(/(\d{2})(\d)/g, '$1 $2');
+    value = value.replace(/(\d{2} \d)(\d{4})/g, '$1-$2');
+    control.setValue(value);
   }
 
   carregarResponsavelTipos() {

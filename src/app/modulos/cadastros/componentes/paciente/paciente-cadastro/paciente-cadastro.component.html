@@ -4,188 +4,190 @@
   </button>
   <h1>Novo Paciente</h1>
 </div>
-<form [formGroup]="pacienteForm" fxLayout="column" [ngStyle.xs]="{'margin-bottom': '42px'}" autocomplete="off">
-  <mat-form-field appearance="outline" fxFlex>
-    <mat-label>Nome completo</mat-label>
-    <input type="text" formControlName="nome_completo" matInput required>
-  </mat-form-field>
-  <div fxLayout="row wrap" fxFlex fxLayoutGap.gt-xs="8px">
-    <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-      <mat-label>Data de nascimento</mat-label>
-      <input [matDatepicker]="picker" (click)="picker.open()" formControlName="data_nascimento" [readonly]="true"
-        matInput>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker disabled="false"></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-      <mat-label>Sexo</mat-label>
-      <mat-select formControlName="sexo" required>
-        <mat-option [value]="'M'">Masculino</mat-option>
-        <mat-option [value]="'F'">Feminino</mat-option>
-        <mat-option [value]="'O'">Outro</mat-option>
-        <mat-option [value]="'N'">Não informado</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <ng-container *ngIf="pacienteForm.get('paciente_id').value; else criacaoPaciente">
-    <h3>Contato</h3>
+<ng-container *ngIf="!processando; else processandoPaciente">
+  <form [formGroup]="pacienteForm" fxLayout="column" [ngStyle.xs]="{'margin-bottom': '42px'}" autocomplete="off">
     <mat-form-field appearance="outline" fxFlex>
-      <mat-label>E-mail</mat-label>
-      <input formControlName="email" matInput>
-      <mat-error *ngIf="pacienteForm.get('email').hasError('email')">E-mail inválido</mat-error>
+      <mat-label>Nome completo</mat-label>
+      <input type="text" formControlName="nome_completo" matInput required>
     </mat-form-field>
-    <div fxLayoutAlign="space-between center">
-      <h4>Telefones</h4>
-      <button mat-icon-button type="button" color="accent" (click)="addTelefone()">
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>
+    <div fxLayout="row wrap" fxFlex fxLayoutGap.gt-xs="8px">
+      <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
+        <mat-label>Data de nascimento</mat-label>
+        <input [matDatepicker]="picker" (click)="picker.open()" formControlName="data_nascimento" [readonly]="true"
+          matInput>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
+        <mat-label>Sexo</mat-label>
+        <mat-select formControlName="sexo" required>
+          <mat-option [value]="'M'">Masculino</mat-option>
+          <mat-option [value]="'F'">Feminino</mat-option>
+          <mat-option [value]="'O'">Outro</mat-option>
+          <mat-option [value]="'N'">Não informado</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <ng-container *ngIf="fones.length; else naoCadastrado">
-      <div fxFlex fxLayout="column" formArrayName="telefones" *ngFor="let telefone of fones.controls; let i = index">
-        <ng-container *ngIf="!telefone.get('excluido').value">
-          <div fxLayoutAlign="space-between center">
-            Telefone {{ i + 1 }}
-            <button mat-icon-button type="button" color="warn" (click)="removerTelefone(fones.length - 1)">
-              <mat-icon>remove</mat-icon>
-            </button>
-          </div>
-          <div fxLayoutGap.gt-xs="8px" [formGroupName]="i" fxLayout.xs="column">
-            <mat-form-field appearance="outline" fxFlex>
-              <mat-label>Telefone</mat-label>
-              <input type="tel" (keydown)="mascaraTelefones(telefone.get('telefone'))" matInput
-                formControlName="telefone">
-              <mat-error
-                *ngIf="!telefone.get('telefone').hasError('required') && telefone.get('telefone').hasError('pattern')">
-                Telefone inválido
-              </mat-error>
-              <mat-error *ngIf="telefone.get('telefone').hasError('required')">Este campo é obrigatório</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex>
-              <mat-label>Tipo</mat-label>
-              <mat-select formControlName="tipo">
-                <mat-option [value]="'C'">Celular</mat-option>
-                <mat-option [value]="'W'">WhatsApp</mat-option>
-                <mat-option [value]="'F'">Fixo</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </ng-container>
-      </div>
-    </ng-container>
-
-    <div fxLayout="column">
+    <ng-container *ngIf="pacienteForm.get('paciente_id').value; else criacaoPaciente">
+      <h3>Contato</h3>
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>E-mail</mat-label>
+        <input formControlName="email" matInput>
+        <mat-error *ngIf="pacienteForm.get('email').hasError('email')">E-mail inválido</mat-error>
+      </mat-form-field>
       <div fxLayoutAlign="space-between center">
-        <h3>Responsáveis</h3>
-        <button mat-icon-button type="button" color="accent" (click)="addResponsavel()">
+        <h4>Telefones</h4>
+        <button mat-icon-button type="button" color="accent" (click)="addTelefone()">
           <mat-icon>add_circle_outline</mat-icon>
         </button>
       </div>
-      <ng-container *ngIf="responsaveis.length; else naoCadastrado">
-        <div formArrayName="responsaveis" fxLayout="column" fxFlex
-          *ngFor="let responsavel of responsaveis.controls; let i = index">
-          <ng-container *ngIf="!responsavel.get('excluido').value">
+      <ng-container *ngIf="fones.length; else naoCadastrado">
+        <div fxFlex fxLayout="column" formArrayName="telefones" *ngFor="let telefone of fones.controls; let i = index">
+          <ng-container *ngIf="!telefone.get('excluido').value">
             <div fxLayoutAlign="space-between center">
-              Responsável {{ i + 1 }}
-              <button mat-icon-button type="button" color="warn" (click)="removerResponsavel(responsaveis.length - 1)">
+              Telefone {{ i + 1 }}
+              <button mat-icon-button type="button" color="warn" (click)="removerTelefone(fones.length - 1)">
                 <mat-icon>remove</mat-icon>
               </button>
             </div>
-            <div [formGroupName]="i" fxLayout="column">
+            <div fxLayoutGap.gt-xs="8px" [formGroupName]="i" fxLayout.xs="column">
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Telefone</mat-label>
+                <input type="tel" matInput formControlName="telefone">
+                <mat-error
+                  *ngIf="!telefone.get('telefone').hasError('required') && telefone.get('telefone').hasError('pattern')">
+                  Telefone inválido
+                </mat-error>
+                <mat-error *ngIf="telefone.get('telefone').hasError('required')">Este campo é obrigatório</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="tipo">
+                  <mat-option [value]="'C'">Celular</mat-option>
+                  <mat-option [value]="'W'">WhatsApp</mat-option>
+                  <mat-option [value]="'F'">Fixo</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <div fxLayout="column">
+        <div fxLayoutAlign="space-between center">
+          <h3>Responsáveis</h3>
+          <button mat-icon-button type="button" color="accent" (click)="addResponsavel()">
+            <mat-icon>add_circle_outline</mat-icon>
+          </button>
+        </div>
+        <ng-container *ngIf="responsaveis.length; else naoCadastrado">
+          <div formArrayName="responsaveis" fxLayout="column" fxFlex
+            *ngFor="let responsavel of responsaveis.controls; let i = index">
+            <ng-container *ngIf="!responsavel.get('excluido').value">
+              <div fxLayoutAlign="space-between center">
+                Responsável {{ i + 1 }}
+                <button mat-icon-button type="button" color="warn"
+                  (click)="removerResponsavel(responsaveis.length - 1)">
+                  <mat-icon>remove</mat-icon>
+                </button>
+              </div>
+              <div [formGroupName]="i" fxLayout="column">
+                <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
+                  <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
+                    <mat-label>Nome</mat-label>
+                    <input type="text" matInput formControlName="nome_responsavel">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="30">
+                    <mat-label>Tipo</mat-label>
+                    <mat-select formControlName="responsavel_tipo">
+                      <mat-option *ngFor="let tipo of responsavelTipos" [value]="tipo.responsavel_tipo_id">
+                        {{ tipo.descricao }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
+                  <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="50">
+                    <mat-label>Telefone</mat-label>
+                    <input type="text" matInput formControlName="telefone_responsavel">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
+                    <mat-label>Tipo do telefone</mat-label>
+                    <mat-select formControlName="tipo_telefone_responsavel">
+                      <mat-option [value]="'C'">Celular</mat-option>
+                      <mat-option [value]="'W'">WhatsApp</mat-option>
+                      <mat-option [value]="'F'">Fixo</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+
+      <div fxLayoutAlign="space-between center">
+        <h3>Endereços</h3>
+        <button mat-icon-button type="button" color="accent" (click)="addEndereco()">
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
+      <ng-container *ngIf="enderecos.length; else naoCadastrado">
+        <div formArrayName="enderecos" *ngFor="let endereco of enderecos.controls; let i = index">
+          <ng-container *ngIf="!endereco.get('excluido').value">
+            <div fxLayoutAlign="space-between center">
+              Endereço {{ i + 1 }}
+              <button mat-icon-button type="button" color="warn" (click)="removerEndereco(enderecos.length - 1)">
+                <mat-icon>remove</mat-icon>
+              </button>
+            </div>
+            <div [formGroupName]="i">
               <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
-                <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-                  <mat-label>Nome</mat-label>
-                  <input type="text" matInput formControlName="nome_responsavel">
-                </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="30">
-                  <mat-label>Tipo</mat-label>
-                  <mat-select formControlName="responsavel_tipo">
-                    <mat-option *ngFor="let tipo of responsavelTipos" [value]="tipo.responsavel_tipo_id">
-                      {{ tipo.descricao }}</mat-option>
-                  </mat-select>
+                  <mat-label>CEP</mat-label>
+                  <input type="text" matInput formControlName="cep">
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
+                  <mat-label>Logradouro</mat-label>
+                  <input type="text" formControlName="logradouro" matInput required>
+                  <mat-error *ngIf="endereco.get('logradouro').hasError('required')">Este campo é obrigatório
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
-                <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="50">
-                  <mat-label>Telefone</mat-label>
-                  <input type="text" (keydown)="mascaraTelefones(responsavel.get('telefone_responsavel'))" matInput
-                    formControlName="telefone_responsavel">
+                <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
+                  <mat-label>Numero</mat-label>
+                  <input type="text" matInput formControlName="numero">
                 </mat-form-field>
                 <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-                  <mat-label>Tipo do telefone</mat-label>
-                  <mat-select formControlName="tipo_telefone_responsavel">
-                    <mat-option [value]="'C'">Celular</mat-option>
-                    <mat-option [value]="'W'">WhatsApp</mat-option>
-                    <mat-option [value]="'F'">Fixo</mat-option>
+                  <mat-label>Complemento</mat-label>
+                  <input type="text" matInput formControlName="complemento">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
+                <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="20">
+                  <mat-label>Estado</mat-label>
+                  <mat-select matInput formControlName="estado">
+                    <mat-option [value]="null">- Selecione -</mat-option>
+                    <mat-option *ngFor="let estado of estados" [value]="estado">{{ estado }}</mat-option>
                   </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
+                  <mat-label>Cidade</mat-label>
+                  <input type="text" matInput formControlName="cidade">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
+                  <mat-label>Bairro</mat-label>
+                  <input type="text" matInput formControlName="bairro">
                 </mat-form-field>
               </div>
             </div>
           </ng-container>
         </div>
       </ng-container>
-    </div>
-
-    <div fxLayoutAlign="space-between center">
-      <h3>Endereços</h3>
-      <button mat-icon-button type="button" color="accent" (click)="addEndereco()">
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>
-    </div>
-    <ng-container *ngIf="enderecos.length; else naoCadastrado">
-      <div formArrayName="enderecos" *ngFor="let endereco of enderecos.controls; let i = index">
-        <ng-container *ngIf="!endereco.get('excluido').value">
-          <div fxLayoutAlign="space-between center">
-            Endereço {{ i + 1 }}
-            <button mat-icon-button type="button" color="warn" (click)="removerEndereco(enderecos.length - 1)">
-              <mat-icon>remove</mat-icon>
-            </button>
-          </div>
-          <div [formGroupName]="i">
-            <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
-              <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="30">
-                <mat-label>CEP</mat-label>
-                <input type="text" matInput formControlName="cep">
-                <mat-icon matSuffix>search</mat-icon>
-              </mat-form-field>
-              <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-                <mat-label>Logradouro</mat-label>
-                <input type="text" formControlName="logradouro" matInput required>
-                <mat-error *ngIf="endereco.get('logradouro').hasError('required')">Este campo é obrigatório</mat-error>
-              </mat-form-field>
-            </div>
-            <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
-              <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-                <mat-label>Numero</mat-label>
-                <input type="text" matInput formControlName="numero">
-              </mat-form-field>
-              <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-                <mat-label>Complemento</mat-label>
-                <input type="text" matInput formControlName="complemento">
-              </mat-form-field>
-            </div>
-            <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
-              <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="20">
-                <mat-label>Estado</mat-label>
-                <mat-select matInput formControlName="estado">
-                  <mat-option [value]="null">- Selecione -</mat-option>
-                  <mat-option *ngFor="let estado of estados" [value]="estado">{{ estado }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-                <mat-label>Cidade</mat-label>
-                <input type="text" matInput formControlName="cidade">
-              </mat-form-field>
-              <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
-                <mat-label>Bairro</mat-label>
-                <input type="text" matInput formControlName="bairro">
-              </mat-form-field>
-            </div>
-          </div>
-        </ng-container>
-      </div>
     </ng-container>
-  </ng-container>
-</form>
+  </form>
+</ng-container>
 <button mat-fab color="accent" (click)="salvar()">
   <mat-icon>save</mat-icon>
 </button>
@@ -199,4 +201,9 @@
 <ng-template #criacaoPaciente>
   <h4 style="opacity: .6;" fxLayoutAlign="center center">Informe os campos acima e salve para poder cadastrar endereços,
     contatos e responsáveis</h4>
+</ng-template>
+<ng-template #processandoPaciente>
+  <h2 style="opacity: .8;">
+    Carregando...
+  </h2>
 </ng-template>

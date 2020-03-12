@@ -20,8 +20,8 @@ export class PacientesListaComponent implements OnInit {
   carregarPacientes() {
     this.pacienteService.listar(null)
       .subscribe(resultado => {
-        if (!!resultado.data && resultado.data.length) {
-          this.pacientes = resultado.data;
+        if (!!resultado.dados && resultado.dados.length) {
+          this.pacientes = resultado.dados;
         }
       });
   }

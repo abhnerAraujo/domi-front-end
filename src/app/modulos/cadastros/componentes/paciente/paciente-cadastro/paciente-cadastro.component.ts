@@ -1,3 +1,4 @@
+import { Paciente, Endereco, Telefone, Responsavel } from './../interfaces/detalher-paciente-response.interface';
 import { ResponsavelTipo } from './../interfaces/listar-responsavel-tipos-response.interface';
 import { ResponsavelTiposService } from './../services/responsavel-tipos/responsavel-tipos.service';
 import { PacientesService } from './../services/pacientes/pacientes.service';
@@ -23,6 +24,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   formSubscription: Subscription;
   estados = SIGLAS_ESTADOS;
   responsavelTipos: ResponsavelTipo[];
+  processando: boolean;
 
   constructor(private formBuilder: FormBuilder,
     public location: Location,
@@ -31,24 +33,16 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar,
     private pacienteService: PacientesService,
     private responsavelTiposService: ResponsavelTiposService) {
-    this.pacienteForm = formBuilder.group({
-      paciente_id: [0],
-      nome_completo: [null, Validators.required],
-      sexo: [null, Validators.required],
-      email: [null, Validators.email],
-      data_nascimento: [null],
-      telefones: formBuilder.array([]),
-      enderecos: formBuilder.array([]),
-      responsaveis: formBuilder.array([])
-    });
+    this.processando = true;
   }
 
   ngOnInit() {
-    this.pacienteForm.disable();
     const pacienteId = this.route.snapshot.paramMap.get('paciente_id');
     if (pacienteId) {
       this.carregarPaciente(Number.parseInt(pacienteId, 10));
       this.carregarResponsavelTipos();
+    } else {
+      this.criarForm();
     }
   }
 
@@ -62,10 +56,33 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   async carregarPaciente(pacienteId: number) {
     this.pacienteService.detalhar(pacienteId)
       .subscribe(resultado => {
-        this.pacienteForm.enable();
-        this.pacienteForm.patchValue(resultado.dados);
+        const dados: Paciente = resultado.dados;
+        this.criarForm(dados);
       },
         error => this.snackbar.open(error.mensagem || 'Erro ao carregar paciente', 'Ok', { duration: 5000 }));
+  }
+
+  criarForm(dados?: Paciente) {
+    this.pacienteForm = this.formBuilder.group({
+      paciente_id: [!!dados ? dados.paciente_id : 0],
+      nome_completo: [!!dados ? dados.nome_completo : null, Validators.required],
+      sexo: [!!dados ? dados.sexo : null, Validators.required],
+      email: [!!dados ? dados.email : null, Validators.email],
+      data_nascimento: [!!dados ? dados.data_nascimento : null],
+      telefones: this.formBuilder.array([]),
+      enderecos: this.formBuilder.array([]),
+      responsaveis: this.formBuilder.array([])
+    });
+    if (!!dados && dados.responsaveis) {
+      dados.responsaveis.forEach(r => this.addResponsavel(r));
+    }
+    if (!!dados && dados.enderecos) {
+      dados.enderecos.forEach(e => this.addEndereco(e));
+    }
+    if (!!dados && dados.telefones) {
+      dados.telefones.forEach(t => this.addTelefone(t));
+    }
+    this.processando = false;
   }
 
   ngOnDestroy() {
@@ -86,56 +103,54 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     return this.pacienteForm.controls.responsaveis as FormArray;
   }
 
-  addTelefone() {
+  addTelefone(telefone?: Telefone) {
     if (!this.fones.valid && this.fones.length > 0) {
       const index = this.fones.controls.findIndex(control => !control.valid);
       this.snackbar.open(`O telefone ${index + 1} está inválido ou incompleto`, 'OK', { duration: 5000 });
     } else {
       this.fones.push(this.formBuilder.group({
-        telefone: ['', Validators.compose([
+        telefone: [!!telefone ? telefone.telefone : null, Validators.compose([
           Validators.required
         ])],
-        tipo: [0, Validators.required],
-        telefone_paciente_id: [0],
-        paciente: [0],
+        tipo: [!!telefone ? telefone.tipo : null, Validators.required],
+        telefone_paciente_id: [!!telefone ? telefone.telefone_paciente_id : 0],
         excluido: [false]
       }));
     }
   }
 
-  addEndereco() {
+  addEndereco(endereco?: Endereco) {
     if (!this.enderecos.valid && this.enderecos.length > 0) {
       const index = this.enderecos.controls.findIndex(control => !control.valid);
       this.snackbar.open(`O endereço ${index + 1} está inválido ou incompleto`, 'OK', { duration: 5000 });
     } else {
       this.enderecos.push(this.formBuilder.group({
-        endereco_paciente_id: [0],
-        paciente: [''],
-        logradouro: ['', Validators.compose([
+        endereco_paciente_id: [!!endereco ? endereco.endereco_paciente_id : null],
+        logradouro: [!!endereco ? endereco.logradouro : null, Validators.compose([
           Validators.required
         ])],
-        numero: [''],
-        complemento: [''],
-        cep: [''],
-        bairro: [''],
-        cidade: [''],
-        estado: [''],
+        numero: [!!endereco ? endereco.numero : null],
+        complemento: [!!endereco ? endereco.complemento : null],
+        cep: [!!endereco ? endereco.cep : null],
+        bairro: [!!endereco ? endereco.bairro : null],
+        cidade: [!!endereco ? endereco.cidade : null],
+        estado: [!!endereco ? endereco.estado : null],
         excluido: [false]
       }));
     }
   }
 
-  addResponsavel() {
+  addResponsavel(responsavel?: Responsavel) {
     if (!this.responsaveis.valid && this.responsaveis.length > 0) {
       const index = this.responsaveis.controls.findIndex(control => !control.valid);
       this.snackbar.open(`O responsável ${index + 1} está inválido ou incompleto`, 'OK', { duration: 5000 });
     } else {
       this.responsaveis.push(this.formBuilder.group({
-        paciente_responsavel_id: [0],
-        nome_responsavel: [''],
-        responsavel_tipo: [0],
-        telefone_responsavel: [''],
-        tipo_telefone_responsavel: [''],
+        paciente_responsavel_id: [!!responsavel ? responsavel.paciente_responsavel_id : null],
+        nome_responsavel: [!!responsavel ? responsavel.nome_responsavel : null],
+        responsavel_tipo: [!!responsavel ? responsavel.responsavel_tipo : null],
+        telefone_responsavel: [!!responsavel ? responsavel.telefone_responsavel : null],
+        tipo_telefone_responsavel: [!!responsavel ? responsavel.tipo_telefone_responsavel : null],
         excluido: [false]
       }));
     }
@@ -183,6 +198,8 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     if (!!formValue.responsaveis && formValue.responsaveis.length) {
       request.responsaveis = formValue.responsaveis.map(responsavel => {
         return {
+          paciente_responsavel_id: responsavel.paciente_responsavel_id
+            ? responsavel.paciente_responsavel_id : undefined,
           nome_responsavel: responsavel.nome_responsavel,
           responsavel_tipo: responsavel.responsavel_tipo,
           telefone_responsavel: responsavel.telefone_responsavel,
@@ -194,6 +211,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     if (!!formValue.telefones && formValue.telefones.length) {
       request.telefones = formValue.telefones.map(telefone => {
         return {
+          telefone_paciente_id: telefone.telefone_paciente_id ? telefone.telefone_paciente_id : undefined,
           telefone: telefone.telefone,
           tipo: telefone.tipo,
           excluido: telefone.excluido
@@ -203,6 +221,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     if (!!formValue.enderecos && formValue.enderecos.length) {
       request.enderecos = formValue.enderecos.map(endereco => {
         return {
+          endereco_paciente_id: endereco.endereco_paciente_id ? endereco.endereco_paciente_id : undefined,
           logradouro: endereco.logradouro,
           numero: endereco.numero,
           complemento: endereco.complemento,

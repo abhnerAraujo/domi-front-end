@@ -1,3 +1,4 @@
+import { REGEX_TELEFONE } from './../../../../../constantes/valores';
 import { Paciente, Endereco, Telefone, Responsavel } from './../interfaces/detalher-paciente-response.interface';
 import { ResponsavelTipo } from './../interfaces/listar-responsavel-tipos-response.interface';
 import { ResponsavelTiposService } from './../services/responsavel-tipos/responsavel-tipos.service';
@@ -10,7 +11,7 @@ import { SIGLAS_ESTADOS } from './../../../../../constantes/estados';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Location } from '@angular/common';
 
 @Component({
@@ -23,6 +24,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   pacienteForm: FormGroup;
   formSubscription: Subscription;
   estados = SIGLAS_ESTADOS;
+  regexTelfone = REGEX_TELEFONE;
   responsavelTipos: ResponsavelTipo[];
   processando: boolean;
 
@@ -40,7 +42,6 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     const pacienteId = this.route.snapshot.paramMap.get('paciente_id');
     if (pacienteId) {
       this.carregarPaciente(Number.parseInt(pacienteId, 10));
-      this.carregarResponsavelTipos();
     } else {
       this.criarForm();
     }
@@ -48,10 +49,24 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
 
   mascaraTelefones(control: AbstractControl) {
     let value: string = control.value;
-    value = value.replace(/[\D]/g, '');
-    value = value.replace(/(\d{2})(\d)/g, '$1 $2');
-    value = value.replace(/(\d{2} \d)(\d{4})/g, '$1-$2');
-    control.setValue(value);
+    if (!!value) {
+      value = value.replace(/[\D]/g, '');
+      value = value.replace(/^(\d{2})(\d)/g, '$1 $2');
+      value = value.replace(/(\d)(\d{4})$/g, '$1-$2');
+      control.setValue(value);
+    }
+  }
+
+  telefoneValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (!!control && !!control.value) {
+        const valor: string = control.value;
+        return valor.match(REGEX_TELEFONE)
+          ? null
+          : { telefone: true };
+      }
+      return null;
+    };
   }
 
   carregarResponsavelTipos() {
@@ -91,6 +106,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       dados.telefones.forEach(t => this.addTelefone(t));
     }
     this.processando = false;
+    this.carregarResponsavelTipos();
   }
 
   ngOnDestroy() {
@@ -118,12 +134,15 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     } else {
       this.fones.push(this.formBuilder.group({
         telefone: [!!telefone ? telefone.telefone : null, Validators.compose([
-          Validators.required
+          Validators.required, this.telefoneValidator()
         ])],
-        tipo: [!!telefone ? telefone.tipo : null, Validators.required],
+        tipo: [!!telefone ? telefone.tipo : 'C', Validators.required],
         telefone_paciente_id: [!!telefone ? telefone.telefone_paciente_id : 0],
         excluido: [false]
       }));
+    }
+    if (this.fones.length) {
+      this.mascaraTelefones(this.fones.at(this.fones.length - 1).get('telefone'));
     }
   }
 
@@ -155,13 +174,22 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     } else {
       this.responsaveis.push(this.formBuilder.group({
         paciente_responsavel_id: [!!responsavel ? responsavel.paciente_responsavel_id : null],
-        nome_responsavel: [!!responsavel ? responsavel.nome_responsavel : null],
+        nome_responsavel: [!!responsavel ? responsavel.nome_responsavel : null, Validators.required],
         responsavel_tipo: [!!responsavel ? responsavel.responsavel_tipo : null],
-        telefone_responsavel: [!!responsavel ? responsavel.telefone_responsavel : null],
-        tipo_telefone_responsavel: [!!responsavel ? responsavel.tipo_telefone_responsavel : null],
+        telefone_responsavel: [!!responsavel ? responsavel.telefone_responsavel : null, Validators.compose([
+          this.telefoneValidator()
+        ])],
+        tipo_telefone_responsavel: [!!responsavel ? responsavel.tipo_telefone_responsavel : 'C'],
         excluido: [false]
       }));
     }
+    if (!!this.responsaveis.length) {
+      this.mascaraTelefones(this.responsaveis.at(this.responsaveis.length - 1).get('telefone_responsavel'));
+    }
+  }
+
+  stringfy(valor) {
+    return JSON.stringify(valor);
   }
 
   removerTelefone(index: number) {
@@ -189,6 +217,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   }
 
   salvar() {
+    this.processando = true;
     const dadosUsuario: DadosUsuario = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ITENS.dados_usuario));
     const formValue = this.pacienteForm.value;
     const request: SalvarPacienteRequest = {
@@ -210,7 +239,8 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
             ? responsavel.paciente_responsavel_id : undefined,
           nome_responsavel: responsavel.nome_responsavel,
           responsavel_tipo: responsavel.responsavel_tipo,
-          telefone_responsavel: responsavel.telefone_responsavel,
+          telefone_responsavel: !!responsavel.telefone_responsavel ?
+            responsavel.telefone_responsavel.replace(/\D/g, '') : undefined,
           tipo_telefone_responsavel: responsavel.tipo_telefone_responsavel,
           excluido: responsavel.excluido
         };
@@ -220,7 +250,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       request.telefones = formValue.telefones.map(telefone => {
         return {
           telefone_paciente_id: telefone.telefone_paciente_id ? telefone.telefone_paciente_id : undefined,
-          telefone: telefone.telefone,
+          telefone: !!telefone.telefone ? telefone.telefone.replace(/\D/g, '') : undefined,
           tipo: telefone.tipo,
           excluido: telefone.excluido
         };
@@ -245,17 +275,25 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       this.pacienteService.editar(formValue.paciente_id, request)
         .subscribe(resposta => {
           this.snackbar.open('Paciente editado com sucesso', 'Ok', { duration: 5000 });
-          this.carregarPaciente(formValue.paciente_id);
+          this.router.navigate([`cadastros/pacientes/${formValue.paciente_id}`]);
         },
-          error => this.snackbar.open(error.mensagem, 'Ok', { duration: 5000 }));
+          error => this.snackbar.open(error.mensagem, 'Ok', { duration: 5000 }),
+          () => this.processando = false);
     } else {
       this.pacienteService.criar(request)
         .subscribe(resposta => {
-          this.snackbar.open('Paciente salvo com sucesso', 'Ok', { duration: 5000 })
+          this.snackbar.open('Paciente salvo com sucesso', 'Ok', { duration: 5000 });
           this.router.navigate([`cadastros/pacientes/${resposta.dados.paciente_id}`]);
         },
-          error => this.snackbar.open(error.mensagem, 'Ok', { duration: 5000 }));
+          error => this.snackbar.open(error.mensagem, 'Ok', { duration: 5000 }),
+          () => this.processando = false);
     }
+  }
+
+  mascara(control: AbstractControl) {
+    return (control.value === 'F')
+      ? '00 0000-0000'
+      : '00 00000-0000';
   }
 
 }

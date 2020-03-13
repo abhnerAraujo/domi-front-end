@@ -53,12 +53,9 @@
             <div fxLayoutGap.gt-xs="8px" [formGroupName]="i" fxLayout.xs="column">
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Telefone</mat-label>
-                <input type="tel" matInput formControlName="telefone">
-                <mat-error
-                  *ngIf="!telefone.get('telefone').hasError('required') && telefone.get('telefone').hasError('pattern')">
-                  Telefone inválido
-                </mat-error>
+                <input matInput [mask]="mascara(telefone.get('tipo'))" formControlName="telefone">
                 <mat-error *ngIf="telefone.get('telefone').hasError('required')">Este campo é obrigatório</mat-error>
+                <mat-error *ngIf="telefone.get('telefone').hasError('telefone')">Telefone inválido</mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" fxFlex>
                 <mat-label>Tipo</mat-label>
@@ -95,7 +92,8 @@
                 <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
                   <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
                     <mat-label>Nome</mat-label>
-                    <input type="text" matInput formControlName="nome_responsavel">
+                    <input type="text" matInput formControlName="nome_responsavel" required>
+                    <mat-error *ngIf="responsavel.get('nome_responsavel').hasError('required')"></mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="30">
                     <mat-label>Tipo</mat-label>
@@ -108,7 +106,11 @@
                 <div fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
                   <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex="50">
                     <mat-label>Telefone</mat-label>
-                    <input type="text" matInput formControlName="telefone_responsavel">
+                    <input matInput [mask]="mascara(responsavel.get('tipo_telefone_responsavel'))"
+                      formControlName="telefone_responsavel">
+                    <mat-error *ngIf="responsavel.get('telefone_responsavel').hasError('telefone')">
+                      Telefone inválido
+                    </mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" fxFlex.xs="100" fxFlex>
                     <mat-label>Tipo do telefone</mat-label>

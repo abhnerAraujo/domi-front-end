@@ -3,14 +3,14 @@ import { Paciente, Endereco, Telefone, Responsavel } from './../interfaces/detal
 import { ResponsavelTipo } from './../interfaces/listar-responsavel-tipos-response.interface';
 import { ResponsavelTiposService } from './../services/responsavel-tipos/responsavel-tipos.service';
 import { PacientesService } from './../services/pacientes/pacientes.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { LOCAL_STORAGE_ITENS } from './../../../../../constantes/config';
 import { DadosUsuario } from './../../../../acesso/interfaces/dados-usuario-response.interface';
 import { SalvarPacienteRequest } from './../interfaces/salvar-paciente-request.interface';
 import { SIGLAS_ESTADOS } from './../../../../../constantes/estados';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Location } from '@angular/common';
 
@@ -27,6 +27,14 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   regexTelfone = REGEX_TELEFONE;
   responsavelTipos: ResponsavelTipo[];
   processando: boolean;
+  dialogRef: any;
+
+  @Input()
+  set dialogo(value: MatDialogRef<any>) {
+    this.dialogRef = value;
+  }
+
+  @Input() pacienteId: number;
 
   constructor(private formBuilder: FormBuilder,
     public location: Location,
@@ -39,9 +47,9 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const pacienteId = this.route.snapshot.paramMap.get('paciente_id');
-    if (pacienteId) {
-      this.carregarPaciente(Number.parseInt(pacienteId, 10));
+    const paciente = Number.parseInt(this.route.snapshot.paramMap.get('paciente_id'), 10) || this.pacienteId || 0;
+    if (paciente) {
+      this.carregarPaciente(paciente);
     } else {
       this.criarForm();
     }
@@ -106,7 +114,9 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       dados.telefones.forEach(t => this.addTelefone(t));
     }
     this.processando = false;
-    this.carregarResponsavelTipos();
+    setTimeout(() => {
+      this.carregarResponsavelTipos();
+    });
   }
 
   ngOnDestroy() {
@@ -275,7 +285,11 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       this.pacienteService.editar(formValue.paciente_id, request)
         .subscribe(resposta => {
           this.snackbar.open('Paciente editado com sucesso', 'Ok', { duration: 5000 });
-          this.router.navigate([`cadastros/pacientes/${formValue.paciente_id}`]);
+          if (!!this.dialogRef) {
+            this.dialogRef.close(formValue.paciente_id);
+          } else {
+            this.router.navigate([`cadastros/pacientes/${formValue.paciente_id}`]);
+          }
         },
           error => this.snackbar.open(error.mensagem, 'Ok', { duration: 5000 }),
           () => this.processando = false);
@@ -283,7 +297,11 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       this.pacienteService.criar(request)
         .subscribe(resposta => {
           this.snackbar.open('Paciente salvo com sucesso', 'Ok', { duration: 5000 });
-          this.router.navigate([`cadastros/pacientes/${resposta.dados.paciente_id}`]);
+          if (!!this.dialogRef) {
+            this.dialogRef.close(resposta.dados.paciente_id);
+          } else {
+            this.router.navigate([`cadastros/pacientes/${resposta.dados.paciente_id}`]);
+          }
         },
           error => this.snackbar.open(error.mensagem, 'Ok', { duration: 5000 }),
           () => this.processando = false);

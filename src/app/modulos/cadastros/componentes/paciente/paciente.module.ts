@@ -17,6 +17,7 @@ import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [PacientesListaComponent, PacienteCadastroComponent],
+  exports: [PacienteCadastroComponent],
   imports: [
     CommonModule,
     PacienteRoutingModule,

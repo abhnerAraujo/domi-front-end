@@ -1,3 +1,4 @@
+import { ListarPacientesResponse } from './../../interfaces/listar-pacientes-response.interface';
 import { DetalharPacienteResponse } from './../../interfaces/detalher-paciente-response.interface';
 import { SalvarPacienteResponse } from './../../interfaces/salvar-paciente-response.interface';
 import { SalvarPacienteRequest } from './../../interfaces/salvar-paciente-request.interface';
@@ -19,7 +20,7 @@ export class PacientesService {
 
   listar(filtro: any) {
     return this.http
-      .get<any>('pacientes', { params: filtro });
+      .get<ListarPacientesResponse>('pacientes', { params: filtro });
   }
 
   detalhar(pacienteId: number) {

@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="!!dialogRef ? dialogRef.close() : location.back()">
     <mat-icon>{{ !!dialogRef ? 'close' : 'arrow_back' }}</mat-icon>
   </button>
-  <h1>Novo Paciente</h1>
+  <h1>{{ pacienteForm.get('paciente_id').value ? 'Editar' : 'Novo'}} Paciente</h1>
 </div>
 <ng-container *ngIf="!processando; else processandoPaciente">
   <form [formGroup]="pacienteForm" fxLayout="column" [ngStyle.xs]="{'margin-bottom': '42px'}" autocomplete="off">

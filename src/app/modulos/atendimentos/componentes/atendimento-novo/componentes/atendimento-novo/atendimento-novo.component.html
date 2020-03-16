@@ -6,7 +6,7 @@
     <h1>Atendimento</h1>
   </div>
   <div>
-    <button mat-raised-button color="accent" (click)="criar()">CRIAR</button>
+    <button mat-raised-button color="accent" [disabled]="!atendimentoForm.valid" (click)="criar()">CRIAR</button>
   </div>
 </div>
 <div>
@@ -15,7 +15,7 @@
       <mat-card-content fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Nome do paciente</mat-label>
-          <input matInput placeholder="Pesquisa" formControlName="paciente" [matAutocomplete]="auto">
+          <input matInput placeholder="Pesquisa" formControlName="paciente" [matAutocomplete]="auto" required>
           <mat-icon matSuffix class="icon">search</mat-icon>
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let paciente of pacientesFiltrados | async" [value]="paciente">
@@ -23,9 +23,10 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="100">
+        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="100" required>
           <mat-label>Data de início</mat-label>
-          <input matInput [matDatepicker]="picker" placeholder="Escolha" readonly="true">
+          <input matInput fromControlName="inicio_data" (click)="picker.open()" [matDatepicker]="picker"
+            placeholder="Escolha" readonly="true">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker disabled="false"></mat-datepicker>
         </mat-form-field>

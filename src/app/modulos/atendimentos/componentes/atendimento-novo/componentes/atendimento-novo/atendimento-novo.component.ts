@@ -10,7 +10,7 @@ import { TEMA_PRIMARIO } from './../../../../../../constantes/time-picker';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -36,13 +36,20 @@ export class AtendimentoNovoComponent implements OnInit {
     , private pacientesService: PacientesService) {
     this.temaPrimario = TEMA_PRIMARIO;
     this.atendimentoForm = formBuilder.group({
-      paciente: [null],
-      inicioData: [''],
-      inicioHora: ['']
+      paciente: [null, Validators.compose([
+        Validators.required
+      ])],
+      inicio_data: ['', Validators.compose([
+        Validators.required
+      ])]
     });
   }
 
   ngOnInit() {
+    this.carregarListaPacientes();
+  }
+
+  carregarListaPacientes(pacienteId?: number) {
     this.pacientesService.listar({ em_atendimento: 0 })
       .subscribe(resultado => {
         this.pacientes = resultado.dados;
@@ -52,6 +59,10 @@ export class AtendimentoNovoComponent implements OnInit {
             map(value => typeof value === 'string' ? value : value.nome),
             map(paciente => paciente ? this._filter(paciente) : this.pacientes.slice())
           );
+        if (!!pacienteId) {
+          this.atendimentoForm.controls.paciente.setValue(
+            this.pacientes.find(paciente => paciente.paciente_id === pacienteId));
+        }
       });
   }
 
@@ -76,11 +87,14 @@ export class AtendimentoNovoComponent implements OnInit {
       data: !!pacienteId ? pacienteId : null
     }).afterClosed()
       .subscribe(resultado => {
-        this.pacientesService.listar({ em_atendimento: 0 })
-          .subscribe(response => {
-            this.pacientes = response.dados;
-          });
+        if (resultado) {
+          this.carregarListaPacientes(resultado);
+        }
       });
+  }
+
+  stringfy(value) {
+    return JSON.stringify(value);
   }
 
 }

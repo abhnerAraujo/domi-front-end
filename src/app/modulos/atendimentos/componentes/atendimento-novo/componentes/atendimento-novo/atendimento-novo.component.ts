@@ -81,13 +81,15 @@ export class AtendimentoNovoComponent implements OnInit {
 
   criar() {
     const formValue = this.atendimentoForm.value;
+    this.atendimentoForm.disable();
     this.atendimentoService.criar({
       paciente: formValue.paciente.paciente_id,
       data_inicio: formValue.data_inicio.toISOString()
     }).subscribe(resultado => {
       this.router.navigate([`atendimentos/${resultado.dados.atendimento_id}/sessoes/nova`]);
     },
-      erro => this.snackbar.open(erro.mensagem, 'OK', { duration: 5000 }));
+      erro => this.snackbar.open(erro.mensagem, 'OK', { duration: 5000 }),
+      () => this.atendimentoForm.enable());
   }
 
   cadastrarPaciente(pacienteId?: number) {
@@ -100,10 +102,6 @@ export class AtendimentoNovoComponent implements OnInit {
           this.carregarListaPacientes(resultado);
         }
       });
-  }
-
-  stringfy(value) {
-    return JSON.stringify(value);
   }
 
   pacienteValidator(): ValidatorFn {

@@ -1,3 +1,4 @@
+import { AtendimentosService } from './../../../../services/atendimentos/atendimentos.service';
 import {
   PacientesService
 } from './../../../../../cadastros/componentes/paciente/services/pacientes/pacientes.service';
@@ -5,12 +6,12 @@ import {
   Paciente
 } from './../../../../../cadastros/componentes/paciente/interfaces/listar-pacientes-response.interface';
 import { DialogoPacienteComponent } from './../dialogo-paciente/dialogo-paciente.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { TEMA_PRIMARIO } from './../../../../../../constantes/time-picker';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -33,13 +34,15 @@ export class AtendimentoNovoComponent implements OnInit {
     , formBuilder: FormBuilder
     , private router: Router
     , private dialog: MatDialog
-    , private pacientesService: PacientesService) {
+    , private pacientesService: PacientesService
+    , private atendimentoService: AtendimentosService
+    , private snackbar: MatSnackBar) {
     this.temaPrimario = TEMA_PRIMARIO;
     this.atendimentoForm = formBuilder.group({
       paciente: [null, Validators.compose([
-        Validators.required
+        Validators.required, this.pacienteValidator()
       ])],
-      inicio_data: ['', Validators.compose([
+      data_inicio: ['', Validators.compose([
         Validators.required
       ])]
     });
@@ -77,8 +80,14 @@ export class AtendimentoNovoComponent implements OnInit {
   }
 
   criar() {
-    // this.router.navigate(['atendimentos/1/sessoes/nova']);
-    console.log(this.atendimentoForm.value);
+    const formValue = this.atendimentoForm.value;
+    this.atendimentoService.criar({
+      paciente: formValue.paciente.paciente_id,
+      data_inicio: formValue.data_inicio.toISOString()
+    }).subscribe(resultado => {
+      this.router.navigate([`atendimentos/${resultado.dados.atendimento_id}/sessoes/nova`]);
+    },
+      erro => this.snackbar.open(erro.mensagem, 'OK', { duration: 5000 }));
   }
 
   cadastrarPaciente(pacienteId?: number) {
@@ -95,6 +104,15 @@ export class AtendimentoNovoComponent implements OnInit {
 
   stringfy(value) {
     return JSON.stringify(value);
+  }
+
+  pacienteValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (!!control && !!control.value && typeof control.value === 'string') {
+        return { paciente: { razao: 'Paciente não existe' } };
+      }
+      return null;
+    };
   }
 
 }

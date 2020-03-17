@@ -1,3 +1,4 @@
+import { AtendimentosService } from './../../services/atendimentos/atendimentos.service';
 import { PacientesService } from './../../../cadastros/componentes/paciente/services/pacientes/pacientes.service';
 import { PacienteModule } from './../../../cadastros/componentes/paciente/paciente.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -38,7 +39,8 @@ import { DialogoPacienteComponent } from './componentes/dialogo-paciente/dialogo
     DialogoPacienteComponent
   ],
   providers: [
-    PacientesService
+    PacientesService,
+    AtendimentosService
   ]
 })
 export class AtendimentoNovoModule { }

@@ -9,7 +9,7 @@
     <button mat-raised-button color="accent" [disabled]="!atendimentoForm.valid" (click)="criar()">CRIAR</button>
   </div>
 </div>
-<div>
+<div *ngIf="!!atendimentoForm">
   <form action="" [formGroup]="atendimentoForm">
     <mat-card>
       <mat-card-content fxLayout="row wrap" fxLayoutGap.gt-xs="8px">
@@ -22,13 +22,20 @@
               {{ paciente.nome_completo }}
             </mat-option>
           </mat-autocomplete>
+          <mat-hint>Pesquise pelo nome do paciente e selecione</mat-hint>
+          <mat-error *ngIf="atendimentoForm.get('paciente').hasError('required')">Este campo é obrigatório</mat-error>
+          <mat-error *ngIf="atendimentoForm.get('paciente').hasError('paciente')">
+            {{ atendimentoForm.get('paciente').getError('paciente')?.razao }}
+          </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="100" required>
+        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="100">
           <mat-label>Data de início</mat-label>
-          <input matInput fromControlName="inicio_data" (click)="picker.open()" [matDatepicker]="picker"
-            placeholder="Escolha" readonly="true">
+          <input matInput formControlName="data_inicio" (click)="picker.open()" [matDatepicker]="picker"
+            placeholder="Escolha" readonly="true" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker disabled="false"></mat-datepicker>
+          <mat-error *ngIf="atendimentoForm.get('data_inicio').hasError('required')">Este campo é obrigatório
+          </mat-error>
         </mat-form-field>
       </mat-card-content>
       <mat-card-footer>

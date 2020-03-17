@@ -6,18 +6,14 @@
       </button>
       <h1>Atendimentos</h1>
     </div>
-    <div fxLayoutGap="16px" fxLayout="column" class="navegacao">
-      <div>
-        <button mat-button fxFlex="240px" [routerLink]="['/atendimentos/agenda']">
-          <mat-icon>event</mat-icon>AGENDA
-        </button>
-      </div>
-      <div>
-        <button mat-button fxFlex="240px" [routerLink]="['/atendimentos/novo']">
-          <mat-icon>perm_contact_calendar</mat-icon>NOVO ATENDIMENTO
-        </button>
-      </div>
-    </div>
+    <mat-nav-list style="opacity: 0.88;">
+      <a mat-list-item [routerLink]="['/atendimentos/agenda']" style="font-weight: 500;">
+        <mat-icon mat-list-icon>event</mat-icon> Agenda
+      </a>
+      <a mat-list-item [routerLink]="['/atendimentos/novo']">
+        <mat-icon mat-list-icon>perm_contact_calendar</mat-icon> Novo Atendimento
+      </a>
+    </mat-nav-list>
   </div>
   <h3 fxFlex="nogrow">Em andamento</h3>
   <div fxFlex class="lista-atendimento">

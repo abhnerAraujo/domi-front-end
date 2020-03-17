@@ -1,14 +1,8 @@
+import { MatSnackBar } from '@angular/material';
+import { ListarAtendimentosDados } from './../../../../../../interfaces/listar-atendimentos.interface';
+import { AtendimentosService } from './../../../../../../services/atendimentos/atendimentos.service';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import 'moment/locale/pt-br';
-
-moment.locale('pt-BR');
-
-export interface Atendimento {
-  id: number;
-  nome: string;
-  data_inicio: string;
-}
 
 @Component({
   selector: 'app-atendimentos-lista',
@@ -17,20 +11,23 @@ export interface Atendimento {
 })
 export class AtendimentosListaComponent implements OnInit {
 
-  atendimentos: Atendimento[] = [
-    { id: 1, nome: 'Matheus Felipe', data_inicio: moment(new Date().toISOString()).format('ll') },
-    { id: 2, nome: 'Osvaldo Macedo', data_inicio: moment(new Date().toISOString()).format('ll') },
-    { id: 3, nome: 'Giovane Castanhares', data_inicio: moment(new Date().toISOString()).format('ll') },
-    { id: 3, nome: 'Jucelino Abravanel', data_inicio: moment(new Date().toISOString()).format('ll') },
-    { id: 3, nome: 'Armando Sorriso', data_inicio: moment(new Date().toISOString()).format('ll') },
-    { id: 3, nome: 'Niravel de Holanda', data_inicio: moment(new Date().toISOString()).format('ll') },
-    { id: 3, nome: 'Marcos Nixael', data_inicio: moment(new Date().toISOString()).format('ll') },
-  ];
+  atendimentos: ListarAtendimentosDados[];
+  carregandoLista: boolean;
 
 
-  constructor() { }
+  constructor(private atendimentosService: AtendimentosService, private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    this.carregarAtendimentos();
+  }
+
+  carregarAtendimentos() {
+    this.carregandoLista = true;
+    this.atendimentosService.listar()
+      .subscribe(
+        resultado => this.atendimentos = resultado.dados,
+        erro => this.snackbar.open(erro.mensagem || 'Erro ao carregar atendimentos', 'OK', { duration: 5000 }),
+        () => this.carregandoLista = false);
   }
 
 }

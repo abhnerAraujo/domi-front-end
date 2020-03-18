@@ -28,6 +28,8 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   responsavelTipos: ResponsavelTipo[];
   processando: boolean;
   dialogRef: any;
+  edicao: boolean;
+  alinhadoDireita: boolean;
 
   @Input()
   set dialogo(value: MatDialogRef<any>) {
@@ -44,6 +46,8 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     private pacienteService: PacientesService,
     private responsavelTiposService: ResponsavelTiposService) {
     this.processando = true;
+    this.edicao = false;
+    this.alinhadoDireita = true;
   }
 
   ngOnInit() {
@@ -52,6 +56,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       this.carregarPaciente(paciente);
     } else {
       this.criarForm();
+      this.edicao = true;
     }
   }
 
@@ -308,10 +313,20 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     }
   }
 
-  mascara(control: AbstractControl) {
-    return (control.value === 'F')
-      ? '00 0000-0000'
-      : '00 00000-0000';
+  mascara(control: (AbstractControl | string)) {
+    if (typeof control === 'string') {
+      return (control === 'F')
+        ? '00 0000-0000'
+        : '00 00000-0000';
+    } else {
+      return (control.value === 'F')
+        ? '00 0000-0000'
+        : '00 00000-0000';
+    }
+  }
+
+  imprimir() {
+    window.print();
   }
 
 }

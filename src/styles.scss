@@ -9,6 +9,12 @@
   font-weight: 600 !important;
 }
 
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
 mat-icon {
   font-family: 'Material Icons' !important;
 }

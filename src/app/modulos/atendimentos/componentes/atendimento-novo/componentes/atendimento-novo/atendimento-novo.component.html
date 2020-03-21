@@ -41,11 +41,12 @@
       <mat-card-footer>
         <mat-card-actions fxLayoutAlign="center center">
           <ng-container *ngIf="atendimentoForm.get('paciente').value?.paciente_id; else criarPaciente">
-            <button mat-button (click)="cadastrarPaciente(atendimentoForm.get('paciente').value?.paciente_id)"
-              color="accent">EDITAR PACIENTE</button>
+            <button type="button" mat-button
+              (click)="cadastrarPaciente(atendimentoForm.get('paciente').value?.paciente_id)" color="accent">EDITAR
+              PACIENTE</button>
           </ng-container>
           <ng-template #criarPaciente>
-            <button mat-button (click)="cadastrarPaciente()" color="primary">
+            <button type="button" mat-button (click)="cadastrarPaciente()" color="primary">
               CADASTRAR PACIENTE</button>
           </ng-template>
         </mat-card-actions>

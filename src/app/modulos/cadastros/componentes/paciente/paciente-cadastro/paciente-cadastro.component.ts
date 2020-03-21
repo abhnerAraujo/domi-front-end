@@ -1,3 +1,4 @@
+import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import { REGEX_TELEFONE } from './../../../../../constantes/valores';
 import { Paciente, Endereco, Telefone, Responsavel } from './../interfaces/detalher-paciente-response.interface';
 import { ResponsavelTipo } from './../interfaces/listar-responsavel-tipos-response.interface';
@@ -30,6 +31,8 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   dialogRef: any;
   edicao: boolean;
   alinhadoDireita: boolean;
+  mediaQuerySubscription: Subscription;
+  activeMediaQuery: string;
 
   @Input()
   set dialogo(value: MatDialogRef<any>) {
@@ -44,7 +47,11 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackbar: MatSnackBar,
     private pacienteService: PacientesService,
-    private responsavelTiposService: ResponsavelTiposService) {
+    private responsavelTiposService: ResponsavelTiposService,
+    private mediaObserver: MediaObserver) {
+    this.mediaQuerySubscription = this.mediaObserver.asObservable().subscribe(
+      (change: MediaChange[]) => this.activeMediaQuery = change[0].mqAlias
+    );
     this.processando = true;
     this.edicao = false;
     this.alinhadoDireita = true;
@@ -52,6 +59,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const paciente = Number.parseInt(this.route.snapshot.paramMap.get('paciente_id'), 10) || this.pacienteId || 0;
+    this.edicao = !!this.dialogRef;
     if (paciente) {
       this.carregarPaciente(paciente);
     } else {
@@ -328,5 +336,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   imprimir() {
     window.print();
   }
+
+  telaPequena = () => this.activeMediaQuery === 'xs' || this.activeMediaQuery === 'sm';
 
 }

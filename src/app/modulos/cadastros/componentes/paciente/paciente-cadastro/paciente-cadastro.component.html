@@ -9,11 +9,11 @@
     <button mat-icon-button *ngIf="!edicao && !dialogRef" (click)="edicao = true;">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="imprimir()" *ngIf="!dialogRef">
-      <mat-icon>print</mat-icon>
-    </button>
     <button mat-icon-button *ngIf="edicao && !dialogRef" (click)="edicao = false;">
       <mat-icon>visibility</mat-icon>
+    </button>
+    <button mat-icon-button (click)="imprimir()" *ngIf="!dialogRef">
+      <mat-icon>print</mat-icon>
     </button>
     <button mat-icon-button *ngIf="!alinhadoDireita && !dialogRef" (click)="alinhadoDireita = true;">
       <mat-icon>format_align_right</mat-icon>
@@ -30,8 +30,8 @@
         <div>
           <mat-form-field fxFlex style="margin-bottom: 16px;">
             <mat-label>Nome completo</mat-label>
-            <input style="font-size: xx-large;" cdkFocusInitial type="text" formControlName="nome_completo" matInput
-              required>
+            <input [ngClass]="{'nome-grande': !dialogRef}" cdkFocusInitial type="text" formControlName="nome_completo"
+              matInput required>
           </mat-form-field>
         </div>
         <div fxLayout="row wrap" fxFlex fxLayoutGap.gt-xs="8px">
@@ -221,7 +221,7 @@
       </form>
     </ng-container>
   </section>
-  <section *ngIf="!dialogRef" fxHide.lt-md fxFlex
+  <section *ngIf="!dialogRef && (!telaPequena() || (telaPequena() && !edicao))" fxFlex
     [ngClass]="{'alinhar-esquerda ': !alinhadoDireita, 'container-visualizacao': true}"
     [fxLayoutAlign]="alinhadoDireita ? 'start' : 'start end'" fxLayout="column" fxLayoutGap="24px">
     <section fxLayout="column" [fxLayoutAlign]="alinhadoDireita ? 'start' : 'start end'">
@@ -239,6 +239,10 @@
             class="texto">{{ pacienteForm.value?.data_nascimento | idade }} anos</span>
         </div>
       </div>
+      <ng-container *ngIf="pacienteForm.value.email">
+        <span class="rotulo">E-mail</span>
+        <span class="texto">{{ pacienteForm.value.email }}</span>
+      </ng-container>
     </section>
     <section fxLayout="column">
       <span class="titulo">
@@ -262,10 +266,6 @@
       </ng-container>
     </section>
     <section fxLayout="column">
-      <ng-container *ngIf="pacienteForm.get('email').value">
-        <span class="rotulo">E-mail</span>
-        <span class="texto">{{ pacienteForm.get('email').value }}</span>
-      </ng-container>
       <span class="titulo">Telefones</span>
       <ng-container *ngIf="fones?.length; else naoInformado">
         <div fxLayout="column" fxLayoutGap="8px">

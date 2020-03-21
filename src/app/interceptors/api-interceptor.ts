@@ -17,7 +17,8 @@ export class ApiInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.progressBar.show();
-    if (ROUTES_NO_AUTH.indexOf(request.url) === -1) {
+    const rotaSemAuth = ROUTES_NO_AUTH.find(rota => `${this.baseUrl}/${request.url}`.indexOf(`${this.baseUrl}/${rota}`) >= 0);
+    if (!rotaSemAuth) {
       const dadosUsuario: DadosUsuario = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ITENS.dados_usuario));
 
       const headers = new HttpHeaders()

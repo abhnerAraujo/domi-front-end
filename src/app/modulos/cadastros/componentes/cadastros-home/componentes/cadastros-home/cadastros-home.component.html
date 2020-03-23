@@ -5,14 +5,12 @@
   <h1>Cadastros</h1>
 </div>
 <div fxLayoutGap="16px" fxLayout="column" class="navegacao">
-  <div>
-    <button mat-button fxFlex="240px">
-      <mat-icon>account_balance</mat-icon>ESPAÇOS
-    </button>
-  </div>
-  <div>
-    <button mat-button fxFlex="240px" [routerLink]="['/cadastros/pacientes']">
-      <mat-icon>account_circle</mat-icon>PACIENTES
-    </button>
-  </div>
+  <mat-nav-list style="opacity: 0.88;">
+    <a mat-list-item [routerLink]="['']" style="font-weight: 500;">
+      <mat-icon mat-list-icon>account_balance</mat-icon> Espaços
+    </a>
+    <a mat-list-item [routerLink]="['/cadastros/pacientes']">
+      <mat-icon mat-list-icon>account_circle</mat-icon> Pacientes
+    </a>
+  </mat-nav-list>
 </div>

@@ -16,7 +16,7 @@ export interface TimeLineConfig {
     linha: string;
   };
   mostrarData: boolean;
-  height: number;
+  height?: string;
   mensagemVazio: string;
   descendente: boolean;
   clicavel: boolean;

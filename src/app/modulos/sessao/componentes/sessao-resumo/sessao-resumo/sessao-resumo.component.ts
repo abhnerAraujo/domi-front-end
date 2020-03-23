@@ -26,7 +26,7 @@ export class SessaoResumoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sessao = this.sessaoService.sessao(this.sessaoId);
+    // this.sessao = this.sessaoService.sessao(this.sessaoId);
   }
 
   calculaTempoTotal(sessao: SessaoDetalhe) {

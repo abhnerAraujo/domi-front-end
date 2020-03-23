@@ -1,12 +1,12 @@
+import { TimeLineItem, TimeLineConfig } from './../../../../compartilhado/componentes/timeline/componentes/timeline/timeline.component';
 import { MoedaPipe } from './../../../../../pipes/moeda/moeda.pipe';
 import { SessaoService } from './../../../services/sessao/sessao.service';
-import { Sessao } from './../../../interfaces/sessao-lista-response.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MomentService } from './../../../../compartilhado/services/moment/moment.service';
 import { CORES } from './../../../../../constantes/valores';
 import { Component, OnInit } from '@angular/core';
-import { TimeLineItem, TimeLineConfig } from 'src/app/modulos/compartilhado/componentes/timeline/componentes/timeline/timeline.component';
 import { Location } from '@angular/common';
+import { Sessao, ResumoPagamentoSessao } from '../../../interfaces';
 
 @Component({
   selector: 'app-sessoes-lista',
@@ -24,6 +24,7 @@ export class SessoesListaComponent implements OnInit {
   mostrarGraficos: boolean;
 
   sessoes: Sessao[];
+  pagamentos: ResumoPagamentoSessao[];
   carregando: boolean;
 
   dataDonut: any;
@@ -47,49 +48,68 @@ export class SessoesListaComponent implements OnInit {
         linha: ''
       },
       descendente: true,
-      height: 100,
       mensagemVazio: 'Nenhuma sessão realizada',
       mostrarData: true,
       clicavel: true
     };
-    this.mostrarGraficos = true;
+    this.mostrarGraficos = false;
   }
 
   carregarLista() {
-    this.sessoes = this.sessaoService.sessoes();
+    this.carregando = true;
+    this.sessaoService.sessoes(this.atendimentoId)
+      .subscribe(
+        resultado => {
+          this.sessoes = resultado.dados;
+          if (this.sessoes && this.sessoes.length) {
+            this.carregarTimeLine();
+            this.resumoPagamentos();
+            this.carregarGraficoEvolucao();
+          }
+        },
+        error => console.log(error),
+        () => this.carregando = false);
   }
 
   ngOnInit() {
-    this.carregando = true;
     this.carregarLista();
-    if (this.sessoes) {
-      this.carregarValores();
-      this.carregarGraficoFinanceiro();
-      this.carregarGraficoEvolucao();
-      this.carregarTimeLine();
-    }
-    this.carregando = false;
   }
 
-  carregarValores() {
+  resumoPagamentos() {
+    this.sessaoService.resumoPagamentos(this.atendimentoId)
+      .subscribe(resultado => {
+        this.pagamentos = resultado.dados;
+        this.carregarValores();
+      });
+  }
+
+  async carregarValores() {
     this.totalPago = 0;
     this.totalSessoes = 0;
     this.total = 0;
-    this.sessoes.forEach(sessao => {
-      this.totalPago += sessao.valor_pago;
-      this.total += sessao.sessao_valor;
+    this.pagamentos.forEach(pagamento => {
+      this.totalPago += Number.parseFloat(pagamento.valor_pago);
+      this.total += Number.parseFloat(pagamento.valor_total_sessao);
     });
     this.totalSessoes = this.sessoes.length;
+
+    this.carregarGraficoFinanceiro();
+    this.mostrarGraficos = true;
   }
 
-  carregarTimeLine() {
+  async carregarTimeLine() {
     this.timeLine = this.sessoes.map((sessao, index) => {
-      return {
+      const item = {
         id: sessao.sessao_id,
         titulo: `${index + 1}ª sessão`,
         data: sessao.sessao_data,
-        descricao: `${this.moedaPipe.transform(sessao.sessao_valor, true)}`
+        // descricao: `${this.moment.momento().duration()}`
+        descricao: 'Em andamento'
       };
+      if (sessao.hora_fim) {
+        item.descricao = `${this.moment.momentBr(sessao.hora_inicio).format('LT')} - ${this.moment.momentBr(sessao.hora_fim).format('LT')}`;
+      }
+      return item;
     });
   }
 
@@ -125,26 +145,30 @@ export class SessoesListaComponent implements OnInit {
         {
           label: 'Evolução',
           data: [],
-          fill: false,
+          fill: true,
           borderColor: CORES.primaria
         }
       ]
     };
     this.optionsLinha = {
       scales: {
-        xAxes: [{
-          ticks: {
-            display: false
-          },
-          gridLines: {
-            color: 'rgba(0, 0, 0, 0)',
-            display: false,
-            drawBorder: false
-          }
-        }],
+        xAxes: [
+          {
+            // ticks: {
+            //   display: false
+            // },
+            gridLines: {
+              color: 'rgba(0, 0, 0, 0)',
+              display: false,
+              drawBorder: false
+            }
+          }],
         yAxes: [{
           ticks: {
-            display: false
+            display: false,
+            beginAtZero: true,
+            maxTicksLimit: 6,
+            suggestedMax: 10,
           },
           gridLines: {
             color: 'rgba(0, 0, 0, 0)',
@@ -157,8 +181,8 @@ export class SessoesListaComponent implements OnInit {
     let ultimoIndicador = 0;
     this.sessoes.forEach((sessao, index) => {
       this.dataLinha.labels.push(`${index + 1}ª sessão`);
-      if (sessao.evolucao) {
-        ultimoIndicador = sessao.evolucao.indicador;
+      if (sessao.nota_geral) {
+        ultimoIndicador = sessao.nota_geral;
       }
       this.dataLinha.datasets[0].data.push(ultimoIndicador);
     });

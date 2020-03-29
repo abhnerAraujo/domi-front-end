@@ -34,18 +34,15 @@
     <app-anamnese-detalhe *ngSwitchCase="5" (cancelado)="tipoArtefatoAdd = null" [sessao]="true"></app-anamnese-detalhe>
     <div *ngSwitchCase="0">
       <div>
-        <h3>Configurar atendimento</h3>
+        <h3>Configurar sessão</h3>
         <p> {{ mensagemConfiguracao }} </p>
         <div *ngIf="configuracaoAtendimentoSalva.atendimento_dias.length" fxLayoutGap="8px" fxLayout="column">
-          <div fxLayout="row" class="header-atender-dias">
+          <div fxLayout="row" class="header-atender-dias" fxLayoutGap="8px">
             <div>
-              Dia/
+              Dia /
             </div>
             <div>
-              Hora/
-            </div>
-            <div>
-              Duração/
+              Duração /
             </div>
             <div>
               Sessões
@@ -54,18 +51,16 @@
           <div fxLayoutAlign="start">
             <mat-chip-list class="mat-chip-list-stacked" fxLayoutGap="8px">
               <mat-chip *ngFor="let dia of configuracaoAtendimentoSalva.atendimento_dias" [selectable]="true"
-                [selected]="dia.selecionado" color="accent" (click)="chipSelecao(dia)">
+                [selected]="dia.selecionado" color="accent" (click)="chipSelecao(dia)" fxLayoutGap="8px">
                 {{ dia.diaSemana | diaSemana:true }} /
-                {{ dia.hora | hora }} /
                 {{ dia.duracao }} (min) /
                 {{ dia.qtdSessoes }}
               </mat-chip>
               <h4 *ngIf="agendamento?.agendamento_id">Agendamento</h4>
               <mat-chip *ngIf="novoDiaAtendimento" [selected]="novoDiaAtendimento?.selecionado" color="accent"
-                (click)="novaConfiguracaoDia()">
+                (click)="novaConfiguracaoDia()" fxLayoutGap="8px">
                 <mat-icon>edit</mat-icon>
                 {{ novoDiaAtendimento.diaSemana | diaSemana:true }} /
-                {{ novoDiaAtendimento.hora | hora }} /
                 {{ novoDiaAtendimento.duracao }} (min) /
                 {{ novoDiaAtendimento.qtdSessoes }}
               </mat-chip>

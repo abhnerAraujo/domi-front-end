@@ -25,4 +25,9 @@ export class SessaoService {
     return this.http
       .get<ResumoPagamentosResponse>(`atendimentos/${atendimentoId}/sessoes/resumo_pagamentos`);
   }
+
+  salvar(atendimentoId: number, dados: any) {
+    return this.http
+      .post<any>(`atendimentos/${atendimentoId}/sessoes`, dados);
+  }
 }

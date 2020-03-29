@@ -1,3 +1,5 @@
+import { MomentService } from './../../../compartilhado/services/moment/moment.service';
+import { AtendimentosService } from './../../services/atendimentos/atendimentos.service';
 import { PipesModule } from './../../../../pipes/pipes.module';
 import {
   DialogConfigDiaAtendimentoModule
@@ -32,6 +34,10 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
     FormsModule,
     DialogConfigDiaAtendimentoModule,
     PipesModule
+  ],
+  providers: [
+    AtendimentosService,
+    MomentService
   ]
 })
 export class AtendimentoConfiguracaoModule { }

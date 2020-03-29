@@ -1,7 +1,8 @@
-import { ListarAtendimentosResponse } from './../../interfaces/listar-atendimentos.interface';
-import { CriarAtendimentoRequest, CriarAtendimentoResponse } from './../../interfaces/criar-atendimento.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {
+  CriarAtendimentoRequest, CriarAtendimentoResponse, ListarAtendimentosResponse, ListarAtendimentoConfiguracoesResponse
+} from '../../interfaces';
 
 @Injectable()
 export class AtendimentosService {
@@ -16,6 +17,16 @@ export class AtendimentosService {
   listar() {
     return this.http
       .get<ListarAtendimentosResponse>('atendimentos');
+  }
+
+  configuracoes(atendimentId: number) {
+    return this.http
+      .get<ListarAtendimentoConfiguracoesResponse>(`atendimentos/${atendimentId}/configuracoes`);
+  }
+
+  valorPadrao(atendimentoid: number, valor: string) {
+    return this.http
+      .put<any>(`atendimentos/${atendimentoid}/configuracoes/valor`, { valor_padrao: valor });
   }
 
 

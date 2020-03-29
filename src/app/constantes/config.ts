@@ -8,3 +8,5 @@ export const LOCAL_STORAGE_ITENS = {
   token: 'x-access-token',
   contexto: 'x-context'
 };
+
+export const DURACAO_SNACKBAR = 5000;

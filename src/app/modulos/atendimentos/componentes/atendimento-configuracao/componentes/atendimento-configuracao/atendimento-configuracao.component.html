@@ -7,51 +7,57 @@
       <h1>Configuração</h1>
     </div>
   </div>
-  <div fxLayout="row wrap" fxFlex fxLayoutGap.gt-xs="16px">
-    <div fxFlex="30" fxFlex.lt-sm="100">
-      <h3>Atender nos(as)</h3>
-      <div fxLayoutGap="8px" fxLayout="column">
-        <div fxLayout="row" class="header-atender-dias">
-          <div>
-            Dia/
-          </div>
-          <div>
-            Hora/
-          </div>
-          <div>
-            Duração/
-          </div>
-          <div>
-            Sessões
-          </div>
-        </div>
-        <div *ngFor="let diaAtendimento of diasAtendimento; let i = index">
-          <mat-chip-list>
-            <mat-chip color="accent" selected (click)="abrirDialog(i)">
-              {{ diaAtendimento.diaSemana | diaSemana:true }} /
-              {{ diaAtendimento.hora }} /
-              {{ diaAtendimento.duracao }} (min) /
-              {{ diaAtendimento.qtdSessoes }}
-            </mat-chip>
-            <button mat-icon-button color="warn" (click)="this.diasAtendimento.splice(i, 1)">
-              <mat-icon>remover</mat-icon>
-            </button>
-          </mat-chip-list>
-        </div>
-        <button mat-icon-button color="accent" (click)="abrirDialog(-1)">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
-    </div>
-    <mat-divider fxHide.lt-sm [vertical]="true"></mat-divider>
-    <div fxFlex fxFlex.lt-sm="100" fxLayout="column">
+  <div fxLayout="column" fxFlex fxLayoutGap.gt-xs="8px">
+    <div fxLayout="column">
       <h3>Valor da sessão</h3>
       <div>
         <mat-form-field appearance="outline" fxFlex.lt-sm>
           <mat-label>Valor</mat-label>
-          <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" [options]="moedaOptions">
+          <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" (change)="alterarValor()"
+            [options]="moedaOptions">
         </mat-form-field>
       </div>
+    </div>
+
+    <div>
+      <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+        <h4>Os atendimentos acontecerão no(a):</h4>
+      </div>
+      <ng-container *ngIf="!!dias">
+        <div fxLayoutGap="24px" fxLayout="column" style="margin-bottom: 32px;">
+          <div class="configuracao-dia" *ngFor="let dia of dias; let i = index" fxLayout="column" fxLayoutGap="8px">
+            <div fxLayout="column">
+              <span class="clicavel"
+                style="opacity: 0.88; font-size: 24px; font-weight: 600;">{{ dia.dia_semana | diaSemana }}</span>
+              <span style="opacity: 0.64; font-size: 24px; font-weight: 600;">{{ dia.quantidade }}
+                {{ dia.quantidade === 1 ? 'sessão' : 'sessões' }} de
+                {{ dia.duracao }} minutos</span>
+            </div>
+            <div class="sessoes" fxLayout="column" fxLayoutGap="4px">
+              <div *ngFor="let sessao of dia.sessoes; let indexSessao = index" fxLayout="row" fxLayoutGap="16px">
+                <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="4px">
+                  <div class="circulo"></div>
+                  <div *ngIf="indexSessao < dia.sessoes.length - 1" class="traco"></div>
+                </div>
+                <div>
+                  <span class="duracao">{{ sessao.hora_inicio }} -
+                    {{ sessao.hora_fim }}</span>
+                </div>
+              </div>
+            </div>
+            <mat-divider class="divider"></mat-divider>
+          </div>
+          <div>
+            <div fxLayout="column" class="configuracao-dia">
+              <span class="clicavel"
+                style="opacity: 0.88; font-size: 24px; font-weight: 600;">{{ dias.length === 0 ? 'Clique aqui' : 'Outro dia'}}</span>
+              <span style="opacity: 0.64; font-size: 24px; font-weight: 600;">
+                Crie uma nova configuração
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

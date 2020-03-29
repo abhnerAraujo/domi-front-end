@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
@@ -36,6 +37,8 @@ export class AtendimentoResumoComponent implements OnInit {
     ultimos_acontecimentos: { tipo: number; descricao: string; data: string }[]
   };
 
+  atendimentoId: number;
+
   countUpOptionsMoeda: CountUpOptions = {
     decimalPlaces: 2,
     useGrouping: true,
@@ -51,7 +54,7 @@ export class AtendimentoResumoComponent implements OnInit {
 
   evolucaoOcultada = true;
 
-  constructor(public location: Location) {
+  constructor(public location: Location, public route: ActivatedRoute) {
     this.atendimento = {
       paciente: {
         nome: 'Matheus Felipe',
@@ -87,6 +90,7 @@ export class AtendimentoResumoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.atendimentoId = Number.parseInt(this.route.snapshot.params.id_atendimento, 10);
   }
 
 }

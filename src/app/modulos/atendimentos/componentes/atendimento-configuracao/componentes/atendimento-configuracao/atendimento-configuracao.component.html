@@ -13,7 +13,7 @@
       <div>
         <mat-form-field appearance="outline" fxFlex.lt-sm>
           <mat-label>Valor</mat-label>
-          <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" (change)="alterarValor()"
+          <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" (blur)="alterarValor()"
             [options]="moedaOptions">
         </mat-form-field>
       </div>
@@ -25,7 +25,8 @@
       </div>
       <ng-container *ngIf="!!dias">
         <div fxLayoutGap="24px" fxLayout="column" style="margin-bottom: 32px;">
-          <div class="configuracao-dia" *ngFor="let dia of dias; let i = index" fxLayout="column" fxLayoutGap="8px">
+          <div class="configuracao-dia" *ngFor="let dia of dias; let i = index" fxLayout="column" fxLayoutGap="8px"
+            (click)="abrirDialog(dia)">
             <div fxLayout="column">
               <span class="clicavel"
                 style="opacity: 0.88; font-size: 24px; font-weight: 600;">{{ dia.dia_semana | diaSemana }}</span>
@@ -48,7 +49,7 @@
             <mat-divider class="divider"></mat-divider>
           </div>
           <div>
-            <div fxLayout="column" class="configuracao-dia">
+            <div fxLayout="column" class="configuracao-dia" (click)="abrirDialog(null)">
               <span class="clicavel"
                 style="opacity: 0.88; font-size: 24px; font-weight: 600;">{{ dias.length === 0 ? 'Clique aqui' : 'Outro dia'}}</span>
               <span style="opacity: 0.64; font-size: 24px; font-weight: 600;">

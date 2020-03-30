@@ -44,7 +44,6 @@ export class AtendimentoConfiguracaoComponent implements OnInit {
     };
   }
 
-
   ngOnInit() {
     this.atendimentoId = Number.parseInt(this.route.snapshot.params.id_atendimento, 10);
     this.carregarConfiguracoes();
@@ -61,6 +60,7 @@ export class AtendimentoConfiguracaoComponent implements OnInit {
           this.dias = resultado.dados.dias;
           this.valorSessao = resultado.dados.valor_padrao;
           this.carregaDuracaoSessoes();
+          this.dias.sort((a, b) => (a.dia_semana > b.dia_semana) ? 1 : (a.dia_semana === b.dia_semana) ? 0 : -1);
         },
         erro => this.snackbar.open(erro.mensagem || 'Ocorreu um erro ao listar configurações', 'Ok', { duration: DURACAO_SNACKBAR })
       );
@@ -80,28 +80,51 @@ export class AtendimentoConfiguracaoComponent implements OnInit {
     });
   }
 
-  abrirDialog(index: number) {
-    let dados: DiaAtendimento = {
+  abrirDialog(dia: ConfiguracaoAtendimento) {
+    const dados: DiaAtendimento = {
       id: null,
       diaSemana: null,
       hora: null,
       qtdSessoes: null,
       duracao: null
     };
-    if (index >= 0) {
-      dados = this.diasAtendimento[index];
+    if (dia) {
+      dados.id = dia.atendimento_configuracao_id;
+      dados.diaSemana = dia.dia_semana;
+      dados.hora = this.momentService.momentBr(dia.hora_inicio).format('LT');
+      dados.qtdSessoes = dia.quantidade;
+      dados.duracao = dia.duracao;
     }
     const dialogRef = this.dialog.open(DialogConfigDiaAtendimentoComponent, {
       data: dados
     });
     dialogRef.afterClosed().subscribe((retorno: DiaAtendimento) => {
       if (retorno) {
-        if (retorno.id) {
-          this.diasAtendimento[index] = retorno;
+        const hora = retorno.hora.split(':')[0];
+        const minutos = retorno.hora.split(':')[1];
+        const config: ConfiguracaoAtendimento = {
+          atendimento_configuracao_id: retorno.id,
+          atendimento: 0,
+          dia_semana: retorno.diaSemana,
+          duracao: retorno.duracao,
+          hora_inicio: this.momentService.momentBr()
+            .set({ hour: Number.parseInt(hora, 10), minute: Number.parseInt(minutos, 10), second: 0 })
+            .toISOString(),
+          quantidade: retorno.qtdSessoes,
+        };
+
+        if (config.atendimento_configuracao_id) {
+          this.atendimentoService.editarConfiguracao(this.atendimentoId, config)
+            .subscribe(r => this.snackbar.open(r.mensagem, 'Ótimo', { duration: DURACAO_SNACKBAR }),
+              erro => this.snackbar.open(erro.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
+              () => this.carregarConfiguracoes());
         } else {
-          retorno.id = (this.diasAtendimento.length + 1) || 1;
-          this.diasAtendimento.push(retorno);
+          this.atendimentoService.criarConfiguracao(this.atendimentoId, config)
+            .subscribe(r => this.snackbar.open(r.mensagem, 'Ótimo', { duration: DURACAO_SNACKBAR }),
+              erro => this.snackbar.open(erro.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
+              () => this.carregarConfiguracoes());
         }
+        this.carregarConfiguracoes();
       }
     });
   }

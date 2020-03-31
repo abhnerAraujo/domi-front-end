@@ -28,8 +28,13 @@
           <div class="configuracao-dia" *ngFor="let dia of dias; let i = index" fxLayout="column" fxLayoutGap="8px"
             (click)="abrirDialog(dia)">
             <div fxLayout="column">
-              <span class="clicavel"
-                style="opacity: 0.88; font-size: 24px; font-weight: 600;">{{ dia.dia_semana | diaSemana }}</span>
+              <div fxLayoutAlign="space-between center">
+                <span class="clicavel"
+                  style="opacity: 0.88; font-size: 24px; font-weight: 600;">{{ dia.dia_semana | diaSemana }}</span>
+                <button mat-icon-button color="warn" (click)="$event.stopPropagation(); excluir(dia)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
               <span style="opacity: 0.64; font-size: 24px; font-weight: 600;">{{ dia.quantidade }}
                 {{ dia.quantidade === 1 ? 'sessão' : 'sessões' }} de
                 {{ dia.duracao }} minutos</span>

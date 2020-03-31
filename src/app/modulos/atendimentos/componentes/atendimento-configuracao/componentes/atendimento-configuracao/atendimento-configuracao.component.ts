@@ -96,6 +96,7 @@ export class AtendimentoConfiguracaoComponent implements OnInit {
       dados.duracao = dia.duracao;
     }
     const dialogRef = this.dialog.open(DialogConfigDiaAtendimentoComponent, {
+      minWidth: 320,
       data: dados
     });
     dialogRef.afterClosed().subscribe((retorno: DiaAtendimento) => {
@@ -134,6 +135,15 @@ export class AtendimentoConfiguracaoComponent implements OnInit {
       .subscribe(
         resultado => this.snackbar.open(resultado.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
         erro => this.snackbar.open(erro.mensagem || 'Ocorreu um erro inesperado :(', 'Ok', { duration: DURACAO_SNACKBAR })
+      );
+  }
+
+  excluir(dia: ConfiguracaoAtendimento) {
+    this.atendimentoService.excluirConfiguracao(this.atendimentoId, dia.atendimento_configuracao_id)
+      .subscribe(
+        r => this.snackbar.open(r.mensagem, 'Ótimo', { duration: DURACAO_SNACKBAR }),
+        e => this.snackbar.open(e.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
+        () => this.carregarConfiguracoes()
       );
   }
 

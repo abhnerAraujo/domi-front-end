@@ -40,4 +40,9 @@ export class AtendimentosService {
       .post<any>(`atendimentos/${atendimentoId}/configuracoes`, dados);
   }
 
+  excluirConfiguracao(atendimentoId: number, atendimentoConfiguracaoId: number) {
+    return this.http
+      .delete<any>(`atendimentos/${atendimentoId}/configuracoes/${atendimentoConfiguracaoId}`);
+  }
+
 }

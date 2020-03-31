@@ -20,12 +20,13 @@ export class ApiResponseInterceptor implements HttpInterceptor {
                 this.progressBar.hide();
               }, 2000);
             }
+          },
+          err => {
+            setTimeout(() => {
+              this.progressBar.hide();
+            }, 2000);
           }
-        ),
-        catchError(err => {
-          this.progressBar.hide();
-          return of(err);
-        })
+        )
       );
   }
 }

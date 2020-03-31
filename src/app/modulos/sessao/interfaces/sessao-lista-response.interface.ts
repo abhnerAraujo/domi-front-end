@@ -5,6 +5,7 @@ export interface Sessao {
   hora_inicio: string;
   hora_fim: string;
   quantidade: number;
+  duracao: number;
   utensilios_especificos?: any;
   objetivos_especificos?: any;
   estrategias_especificas?: any;

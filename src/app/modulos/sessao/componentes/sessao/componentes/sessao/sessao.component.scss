@@ -4,6 +4,26 @@
   color: $warn;
 }
 
+.configuracao-field {
+  text-align: center; 
+  font-size: 20px; 
+  font-weight: 600;
+}
+
+.container-resultado {
+  margin-top: 24px;
+  opacity: .88;
+}
+
+.resultado {
+  font-weight: 600; 
+  font-size: 24px; 
+  padding-top: 24px;
+  @media screen and (max-width: 499px) {
+    padding: 0;
+  }
+}
+
 @keyframes flickerAnimation {
   0%   { opacity:1; }
   50%  { opacity:0; }

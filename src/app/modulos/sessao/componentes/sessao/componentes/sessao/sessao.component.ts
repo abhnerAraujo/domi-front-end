@@ -1,24 +1,23 @@
+import { FinalizarSessaoComponent } from './../finalizar-sessao/finalizar-sessao.component';
+import { DURACAO_SNACKBAR } from './../../../../../../constantes/config';
+import { SessaoService } from './../../../../services/sessao/sessao.service';
+import { MomentService } from './../../../../../compartilhado/services/moment/moment.service';
+import { AtendimentosService } from './../../../../../atendimentos/services/atendimentos/atendimentos.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Artefato } from './../../../../interfaces/atividade.interface';
 import { ARTEFATO_TIPO, ARTEFATO_TIPO_DESCRICAO } from './../../../../../../constantes/artefato-tipo';
-import { Agendamento } from './../../../../../atendimentos/interfaces/agendamento.interface';
 import { Subscription } from 'rxjs';
-import {
-  DialogConfigDiaAtendimentoComponent
-} from './../../../../../compartilhado/componentes/dialog-config-dia-atendimento/dialog-config-dia-atendimento.component';
-import { DiaAtendimento } from './../../../../../atendimentos/interfaces/dia-atendimento.interface';
-import { AtendimentoConfiguracao } from './../../../../../atendimentos/interfaces/atendimento-configuracao.interface';
-import { Router } from '@angular/router';
-import { FinalizarSessaoComponent, FinalizarSessaoDados } from './../finalizar-sessao/finalizar-sessao.component';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatBottomSheet, MatDialog, MatSnackBar } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
-import 'moment/locale/pt-br';
 import {
   BottomSheetNavegacaoComponent
 } from '../../../../../compartilhado/componentes/bottom-sheet-navegacao/bottom-sheet-navegacao.component';
 import { CurrencyMaskConfig } from 'ng2-currency-mask/src/currency-mask.config';
+import { Sessao } from 'src/app/modulos/sessao/interfaces';
+import { Moment } from 'moment';
+import { FinalizarSessaoDados } from '../finalizar-sessao/finalizar-sessao.component';
 
-moment.locale('pt-BR');
 
 @Component({
   selector: 'app-sessao',
@@ -29,123 +28,125 @@ export class SessaoComponent implements OnInit {
 
   dialogSubscription: Subscription;
   moedaOptions: CurrencyMaskConfig;
-
-  qtdSessoes: number;
-  tempoSessao: number;
-
-  countDown: string;
-  counter: number;
-  limite: number;
   interval;
-  parado: boolean;
-  extrapolou: boolean;
-
-  agendamento: Agendamento =
-    {
-      agendamento_id: 1,
-      agendamento_data: new Date().toISOString(),
-      hora_inicio_sessao: '1000',
-      tempo_sessao: 45,
-      quantidade_sessoes: 2,
-      paciente_id: 1,
-      atendimento_id: 1
-    };
-  diaAtendimentoSelecionado: DiaAtendimento;
-  novoDiaAtendimento: DiaAtendimento;
-  configuracaoAtendimentoSalva: AtendimentoConfiguracao = {
-    valor_sessao: 80.00,
-    atendimento_dias: [
-      { id: 6, diaSemana: 6, hora: '100000', qtdSessoes: 2, duracao: 45 },
-      { id: 7, diaSemana: 1, hora: '1000', qtdSessoes: 2, duracao: 45 },
-      // { id: 8, diaSemana: 0, hora: '1000', qtdSessoes: 2, duracao: 45 },
-      // { id: 9, diaSemana: 3, hora: '1000', qtdSessoes: 2, duracao: 45 },
-      // { id: 1, diaSemana: 5, hora: '1000', qtdSessoes: 2, duracao: 45 },
-      // { id: 2, diaSemana: 4, hora: '1000', qtdSessoes: 2, duracao: 45 },
-      // { id: 3, diaSemana: 2, hora: '1000', qtdSessoes: 2, duracao: 45 }
-    ]
-  };
-  mensagemConfiguracao: string;
-  prontoParaComecar: boolean;
-  valorSessao: number;
-
-  novaNota: string;
-  tipoArtefatoAdd: number;
+  sessaoForm: FormGroup;
   atividades: Artefato[];
   timeline: any[];
+  sessao: Sessao;
+  agoraServidor: Moment;
 
-  constructor(public bottomSheet: MatBottomSheet
+  parado: boolean;
+  extrapolou: boolean;
+  carregando: boolean;
+  prontoParaComecar: boolean;
+
+  countDown: string;
+  novaNota: string;
+
+  counter: number;
+  limite: number;
+  valorSessao: number;
+  tipoArtefatoAdd: number;
+  atendimentoId: number;
+  sessaoId: number;
+
+  constructor(
+    public bottomSheet: MatBottomSheet
     , public dialog: MatDialog
-    , private router: Router) {
+    , private router: Router
+    , fb: FormBuilder
+    , private route: ActivatedRoute
+    , private atendimentoService: AtendimentosService
+    , private sessaoService: SessaoService
+    , private moment: MomentService
+    , private snackbar: MatSnackBar) {
     this.counter = 0;
     this.parado = true;
     this.extrapolou = false;
     this.prontoParaComecar = false;
-    this.moedaOptions = {
-      align: 'left',
-      allowNegative: true,
-      decimal: ',',
-      thousands: '.',
-      prefix: 'R$ ',
-      suffix: '',
-      precision: 2,
-    };
+    this.sessaoForm = fb.group({
+      duracao: [1, Validators.compose([Validators.required])],
+      quantidade: [45, Validators.compose([Validators.required])],
+      valor_padrao: [100],
+    });
+    this.carregando = true;
   }
 
   ngOnInit() {
+    this.atendimentoId = Number.parseInt(this.route.snapshot.params.id_atendimento, 10);
+    this.sessaoId = Number.parseInt(this.route.snapshot.params.id_sessao, 10);
     this.countDown = '00:00:00';
     this.prepararConfiguracao();
+    if (this.sessaoId) {
+      this.dadosSessao();
+    } else {
+    }
     this.tipoArtefatoAdd = 0;
   }
 
   prepararConfiguracao() {
-    if (this.agendamento) {
-      this.mensagemConfiguracao =
-        'Existe um agendamento para esta sessão. Clique na configuração para alterar ou selecione a de outro dia.';
-      this.novoDiaAtendimento = {
-        id: null,
-        diaSemana: moment(this.agendamento.agendamento_data).weekday(),
-        hora: this.agendamento.hora_inicio_sessao,
-        qtdSessoes: this.agendamento.quantidade_sessoes,
-        duracao: this.agendamento.tempo_sessao,
-        selecionado: true
-      };
-      this.diaAtendimentoSelecionado = this.novoDiaAtendimento;
-      this.chipSelecao(this.diaAtendimentoSelecionado);
-      this.configuracaoAtendimentoSalva.atendimento_dias.sort(this.ordenarChips);
-    } else if (this.configuracaoAtendimentoSalva.atendimento_dias && this.configuracaoAtendimentoSalva.atendimento_dias.length) {
-      const diaAtendimento = this.configuracaoParaHoje(this.configuracaoAtendimentoSalva.atendimento_dias);
-      if (diaAtendimento) {
-        diaAtendimento.selecionado = true;
-        this.mensagemConfiguracao = 'Utilize a configuração salva ou crie uma nova.';
-      } else {
-        this.mensagemConfiguracao = 'Não foi encontrada uma configuração para hoje. Utilize a de outro dia ou crie uma nova.';
-        this.diaAtendimentoSelecionado = null;
-      }
-      this.configuracaoAtendimentoSalva.atendimento_dias.sort(this.ordenarChips);
-    } else {
-      this.mensagemConfiguracao = 'Não existe nenhuma configuração salva, crie uma nova';
-      this.diaAtendimentoSelecionado = null;
-    }
-    this.valorSessao = this.configuracaoAtendimentoSalva.valor_sessao;
+    this.atendimentoService.configuracoes(this.atendimentoId)
+      .subscribe(
+        r => {
+          const diaHoje = this.moment.momentBr().weekday();
+          const configuracaoHoje = r.dados.dias.find(dia => dia.dia_semana === diaHoje);
+          if (configuracaoHoje) {
+            this.sessaoForm.patchValue({
+              quantidade: configuracaoHoje.quantidade,
+              duracao: configuracaoHoje.duracao,
+              valor: r.dados.valor_padrao
+            });
+          }
+        }
+      );
+  }
+
+  private dadosSessao() {
+    this.sessaoService.sessao(this.atendimentoId, this.sessaoId)
+      .subscribe(
+        r => {
+          this.sessao = r.dados[0];
+          this.limite = this.sessao.duracao * this.sessao.quantidade * 60;
+          this.prontoParaComecar = true;
+          this.tipoArtefatoAdd = null;
+          if (this.sessao.hora_fim) {
+            this.router.navigate([`atendimentos/${this.atendimentoId}/sessoes/${this.sessaoId}/resumo`]);
+          }
+          if (this.sessao.hora_inicio) {
+            this.iniciar();
+          }
+        },
+        e => this.snackbar.open(e.error.mensagem || 'Não foi possível carregar a sessão', 'Ok', { duration: DURACAO_SNACKBAR }),
+        () => this.carregando = false
+      );
   }
 
   atualizarTempo() {
-    this.countDown = moment().hours(0).minutes(0).seconds(this.counter++).format('HH:mm:ss');
+    this.countDown = this.moment.momentBr().hours(0).minutes(0).seconds(this.counter++).format('HH:mm:ss');
     this.extrapolou = this.counter > this.limite;
   }
 
-  ordenarChips = (a: DiaAtendimento, b: DiaAtendimento) =>
-    (a.selecionado === true || a.diaSemana < b.diaSemana) ? -1 : 1
-
   iniciar() {
-    this.parado = false;
-    if (this.counter === 0) {
-      this.atividades = [{ id: 1, tipo: 'Início do Atendimento', tipo_id: null, data_criacao: new Date().toISOString() }];
-      this.countDown = '00:00:00';
-    }
-    this.interval = setInterval(() => this.atualizarTempo(), 1000);
-    this.atualizarTimeLine();
-    this.criarArtefatoAleatorio();
+    this.sessaoService.iniciar(this.atendimentoId, this.sessaoId)
+      .subscribe(
+        r => {
+          this.agoraServidor = this.moment.momentBr(r.dados.agora);
+          this.sessao.hora_inicio = r.dados.hora_inicio;
+
+          this.parado = false;
+          this.counter = this.agoraServidor.diff(this.moment.momentBr(this.sessao.hora_inicio), 'seconds');
+
+          if (this.counter === 0) {
+            this.atividades = [{ id: 1, tipo: 'Início do Atendimento', tipo_id: null, data_criacao: new Date().toISOString() }];
+            this.countDown = '00:00:00';
+            this.atualizarTimeLine();
+          }
+          this.interval = setInterval(() => this.atualizarTempo(), 1000);
+          // this.criarArtefatoAleatorio();
+        },
+        e => this.snackbar.open(e.error.mensagem || 'Não foi possível iniciar a sessão', 'Ok', { duration: DURACAO_SNACKBAR })
+      );
+
   }
 
   pausar() {
@@ -163,9 +164,29 @@ export class SessaoComponent implements OnInit {
   }
 
   aplicarConfiguracoes() {
-    this.limite = this.diaAtendimentoSelecionado.duracao * this.diaAtendimentoSelecionado.qtdSessoes * 60;
-    this.prontoParaComecar = true;
-    this.tipoArtefatoAdd = null;
+    const dados = this.sessaoForm.value;
+    this.sessaoService.salvar(this.atendimentoId, dados)
+      .subscribe(
+        r => this.router.navigate([`atendimentos/${this.atendimentoId}/sessoes/${r.sessao_id}`]),
+        e => this.snackbar.open(e.error.mensagem || 'Ocorreu um erro ao criar sessão', 'Ok', { duration: DURACAO_SNACKBAR }),
+        () => this.carregando = false);
+
+  }
+
+  tempoTotal = () => {
+    const duracao: number = this.sessaoForm.get('duracao').value;
+    const quantidade: number = this.sessaoForm.get('quantidade').value;
+    const totalEmMilli = (duracao * quantidade) * 60 * 1000;
+    const inicial = this.moment.momentBr().set({ hour: 0, minute: 0, second: 0 });
+    const formato = (quantidade * duracao) >= 60 ? 'H[h] mm[m]' : 'mm [min(s)]';
+    return inicial.millisecond(totalEmMilli).format(formato);
+  }
+
+  fimDaSessao = () => {
+    const duracao: number = this.sessaoForm.get('duracao').value;
+    const quantidade: number = this.sessaoForm.get('quantidade').value;
+    const totalEmMilli = (duracao * quantidade) * 60 * 1000;
+    return this.moment.momentBr().add(totalEmMilli, 'millisecond').format('LT');
   }
 
   adicionarArtefato() {
@@ -183,22 +204,24 @@ export class SessaoComponent implements OnInit {
   }
 
   finalizar() {
-    const sessaoQuantidade = this.counter < this.diaAtendimentoSelecionado.duracao
+    const sessaoQuantidade = this.counter < (this.sessao.duracao * 60)
       ? 1
-      : Math.round(this.counter / (this.diaAtendimentoSelecionado.duracao * 60));
+      : Math.round(this.counter / (this.sessao.duracao * 60));
     const data: FinalizarSessaoDados = {
-      sessao_id: 1,
+      sessao_id: this.sessao.sessao_id,
       sessao_duracao: this.countDown,
       sessao_quantidade: sessaoQuantidade,
-      sessao_data: new Date().toISOString(),
-      sessao_responsavel: 'Abhner Araujo',
-      sessao_email_responsavel: 'abhnerfelipe@gmail.com',
-      sessao_envia_email_responsavel: true,
-      sessao_orientacoes: 'Treinar mais o /k/ durante a semana.',
-      sessao_valor: 80 * sessaoQuantidade,
+      sessao_data: this.sessao.sessao_data,
+      sessao_responsavel: '',
+      sessao_email_responsavel: '',
+      sessao_envia_email_responsavel: false,
+      sessao_orientacoes: '',
+      sessao_valor: this.sessaoForm.value.valor_padrao * sessaoQuantidade,
       sessao_paga: false
     };
+
     const dialogRef = this.dialog.open(FinalizarSessaoComponent, {
+      disableClose: true,
       data,
       minWidth: 320
     });
@@ -206,41 +229,6 @@ export class SessaoComponent implements OnInit {
     this.dialogSubscription = dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
         this.router.navigate(['/atendimentos/1/sessoes']);
-      }
-    });
-  }
-
-  configuracaoParaHoje = (dias: DiaAtendimento[]) => dias.find(dia => dia.diaSemana === moment().weekday());
-
-  chipSelecao(dia: DiaAtendimento) {
-    this.configuracaoAtendimentoSalva.atendimento_dias.forEach(outroDia => {
-      if (outroDia.id !== dia.id) {
-        outroDia.selecionado = false;
-      } else {
-        dia.selecionado = !dia.selecionado;
-        this.novoDiaAtendimento.selecionado = false;
-        this.diaAtendimentoSelecionado = dia;
-      }
-    });
-  }
-
-  novaConfiguracaoDia() {
-    const dialogRef = this.dialog.open(DialogConfigDiaAtendimentoComponent, {
-      data: {
-        id: null,
-        diaSemana: moment().weekday(),
-        hora: moment().format('LT'),
-        qtdSessoes: 1,
-        duracao: 40,
-        travarBotoes: true
-      }
-    });
-    this.dialogSubscription = dialogRef.afterClosed().subscribe((resultado: DiaAtendimento) => {
-      if (resultado) {
-        this.novoDiaAtendimento = resultado;
-        this.novoDiaAtendimento.selecionado = true;
-        this.diaAtendimentoSelecionado = this.novoDiaAtendimento;
-        this.chipSelecao(this.novoDiaAtendimento);
       }
     });
   }
@@ -264,7 +252,8 @@ export class SessaoComponent implements OnInit {
 
   atualizarTimeLine() {
     const group = this.atividades.reduce(
-      (entryMap, e) => entryMap.set(moment(e.data_criacao).format('LT'), [...entryMap.get(moment(e.data_criacao).format('LT')) || [], e]),
+      (entryMap, e) => entryMap.set(this.moment.momentBr(e.data_criacao).format('LT'),
+        [...entryMap.get(this.moment.momentBr(e.data_criacao).format('LT')) || [], e]),
       new Map()
     );
     this.timeline = Array.from(group.entries());

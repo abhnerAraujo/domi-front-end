@@ -1,3 +1,6 @@
+import { SessaoService } from './../../services/sessao/sessao.service';
+import { AtendimentosService } from './../../../atendimentos/services/atendimentos/atendimentos.service';
+import { MomentService } from './../../../compartilhado/services/moment/moment.service';
 import { AvaliacaoModule } from './../../../avaliacao/avaliacao.module';
 import { AnamneseModule } from './../../../anamnese/anamnese.module';
 import { PipesModule } from './../../../../pipes/pipes.module';
@@ -10,7 +13,7 @@ import { BottomSheetNavegacaoModule } from './../../../compartilhado/componentes
 import {
   MatButtonModule, MatIconModule, MatDividerModule, MatProgressBarModule,
   MatFormFieldModule, MatInputModule, MatCheckboxModule, MatExpansionModule, MatDialogModule
-  , MatSliderModule, MatDatepickerModule, MatChipsModule
+  , MatSliderModule, MatDatepickerModule, MatSnackBarModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SessaoRoutingModule } from './sessao-routing.module';
@@ -44,13 +47,18 @@ import { SalvarNotaComponent } from './componentes/salvar-nota/salvar-nota.compo
     MatDatepickerModule,
     CurrencyMaskModule,
     DialogConfigDiaAtendimentoModule,
-    MatChipsModule,
     PipesModule,
     FormsModule,
     CurrencyMaskModule,
     NgxDropzoneModule,
     AnamneseModule,
-    AvaliacaoModule
+    AvaliacaoModule,
+    MatSnackBarModule
+  ],
+  providers: [
+    MomentService,
+    AtendimentosService,
+    SessaoService
   ],
   entryComponents: [FinalizarSessaoComponent]
 })

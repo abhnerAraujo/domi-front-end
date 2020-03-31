@@ -1,7 +1,7 @@
-import { ResumoPagamentosResponse } from './../../interfaces/resumo-pagamentos-response.interface';
+import {
+  ResumoPagamentosResponse, SalvarSessaoRequest, ListarSessoesResponse, SalvarSessaoResponse, Sessao, IniciarSessaoResponse
+} from './../../interfaces';
 import { HttpClient } from '@angular/common/http';
-import { MomentService } from './../../../compartilhado/services/moment/moment.service';
-import { ListarSessoesResponse } from './../../interfaces/sessao-lista-response.interface';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -26,8 +26,18 @@ export class SessaoService {
       .get<ResumoPagamentosResponse>(`atendimentos/${atendimentoId}/sessoes/resumo_pagamentos`);
   }
 
-  salvar(atendimentoId: number, dados: any) {
+  salvar(atendimentoId: number, dados: SalvarSessaoRequest) {
     return this.http
-      .post<any>(`atendimentos/${atendimentoId}/sessoes`, dados);
+      .post<SalvarSessaoResponse>(`atendimentos/${atendimentoId}/sessoes`, dados);
+  }
+
+  editar(atendimentoId: number, sessaoId: number, dados: Sessao) {
+    return this.http
+      .put<any>(`atendimentos/${atendimentoId}/sessoes/${sessaoId}`, dados);
+  }
+
+  iniciar(atendimentoId: number, sessaoId: number) {
+    return this.http
+      .put<IniciarSessaoResponse>(`atendimentos/${atendimentoId}/sessoes/${sessaoId}/iniciar`, {});
   }
 }

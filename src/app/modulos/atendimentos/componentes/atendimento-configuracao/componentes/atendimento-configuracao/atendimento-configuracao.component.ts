@@ -47,10 +47,6 @@ export class AtendimentoConfiguracaoComponent implements OnInit {
   ngOnInit() {
     this.atendimentoId = Number.parseInt(this.route.snapshot.params.id_atendimento, 10);
     this.carregarConfiguracoes();
-    this.diasAtendimento = [];
-    this.diasAtendimento.push(
-      { id: 1, diaSemana: 1, hora: '10:00', qtdSessoes: 2, duracao: 45 },
-    );
   }
 
   async carregarConfiguracoes() {

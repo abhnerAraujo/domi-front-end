@@ -15,4 +15,5 @@ export interface IniciarSessaoResponse {
 export interface IniciarSessaoDados {
   hora_inicio: string;
   agora: string;
+  tempo_corrido: number;
 }

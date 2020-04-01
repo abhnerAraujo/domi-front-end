@@ -79,7 +79,6 @@ export class SessaoComponent implements OnInit {
     this.prepararConfiguracao();
     if (this.sessaoId) {
       this.dadosSessao();
-    } else {
     }
     this.tipoArtefatoAdd = 0;
   }
@@ -97,7 +96,9 @@ export class SessaoComponent implements OnInit {
               valor: r.dados.valor_padrao
             });
           }
-        }
+        },
+        e => this.snackbar.open(e.error.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
+        () => this.carregando = false
       );
   }
 
@@ -132,9 +133,10 @@ export class SessaoComponent implements OnInit {
         r => {
           this.agoraServidor = this.moment.momentBr(r.dados.agora);
           this.sessao.hora_inicio = r.dados.hora_inicio;
+          this.sessao.tempo_corrido = r.dados.tempo_corrido;
 
           this.parado = false;
-          this.counter = this.agoraServidor.diff(this.moment.momentBr(this.sessao.hora_inicio), 'seconds');
+          this.counter = this.sessao.tempo_corrido;
 
           if (this.counter === 0) {
             this.atividades = [{ id: 1, tipo: 'Início do Atendimento', tipo_id: null, data_criacao: new Date().toISOString() }];
@@ -150,6 +152,10 @@ export class SessaoComponent implements OnInit {
   }
 
   pausar() {
+    this.sessaoService.pausar(this.atendimentoId, this.sessaoId, this.counter)
+      .subscribe(
+        r => this.snackbar.open('Pausado!', 'Ok', { duration: DURACAO_SNACKBAR })
+      );
     this.parado = true;
     clearInterval(this.interval);
   }

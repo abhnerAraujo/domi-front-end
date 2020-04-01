@@ -40,4 +40,14 @@ export class SessaoService {
     return this.http
       .put<IniciarSessaoResponse>(`atendimentos/${atendimentoId}/sessoes/${sessaoId}/iniciar`, {});
   }
+
+  finalizar(atendimentoId: number, sessaoId: number) {
+    return this.http
+      .put<IniciarSessaoResponse>(`atendimentos/${atendimentoId}/sessoes/${sessaoId}/finalizar`, {});
+  }
+
+  pausar(atendimentoId: number, sessaoId: number, tempoCorrido: number) {
+    return this.http
+      .put<IniciarSessaoResponse>(`atendimentos/${atendimentoId}/sessoes/${sessaoId}/pausar`, { tempo_corrido: tempoCorrido });
+  }
 }

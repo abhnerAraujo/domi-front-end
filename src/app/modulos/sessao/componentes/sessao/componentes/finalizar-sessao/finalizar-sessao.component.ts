@@ -34,8 +34,8 @@ export class FinalizarSessaoComponent implements OnInit {
     fb: FormBuilder) {
     this.resumoSessaoForm = fb.group({
       sessao_id: [data.sessao_id],
-      sessao_duracao: [data.sessao_duracao],
-      sessao_quantidade: [data.sessao_quantidade],
+      sessao_duracao: [{ disabled: true, value: data.sessao_duracao }],
+      sessao_quantidade: [{ disabled: true, value: data.sessao_quantidade }],
       sessao_data: [data.sessao_data],
       sessao_responsavel: [data.sessao_responsavel],
       sessao_email_responsavel: [data.sessao_email_responsavel],

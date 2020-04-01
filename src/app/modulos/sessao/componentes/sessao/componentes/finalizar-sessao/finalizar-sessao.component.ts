@@ -8,9 +8,10 @@ moment.locale('pt-BR');
 
 export interface FinalizarSessaoDados {
   sessao_id: number;
-  sessao_duracao: string;
+  sessao_duracao: number;
+  sessao_tempo_corrido: string;
   sessao_quantidade: number;
-  sessao_data: string;
+  sessao_data: any;
   sessao_responsavel: string;
   sessao_email_responsavel: string;
   sessao_envia_email_responsavel: boolean;
@@ -34,8 +35,9 @@ export class FinalizarSessaoComponent implements OnInit {
     fb: FormBuilder) {
     this.resumoSessaoForm = fb.group({
       sessao_id: [data.sessao_id],
-      sessao_duracao: [{ disabled: true, value: data.sessao_duracao }],
-      sessao_quantidade: [{ disabled: true, value: data.sessao_quantidade }],
+      sessao_duracao: [data.sessao_duracao],
+      sessao_tempo_corrido: [{ disabled: true, value: data.sessao_tempo_corrido }],
+      sessao_quantidade: [data.sessao_quantidade],
       sessao_data: [data.sessao_data],
       sessao_responsavel: [data.sessao_responsavel],
       sessao_email_responsavel: [data.sessao_email_responsavel],

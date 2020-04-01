@@ -210,12 +210,17 @@ export class SessaoComponent implements OnInit {
   }
 
   finalizar() {
+    this.sessaoService.pausar(this.atendimentoId, this.sessaoId, this.counter)
+      .subscribe(
+        r => { }
+      );
     const sessaoQuantidade = this.counter < (this.sessao.duracao * 60)
       ? 1
       : Math.round(this.counter / (this.sessao.duracao * 60));
     const data: FinalizarSessaoDados = {
       sessao_id: this.sessao.sessao_id,
-      sessao_duracao: this.countDown,
+      sessao_duracao: this.sessao.duracao,
+      sessao_tempo_corrido: this.countDown,
       sessao_quantidade: sessaoQuantidade,
       sessao_data: this.sessao.sessao_data,
       sessao_responsavel: '',
@@ -232,9 +237,20 @@ export class SessaoComponent implements OnInit {
       minWidth: 320
     });
 
-    this.dialogSubscription = dialogRef.afterClosed().subscribe(resultado => {
+    this.dialogSubscription = dialogRef.afterClosed().subscribe((resultado: FinalizarSessaoDados) => {
       if (resultado) {
-        this.router.navigate(['/atendimentos/1/sessoes']);
+        this.sessao.duracao = resultado.sessao_duracao;
+        this.sessao.sessao_data = typeof resultado.sessao_data === 'string' ? resultado.sessao_data : resultado.sessao_data.toISOString();
+        this.sessao.valor_sessao = resultado.sessao_valor * 100;
+        this.sessao.quantidade = resultado.sessao_quantidade;
+        this.sessao.tempo_corrido = this.counter;
+
+        this.sessaoService.finalizar(this.atendimentoId, this.sessaoId, this.sessao)
+          .subscribe(
+            r => this.snackbar.open(r.mensagem, 'Ótimo', { duration: DURACAO_SNACKBAR }),
+            e => this.snackbar.open(e.error.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
+            () => this.router.navigate([`/atendimentos/${this.atendimentoId}/sessoes/${this.sessaoId}/resumo`])
+          );
       }
     });
   }

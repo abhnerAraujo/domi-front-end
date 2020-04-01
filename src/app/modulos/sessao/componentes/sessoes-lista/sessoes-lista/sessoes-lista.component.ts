@@ -189,7 +189,12 @@ export class SessoesListaComponent implements OnInit {
   }
 
   sessaoResumo(item: TimeLineItem) {
-    this.router.navigate([`/atendimentos/${this.atendimentoId}/sessoes/${item.id}`]);
+    const sessao = this.sessoes.find(s => s.sessao_id === item.id);
+    if (sessao.hora_fim) {
+      this.router.navigate([`/atendimentos/${this.atendimentoId}/sessoes/${item.id}/resumo`]);
+    } else {
+      this.router.navigate([`/atendimentos/${this.atendimentoId}/sessoes/${item.id}`]);
+    }
   }
 
 }

@@ -12,6 +12,7 @@ export interface Sessao {
   estrategias_especificas?: any;
   evolucao: string;
   nota_geral: number;
+  valor_sessao: number;
   created_at: string;
   updated_at: string;
   deleted_at?: any;

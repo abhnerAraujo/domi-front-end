@@ -1,4 +1,4 @@
-<div fxLayout="column" style="height: 100%;" fxLayoutGap="16px">
+<div fxLayout="column" fxLayoutGap="16px">
   <div fxLayoutAlign="space-between center">
     <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px" fxFlex="nogrow">
       <button mat-icon-button (click)="location.back()">
@@ -16,12 +16,13 @@
   </div>
   <ng-container *ngIf="!carregando; else spinner">
     <ng-container *ngIf="sessoes?.length; else nenhumaSessao">
-      <div fxLayout="row" fxFlex="40" fxLayoutAlign="center" fxLayoutGap="32px" *ngIf="mostrarGraficos">
+      <div fxLayout="row" fxFlex="300px" fxFlex.xs="200px" fxLayoutAlign="center" fxLayoutGap="32px"
+        *ngIf="mostrarGraficos">
         <div fxLayout="column" fxFlex>
           <div fxLayoutAlign="center" fxFlex class="donut-wrapper">
             <p-chart type="doughnut" height="100%" [data]="dataDonut" [options]="optionsDonut"></p-chart>
             <div class="donut-inner" fxLayout="column" fxLayoutAlign="center center">
-              <h5>{{ total | moeda:true }}</h5>
+              <h5>{{ totalPago | moeda:true }}</h5>
               <span>Faltam receber</span>
               <span>{{ total - totalPago | moeda:true }}</span>
             </div>
@@ -32,8 +33,8 @@
               <h4>{{ totalSessoes > 1 ? 'Sessões' : 'Sessão'}}</h4>
             </div>
             <div fxFlex fxLayoutAlign="start center" fxLayout="column" class="informacoes">
-              <h3>{{ totalPago | moeda }}</h3>
-              <h4>Reais recebidos</h4>
+              <h3>{{ total | moeda:true }}</h3>
+              <h4>Total</h4>
             </div>
           </div>
         </div>
@@ -45,7 +46,7 @@
         </div>
       </div>
       <mat-divider></mat-divider>
-      <div fxFlex>
+      <div>
         <app-timeline [timeline]="timeLine" [options]="timeLineConfig" (selecao)="sessaoResumo($event)"></app-timeline>
       </div>
     </ng-container>

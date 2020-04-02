@@ -98,17 +98,18 @@ export class SessoesListaComponent implements OnInit {
   }
 
   async carregarTimeLine() {
-    this.timeLine = this.sessoes.map((sessao, index) => {
+    let index = this.sessoes.length;
+    this.timeLine = this.sessoes.map((sessao) => {
       const item = {
         id: sessao.sessao_id,
-        titulo: `${index + 1}ª sessão`,
+        titulo: `${index}ª sessão`,
         data: sessao.sessao_data,
-        // descricao: `${this.moment.momento().duration()}`
         descricao: 'Em andamento'
       };
       if (sessao.hora_fim) {
         item.descricao = `${this.moment.momentBr(sessao.hora_inicio).format('LT')} - ${this.moment.momentBr(sessao.hora_fim).format('LT')}`;
       }
+      index--;
       return item;
     });
   }
@@ -122,10 +123,10 @@ export class SessoesListaComponent implements OnInit {
       cutoutPercentage: 80
     };
     this.dataDonut = {
-      labels: ['Total pago', 'A receber'],
+      labels: ['Total pago (R$)', 'A receber (R$)'],
       datasets: [
         {
-          data: [this.totalPago, this.total - this.totalPago],
+          data: [this.totalPago, (this.total - this.totalPago).toFixed(2)],
           backgroundColor: [
             CORES.acento_dark,
             CORES.acento_light
@@ -179,7 +180,8 @@ export class SessoesListaComponent implements OnInit {
       }
     };
     let ultimoIndicador = 0;
-    this.sessoes.forEach((sessao, index) => {
+    const ultimasDez = this.sessoes.slice(0, 9);
+    ultimasDez.forEach((sessao, index) => {
       this.dataLinha.labels.push(`${index + 1}ª sessão`);
       if (sessao.nota_geral) {
         ultimoIndicador = sessao.nota_geral;

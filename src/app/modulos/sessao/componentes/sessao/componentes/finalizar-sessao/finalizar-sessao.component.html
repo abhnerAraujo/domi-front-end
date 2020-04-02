@@ -71,12 +71,58 @@
             <mat-panel-title> Valor </mat-panel-title>
             <mat-panel-description fxLayoutAlign="end"> Ver mais </mat-panel-description>
           </mat-expansion-panel-header>
-          <div fxLayout="column">
+          <div fxLayout="column" fxLayoutGap="8px">
             <mat-form-field appearance="outline">
               <mat-label>Preço</mat-label>
               <input matInput formControlName="sessao_valor" currencyMask autocomplete="off" [options]="moedaOptions">
             </mat-form-field>
-            <mat-checkbox formControlName="sessao_paga">Pago</mat-checkbox>
+            <mat-checkbox (change)="sessaoPagaChange()" formControlName="sessao_paga">Pagamento</mat-checkbox>
+            <ng-container *ngIf="resumoSessaoForm.get('sessao_paga').value && tiposPagamento">
+              <div fxLayout="row" formArrayName="sessao_pagamentos"
+                *ngFor="let pagamento of pagamentos.controls; let i = index">
+
+                <div fxLayoutGap.gt-xs="8px" fxLayoutAlign="start" [formGroupName]="i">
+                  <div fxLayout="row" fxLayoutGap.gt-xs="8px" fxLayout.xs="column">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Forma de pagamento</mat-label>
+                      <mat-select formControlName="sessao_tipo_pagamento">
+                        <mat-option>Selecione</mat-option>
+                        <mat-option *ngFor="let tipoPagamento of tiposPagamento"
+                          [value]="tipoPagamento.tipo_pagamento_id">
+                          {{ tipoPagamento.descricao }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="pagamento.get('sessao_tipo_pagamento').hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Valor pago</mat-label>
+                      <input matInput formControlName="sessao_valor_pago" currencyMask autocomplete="off"
+                        [options]="moedaOptions">
+                      <mat-error *ngIf="pagamento.get('sessao_valor_pago').hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                      <mat-error
+                        *ngIf="!pagamento.get('sessao_valor_pago').hasError('required') && pagamento.get('sessao_valor_pago').hasError('min')">
+                        Valor não pode ser zero
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <button mat-icon-button color="warn" (click)="removerPagamento(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+
+              </div>
+              <div fxLayoutAlign="center">
+                <button mat-icon-button color="accent" (click)="addPagamento()">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+            </ng-container>
           </div>
         </mat-expansion-panel>
         <!-- <mat-expansion-panel>
@@ -89,6 +135,20 @@
             <textarea matInput formControlName="sessao_orientacoes"></textarea>
           </mat-form-field>
         </mat-expansion-panel> -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Nota geral </mat-panel-title>
+            <mat-panel-description fxLayoutAlign="end"> {{ resumoSessaoForm.get('sessao_nota_geral').value }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <section fxLayout="row" fxLayoutAlign="center">
+            <mat-icon *ngFor="let nota of notas"
+              [ngClass]="{'clicavel': true, 'nota': true, 'selecionado': (resumoSessaoForm.get('sessao_nota_geral').value >= nota)}"
+              (click)="resumoSessaoForm.get('sessao_nota_geral').setValue(nota)">
+              {{ (resumoSessaoForm.get('sessao_nota_geral').value >= nota) ? 'star' : 'star_outline' }}
+            </mat-icon>
+          </section>
+        </mat-expansion-panel>
       </mat-accordion>
     </form>
   </div>

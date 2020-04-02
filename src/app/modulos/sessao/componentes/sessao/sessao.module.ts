@@ -1,3 +1,5 @@
+import { PagamentosService } from './../../services/pagamentos/pagamentos.service';
+import { TiposPagamentoService } from './../../services/tipos-pagamento/tipos-pagamento.service';
 import { SessaoService } from './../../services/sessao/sessao.service';
 import { AtendimentosService } from './../../../atendimentos/services/atendimentos/atendimentos.service';
 import { MomentService } from './../../../compartilhado/services/moment/moment.service';
@@ -13,7 +15,7 @@ import { BottomSheetNavegacaoModule } from './../../../compartilhado/componentes
 import {
   MatButtonModule, MatIconModule, MatDividerModule, MatProgressBarModule,
   MatFormFieldModule, MatInputModule, MatCheckboxModule, MatExpansionModule, MatDialogModule
-  , MatSliderModule, MatDatepickerModule, MatSnackBarModule
+  , MatSliderModule, MatDatepickerModule, MatSnackBarModule, MatSelectModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SessaoRoutingModule } from './sessao-routing.module';
@@ -45,6 +47,7 @@ import { SalvarNotaComponent } from './componentes/salvar-nota/salvar-nota.compo
     MatDialogModule,
     MatSliderModule,
     MatDatepickerModule,
+    MatSelectModule,
     CurrencyMaskModule,
     DialogConfigDiaAtendimentoModule,
     PipesModule,
@@ -58,7 +61,9 @@ import { SalvarNotaComponent } from './componentes/salvar-nota/salvar-nota.compo
   providers: [
     MomentService,
     AtendimentosService,
-    SessaoService
+    SessaoService,
+    TiposPagamentoService,
+    PagamentosService
   ],
   entryComponents: [FinalizarSessaoComponent]
 })

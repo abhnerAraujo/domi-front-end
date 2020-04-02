@@ -9,7 +9,7 @@ import { ARTEFATO_TIPO, ARTEFATO_TIPO_DESCRICAO } from './../../../../../../cons
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatBottomSheet, MatDialog, MatSnackBar } from '@angular/material';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   BottomSheetNavegacaoComponent
 } from '../../../../../compartilhado/componentes/bottom-sheet-navegacao/bottom-sheet-navegacao.component';
@@ -24,7 +24,7 @@ import { FinalizarSessaoDados } from '../finalizar-sessao/finalizar-sessao.compo
   templateUrl: './sessao.component.html',
   styleUrls: ['./sessao.component.scss']
 })
-export class SessaoComponent implements OnInit {
+export class SessaoComponent implements OnInit, OnDestroy {
 
   dialogSubscription: Subscription;
   moedaOptions: CurrencyMaskConfig;
@@ -65,8 +65,8 @@ export class SessaoComponent implements OnInit {
     this.extrapolou = false;
     this.prontoParaComecar = false;
     this.sessaoForm = fb.group({
-      duracao: [1, Validators.compose([Validators.required])],
-      quantidade: [45, Validators.compose([Validators.required])],
+      duracao: [45, Validators.compose([Validators.required])],
+      quantidade: [1, Validators.compose([Validators.required])],
       valor_padrao: [100],
     });
     this.carregando = true;
@@ -81,6 +81,12 @@ export class SessaoComponent implements OnInit {
       this.dadosSessao();
     }
     this.tipoArtefatoAdd = 0;
+  }
+
+  ngOnDestroy() {
+    this.sessaoService.pausar(this.atendimentoId, this.sessaoId, this.counter)
+      .subscribe(
+        r => { });
   }
 
   prepararConfiguracao() {
@@ -173,7 +179,7 @@ export class SessaoComponent implements OnInit {
     const dados = this.sessaoForm.value;
     this.sessaoService.salvar(this.atendimentoId, dados)
       .subscribe(
-        r => this.router.navigate([`atendimentos/${this.atendimentoId}/sessoes/${r.sessao_id}`]),
+        r => this.router.navigate([`atendimentos/${this.atendimentoId}/sessoes/${r.dados.sessao.sessao_id}`]),
         e => this.snackbar.open(e.error.mensagem || 'Ocorreu um erro ao criar sessão', 'Ok', { duration: DURACAO_SNACKBAR }),
         () => this.carregando = false);
 
@@ -228,7 +234,8 @@ export class SessaoComponent implements OnInit {
       sessao_envia_email_responsavel: false,
       sessao_orientacoes: '',
       sessao_valor: this.sessaoForm.value.valor_padrao * sessaoQuantidade,
-      sessao_paga: false
+      sessao_paga: false,
+      sessao_nota_geral: this.sessao.nota_geral ? this.sessao.nota_geral : 5
     };
 
     const dialogRef = this.dialog.open(FinalizarSessaoComponent, {
@@ -244,6 +251,16 @@ export class SessaoComponent implements OnInit {
         this.sessao.valor_sessao = resultado.sessao_valor * 100;
         this.sessao.quantidade = resultado.sessao_quantidade;
         this.sessao.tempo_corrido = this.counter;
+        this.sessao.nota_geral = resultado.sessao_nota_geral;
+        this.sessao.pagamentos = resultado.sessao_pagamentos.map(pagamento => {
+          return {
+            valor_pago: pagamento.sessao_valor_pago * 100,
+            tipo_pagamento: pagamento.sessao_tipo_pagamento,
+            sessao: this.sessaoId,
+            sessao_pagamento_id: undefined,
+            tipo_pagamento_descricao: ''
+          };
+        });
 
         this.sessaoService.finalizar(this.atendimentoId, this.sessaoId, this.sessao)
           .subscribe(

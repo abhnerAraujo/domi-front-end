@@ -4,6 +4,14 @@ export interface SalvarSessaoRequest {
 }
 
 export interface SalvarSessaoResponse {
+  dados: SalvarSessaoDados;
+}
+
+export interface SalvarSessaoDados {
+  sessao: SessaoSalva;
+}
+
+export interface SessaoSalva {
   sessao_id: number;
 }
 

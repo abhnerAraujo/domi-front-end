@@ -1,3 +1,5 @@
+import { Pagamento } from './pagamentos.interface';
+
 export interface Sessao {
   sessao_id: number;
   atendimento: number;
@@ -16,6 +18,7 @@ export interface Sessao {
   created_at: string;
   updated_at: string;
   deleted_at?: any;
+  pagamentos?: Pagamento[];
 }
 
 export interface ListarSessoesResponse {

@@ -33,3 +33,9 @@ export const RESPONSAVEL_TIPO = [
 
 export const REGEX_TELEFONE =
   /^(68|82|96|92|71|88|61|27|62|98|65|84|31|41|83|91|81|86|21|84|51|69|95|48|79|11|63)\s?(([2-5]\d{3})|([6-9]\d{4}))-?\d{4}$/g;
+
+export const TIPOS_PAGAMENTO = {
+  dinheiro: 1,
+  debito: 2,
+  credito: 3
+};

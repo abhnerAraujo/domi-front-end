@@ -1,5 +1,5 @@
-<div fxLayout="column" style="height: 100%" fxLayoutGap="16px">
-  <ng-container *ngIf="sessao">
+<div fxLayout="column" fxLayoutGap="16px">
+  <ng-container *ngIf="!processando">
     <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px" fxFlex="nogrow">
       <button mat-icon-button (click)="location.back()">
         <mat-icon>arrow_back</mat-icon>
@@ -8,65 +8,126 @@
     </div>
     <div fxFlex fxLayout="column">
       <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
-          <span>Data</span>
-          <button mat-button color="accent">{{ sessao.sessao_data | dataHora:'LL' }}</button>
-        </div>
-        <mat-divider></mat-divider>
-      </div>
-      <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
-          <span>Hora início</span>
-          <button mat-button color="accent">{{ sessao.sessao_hora_inicio | hora }}</button>
-        </div>
-        <mat-divider></mat-divider>
-      </div>
-      <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
-          <span>Hora final</span>
-          <button mat-button color="accent">{{ sessao.sessao_hora_fim | hora }}</button>
-        </div>
-        <mat-divider></mat-divider>
-      </div>
-      <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
-          <span>Quantidade de sessões</span>
-          <button mat-button color="accent">{{ sessao.sessao_quantidade }}</button>
-        </div>
-        <mat-divider></mat-divider>
-      </div>
-      <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
-          <span>Tempo total</span>
-          <button mat-button color="accent">{{ calculaTempoTotal(sessao) }} minutos</button>
-        </div>
-        <mat-divider></mat-divider>
-      </div>
-      <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
-          <span>Valor</span>
-          <button mat-button color="accent">{{ sessao.sessao_valor | moeda:true }}</button>
-        </div>
-        <mat-divider></mat-divider>
-      </div>
-      <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
-          <span>Valor pago</span>
-          <button mat-button color="accent">{{ sessao.sessao_valor_pago | moeda:true }}</button>
-        </div>
-        <mat-divider></mat-divider>
-      </div>
-      <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
-          <span>Pago</span>
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
+          <div fxLayout="column" fxLayoutGap="8px">
+            <span class="item-descricao">Data</span>
+            <span class="item-valor">
+              {{ sessao.sessao_data | dataHora:'LL' }}
+            </span>
+          </div>
           <button mat-icon-button color="accent">
-            <mat-icon>{{ sessao.sessao_pago ? 'done' : 'close' }}</mat-icon>
+            <mat-icon>edit</mat-icon>
           </button>
         </div>
         <mat-divider></mat-divider>
       </div>
       <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
+          <div fxLayout="column" fxLayoutGap="8px">
+            <span class="item-descricao">Hora início</span>
+            <span class="item-valor">
+              {{ sessao.hora_inicio | dataHora:'LT' }}
+            </span>
+          </div>
+          <button mat-icon-button color="accent">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
+          <div fxLayout="column" fxLayoutGap="8px">
+            <span class="item-descricao">Hora final</span>
+            <span class="item-valor">
+              {{ sessao.hora_fim | dataHora:'LT' }}
+            </span>
+          </div>
+          <button mat-icon-button color="accent">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
+          <div fxLayout="column" fxLayoutGap="8px">
+            <span class="item-descricao">Quantidade de sessões</span>
+            <span class="item-valor">
+              {{ sessao.quantidade }}
+            </span>
+          </div>
+          <button mat-icon-button color="accent">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
+          <div fxLayout="column" fxLayoutGap="8px">
+            <span class="item-descricao">Tempo total</span>
+            <span class="item-valor">
+              {{ calculaTempoTotal() }}
+            </span>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
+          <div fxLayout="column" fxLayoutGap="8px">
+            <span class="item-descricao">Valor</span>
+            <span class="item-valor">
+              {{ sessao.valor_sessao || 0 | moeda:true }}
+            </span>
+          </div>
+          <button mat-icon-button color="accent">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
+          <div fxLayout="column" fxLayoutGap="8px">
+            <span class="item-descricao">Valor pago</span>
+            <span class="item-valor">{{ calculaValorPago() | moeda:true }}</span>
+          </div>
+          <div>
+            <button mat-icon-button (click)="mostrarValorPago = !mostrarValorPago" color="accent">
+              <mat-icon [ngClass]="{'rotacao-ida': mostrarValorPago, 'rotacao-volta': !mostrarValorPago}">expand_more
+              </mat-icon>
+            </button>
+          </div>
+        </div>
+        <div [ngClass]="{'expandir': mostrarValorPago, 'esconder': !mostrarValorPago}">
+          <ng-container *ngIf="mostrarValorPago && sessao?.pagamentos">
+            <div [ngClass]="{'slide-right': mostrarValorPago, 'sumir': !mostrarValorPago}" fxLayout="column"
+              fxLayoutGap="8px">
+              <mat-selection-list #listaPagamentos>
+                <div fxLayoutAlign="space-between center">
+                  <div mat-subheader>Pagamentos</div>
+                  <button *ngIf="listaPagamentos.selectedOptions.selected.length" mat-icon-button>
+                    <mat-icon [matBadge]="listaPagamentos.selectedOptions.selected.length" matBadgeColor="warn"
+                      style="opacity: .8;">delete
+                    </mat-icon>
+                  </button>
+                </div>
+                <mat-list-option *ngFor="let pagamento of sessao.pagamentos">
+                  <mat-icon mat-list-icon>
+                    {{ pagamento.tipo_pagamento === tiposPagamento.dinheiro ? 'money' : 'credit_card' }}</mat-icon>
+                  <div mat-line style="font-size: 24px; opacity: .96;">{{ pagamento.valor_pago | moeda:true }}</div>
+                  <div mat-line style="font-weight: 600; opacity: .72;">{{ pagamento.tipo_pagamento_descricao }}</div>
+                </mat-list-option>
+              </mat-selection-list>
+            </div>
+          </ng-container>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="resumo-item">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
           <span>Planejamento</span>
           <button mat-icon-button color="accent">
             <mat-icon>create</mat-icon>
@@ -75,7 +136,7 @@
         <mat-divider></mat-divider>
       </div>
       <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
           <span>Evolução</span>
           <button mat-icon-button color="accent">
             <mat-icon>create</mat-icon>
@@ -84,13 +145,12 @@
         <mat-divider></mat-divider>
       </div>
       <div class="resumo-item">
-        <div class="item-descricao" fxLayoutAlign="space-between center">
+        <div class="item-conteudo" fxLayoutAlign="space-between center">
           <span>Mídias</span>
           <button mat-icon-button color="accent">
             <mat-icon>collections</mat-icon>
           </button>
         </div>
-        <mat-divider></mat-divider>
       </div>
     </div>
   </ng-container>

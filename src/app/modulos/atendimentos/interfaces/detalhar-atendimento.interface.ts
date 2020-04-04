@@ -1,6 +1,8 @@
+import { Paciente } from './../../cadastros/componentes/paciente/interfaces/detalher-paciente-response.interface';
+
 export interface Atendimento {
   atendimento_id: number;
-  paciente: number;
+  paciente: number | Paciente;
   data_inicio: string;
   data_terminio: string;
   estrategia_geral: string;

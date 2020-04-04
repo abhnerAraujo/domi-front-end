@@ -14,6 +14,7 @@ export interface Paciente {
   profissional_criador: number;
   telefones: Telefone[];
   enderecos: Endereco[];
+  foto?: string;
   responsaveis: Responsavel[];
 }
 

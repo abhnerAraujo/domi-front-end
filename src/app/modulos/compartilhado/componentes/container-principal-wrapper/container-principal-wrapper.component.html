@@ -1,8 +1,10 @@
 <div class="container-geral" fxLayout="column">
+  <div class="loader" fxFlex="4px">
+    <app-loader></app-loader>
+  </div>
   <div class="cabecalho no-print" fxFlex="nogrow" fxLayout="column">
     <app-toolbar fxFlex (toggleSidenav)="sidenavEsquerdoAberto = !sidenavEsquerdoAberto"></app-toolbar>
   </div>
-  <app-loader fxFlex="10px"></app-loader>
   <mat-sidenav-container fxFlex>
     <mat-sidenav [(opened)]="sidenavEsquerdoAberto" [mode]="sidenavEsquerdoMode" fxFlex="250px"
       class="navegacao no-print">

@@ -1,5 +1,11 @@
+@import '../../../../styles/variables.scss';
+
 .cabecalho {
   width: 100%;
+}
+
+.loader {
+  background-color: $primary;
 }
 
 .container-geral {

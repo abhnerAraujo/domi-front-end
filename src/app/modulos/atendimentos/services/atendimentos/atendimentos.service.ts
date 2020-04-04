@@ -20,9 +20,9 @@ export class AtendimentosService {
       .get<ListarAtendimentosResponse>('atendimentos');
   }
 
-  detalhar(atendimentoId: number) {
+  detalhar(atendimentoId: number, fill?: boolean) {
     return this.http
-      .get<DetalharAtendimentoRequest>(`atendimentos/${atendimentoId}`);
+      .get<DetalharAtendimentoRequest>(`atendimentos/${atendimentoId}`, { params: { fill: `${fill}` } });
   }
 
   editar(atendimentoId: number, dados: Atendimento) {

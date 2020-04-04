@@ -1,3 +1,4 @@
+import { EscolaridadesService } from './../../../compartilhado/services/escolaridades/escolaridades.service';
 import { ResponsavelTiposService } from './services/responsavel-tipos/responsavel-tipos.service';
 import { PipesModule } from './../../../../pipes/pipes.module';
 import { PacientesService } from './services/pacientes/pacientes.service';
@@ -39,7 +40,8 @@ import { NgxMaskModule } from 'ngx-mask';
   ],
   providers: [
     PacientesService,
-    ResponsavelTiposService
+    ResponsavelTiposService,
+    EscolaridadesService
   ]
 })
 export class PacienteModule { }

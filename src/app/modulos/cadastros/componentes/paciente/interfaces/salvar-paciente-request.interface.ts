@@ -4,6 +4,7 @@ export interface SalvarPacienteRequest {
   nome_completo: string;
   sexo: string;
   email?: string;
+  escolaridade?: string;
   data_nascimento?: string;
   responsaveis?: Responsavel[];
   telefones?: Telefone[];

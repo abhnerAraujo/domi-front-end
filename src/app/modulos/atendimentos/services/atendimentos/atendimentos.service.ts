@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   CriarAtendimentoRequest, CriarAtendimentoResponse, ListarAtendimentosResponse, ListarAtendimentoConfiguracoesResponse,
-  ConfiguracaoAtendimento
+  ConfiguracaoAtendimento, Atendimento, DetalharAtendimentoRequest, EditarAtendimentoResponse
 } from '../../interfaces';
 
 @Injectable()
@@ -18,6 +18,16 @@ export class AtendimentosService {
   listar() {
     return this.http
       .get<ListarAtendimentosResponse>('atendimentos');
+  }
+
+  detalhar(atendimentoId: number) {
+    return this.http
+      .get<DetalharAtendimentoRequest>(`atendimentos/${atendimentoId}`);
+  }
+
+  editar(atendimentoId: number, dados: Atendimento) {
+    return this.http
+      .put<EditarAtendimentoResponse>(`atendimentos/${atendimentoId}`, dados);
   }
 
   configuracoes(atendimentId: number) {

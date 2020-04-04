@@ -7,21 +7,54 @@
       <h1>Configuração</h1>
     </div>
   </div>
-  <div fxLayout="column" fxFlex fxLayoutGap.gt-xs="8px">
-    <div fxLayout="column">
-      <h3>Valor da sessão</h3>
+  <div fxLayout="column" fxFlex fxLayoutGap.gt-xs="16px" (ngSubmit)="alterarValor()">
+    <h3>Atendimento</h3>
+    <form [formGroup]="atendimentoForm" fxLayout="column">
       <div>
-        <mat-form-field appearance="outline" fxFlex.lt-sm>
+        <mat-form-field appearance="outline" fxFlex.lt-sm fxFlex="50">
           <mat-label>Valor</mat-label>
-          <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" (blur)="alterarValor()"
-            [options]="moedaOptions">
+          <input matInput currencyMask formControlName="valor_padrao" autocomplete="off"
+            (blur)="alterarValor('valor_padrao')" [options]="moedaOptions">
         </mat-form-field>
       </div>
-    </div>
+      <div>
+        <mat-form-field appearance="outline" fxFlex.lt-sm fxFlex="50">
+          <mat-label>Queixa</mat-label>
+          <textarea matTextareaAutosize matInput formControlName="queixa" autocomplete="off"
+            (change)="alterarValor()"></textarea>
+          <mat-error *ngIf="atendimentoForm.get('queixa').hasError('maxlength')">
+            Não pode conter mais que {{ atendimentoForm.get('queixa').getError('maxlength').requiredLength }} caracteres
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline" fxFlex.lt-sm fxFlex="50">
+          <mat-label>Diagnóstico</mat-label>
+          <textarea matTextareaAutosize matInput formControlName="diagnostico" autocomplete="off"
+            (change)="alterarValor()"></textarea>
+          <mat-error *ngIf="atendimentoForm.get('diagnostico').hasError('maxlength')">
+            Não pode conter mais que {{ atendimentoForm.get('diagnostico').getError('maxlength').requiredLength }}
+            caracteres
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="outline" fxFlex.lt-sm fxFlex="50">
+          <mat-label>H.D Fonoaudiológico</mat-label>
+          <textarea matTextareaAutosize matInput formControlName="hipotese_diagnostica_especifica" autocomplete="off"
+            (change)="alterarValor()"></textarea>
+          <mat-error *ngIf="atendimentoForm.get('hipotese_diagnostica_especifica').hasError('maxlength')">
+            Não pode conter mais que
+            {{ atendimentoForm.get('hipotese_diagnostica_especifica').getError('maxlength').requiredLength }}
+            caracteres
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
 
     <div>
       <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
-        <h4>Os atendimentos acontecerão no(a):</h4>
+        <h3>Os atendimentos acontecerão no(a):</h3>
       </div>
       <ng-container *ngIf="!!dias">
         <div fxLayoutGap="24px" fxLayout="column" style="margin-bottom: 32px;">

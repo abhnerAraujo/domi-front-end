@@ -4,7 +4,7 @@ import { PipesModule } from './../../../../pipes/pipes.module';
 import {
   DialogConfigDiaAtendimentoModule
 } from './../../../compartilhado/componentes/dialog-config-dia-atendimento/dialog-config-dia-atendimento.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   MatButtonModule, MatIconModule, MatChipsModule, MatSnackBarModule,
@@ -32,6 +32,7 @@ import { CurrencyMaskModule } from 'ng2-currency-mask';
     MatDividerModule,
     CurrencyMaskModule,
     FormsModule,
+    ReactiveFormsModule,
     DialogConfigDiaAtendimentoModule,
     PipesModule
   ],

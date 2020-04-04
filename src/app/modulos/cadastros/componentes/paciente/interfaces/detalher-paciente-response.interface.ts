@@ -10,6 +10,7 @@ export interface Paciente {
   sexo: string;
   data_nascimento?: string;
   email?: string;
+  escolaridade: number;
   profissional_criador: number;
   telefones: Telefone[];
   enderecos: Endereco[];

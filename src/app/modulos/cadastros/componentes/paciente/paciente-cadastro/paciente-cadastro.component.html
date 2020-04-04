@@ -54,6 +54,15 @@
             </mat-form-field>
           </div>
         </div>
+        <div>
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Escolaridade</mat-label>
+            <mat-select formControlName="escolaridade">
+              <mat-option *ngFor="let escolaridade of escolaridades" [value]="escolaridade.escolaridade_id">
+                {{ escolaridade.descricao }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
         <div *ngIf="!dialogRef" fxLayout="column">
           <ng-container *ngIf="pacienteForm.get('paciente_id').value; else criacaoPaciente">
             <h3>Contato</h3>
@@ -227,16 +236,23 @@
     <section fxLayout="column" [fxLayoutAlign]="alinhadoDireita ? 'start' : 'start end'">
       <ng-container *ngIf="pacienteForm.value?.nome_completo; else naoInformado"></ng-container>
       <span class="nome-paciente">{{ pacienteForm.value?.nome_completo }}</span>
-      <div fxLayoutGap="24px" fxLayoutAlign="start">
-        <div fxLayout="column">
-          <span class="rotulo">Sexo</span>
-          <span *ngIf="pacienteForm.value?.sexo; else naoInformado"
-            class="texto">{{ pacienteForm.value?.sexo | sexo }}</span>
+      <div fxLayout="column" fxLayoutGap="16px">
+        <div fxLayoutGap="24px" fxLayoutAlign="start">
+          <div fxLayout="column">
+            <span class="rotulo">Sexo</span>
+            <span *ngIf="pacienteForm.value?.sexo; else naoInformado"
+              class="texto">{{ pacienteForm.value?.sexo | sexo }}</span>
+          </div>
+          <div fxLayout="column">
+            <span class="rotulo">Idade</span>
+            <span *ngIf="pacienteForm.value?.data_nascimento; else naoInformado"
+              class="texto">{{ pacienteForm.value?.data_nascimento | idade }} anos</span>
+          </div>
         </div>
         <div fxLayout="column">
-          <span class="rotulo">Idade</span>
-          <span *ngIf="pacienteForm.value?.data_nascimento; else naoInformado"
-            class="texto">{{ pacienteForm.value?.data_nascimento | idade }} anos</span>
+          <span class="rotulo">Escolaridade</span>
+          <span *ngIf="pacienteForm.value?.escolaridade; else naoInformado"
+            class="texto">{{ valorEscolaridade(pacienteForm.value?.escolaridade) }}</span>
         </div>
       </div>
       <ng-container *ngIf="pacienteForm.value.email">
@@ -252,15 +268,17 @@
         <div fxLayout="column" fxLayoutGap="8px">
           <div *ngFor="let responsavel of pacienteForm.value.responsaveis"
             [fxLayoutAlign]="alinhadoDireita ? 'start' : 'start end'" fxLayout="column">
-            <span class="rotulo">{{ responsavel.responsavel_tipo | tipoResponsavel }}</span>
-            <span class="texto-menor">{{ responsavel.nome_responsavel }}</span>
-            <div *ngIf="responsavel.telefone_responsavel" [fxLayoutAlign]="alinhadoDireita ? 'start' : 'end center'">
-              <div fxFlex="nogrow" [fxLayout]="alinhadoDireita ? 'row-reverse' : 'row'" fxLayoutGap="8px">
-                <span fxFlex="122px" class="enfase texto-pequeno">
-                  {{ responsavel.telefone_responsavel | mask:mascara(responsavel.tipo_telefone_responsavel) }}</span>
-                <span class="enfase texto-pequeno"> {{ responsavel.tipo_telefone_responsavel | tipoTelefone }}</span>
+            <ng-container *ngIf="!responsavel.excluido">
+              <span class="rotulo">{{ responsavel.responsavel_tipo | tipoResponsavel }}</span>
+              <span class="texto-menor">{{ responsavel.nome_responsavel }}</span>
+              <div *ngIf="responsavel.telefone_responsavel" [fxLayoutAlign]="alinhadoDireita ? 'start' : 'end center'">
+                <div fxFlex="nogrow" [fxLayout]="alinhadoDireita ? 'row-reverse' : 'row'" fxLayoutGap="8px">
+                  <span fxFlex="122px" class="enfase texto-pequeno">
+                    {{ responsavel.telefone_responsavel | mask:mascara(responsavel.tipo_telefone_responsavel) }}</span>
+                  <span class="enfase texto-pequeno"> {{ responsavel.tipo_telefone_responsavel | tipoTelefone }}</span>
+                </div>
               </div>
-            </div>
+            </ng-container>
           </div>
         </div>
       </ng-container>

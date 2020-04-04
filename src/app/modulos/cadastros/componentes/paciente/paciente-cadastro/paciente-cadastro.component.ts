@@ -1,3 +1,5 @@
+import { Escolaridade } from './../../../../compartilhado/interfaces/escolaridade';
+import { EscolaridadesService } from './../../../../compartilhado/services/escolaridades/escolaridades.service';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import { REGEX_TELEFONE } from './../../../../../constantes/valores';
 import { Paciente, Endereco, Telefone, Responsavel } from './../interfaces/detalher-paciente-response.interface';
@@ -5,7 +7,7 @@ import { ResponsavelTipo } from './../interfaces/listar-responsavel-tipos-respon
 import { ResponsavelTiposService } from './../services/responsavel-tipos/responsavel-tipos.service';
 import { PacientesService } from './../services/pacientes/pacientes.service';
 import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
-import { LOCAL_STORAGE_ITENS } from './../../../../../constantes/config';
+import { LOCAL_STORAGE_ITENS, DURACAO_SNACKBAR } from './../../../../../constantes/config';
 import { DadosUsuario } from './../../../../acesso/interfaces/dados-usuario-response.interface';
 import { SalvarPacienteRequest } from './../interfaces/salvar-paciente-request.interface';
 import { SIGLAS_ESTADOS } from './../../../../../constantes/estados';
@@ -33,6 +35,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   alinhadoDireita: boolean;
   mediaQuerySubscription: Subscription;
   activeMediaQuery: string;
+  escolaridades: Escolaridade[];
 
   @Input()
   set dialogo(value: MatDialogRef<any>) {
@@ -48,7 +51,8 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar,
     private pacienteService: PacientesService,
     private responsavelTiposService: ResponsavelTiposService,
-    private mediaObserver: MediaObserver) {
+    private mediaObserver: MediaObserver,
+    private escolaridadeService: EscolaridadesService) {
     this.mediaQuerySubscription = this.mediaObserver.asObservable().subscribe(
       (change: MediaChange[]) => this.activeMediaQuery = change[0].mqAlias
     );
@@ -90,6 +94,14 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     };
   }
 
+  private carregarEscolaridades() {
+    this.escolaridadeService.listar()
+      .subscribe(
+        r => this.escolaridades = r.dados,
+        e => this.snackbar.open(e.error.mensagem, 'Ok', { duration: DURACAO_SNACKBAR })
+      );
+  }
+
   carregarResponsavelTipos() {
     this.responsavelTiposService.listar()
       .subscribe(resultado => {
@@ -113,6 +125,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       sexo: [!!dados ? dados.sexo : null, Validators.required],
       email: [!!dados ? dados.email : null, Validators.email],
       data_nascimento: [!!dados ? dados.data_nascimento : null],
+      escolaridade: [!!dados ? dados.escolaridade : null],
       telefones: this.formBuilder.array([]),
       enderecos: this.formBuilder.array([]),
       responsaveis: this.formBuilder.array([])
@@ -129,6 +142,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     this.processando = false;
     setTimeout(() => {
       this.carregarResponsavelTipos();
+      this.carregarEscolaridades();
     });
   }
 
@@ -248,6 +262,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       sexo: formValue.sexo,
       nome_completo: formValue.nome_completo,
       email: formValue.email,
+      escolaridade: formValue.escolaridade,
       profissional_criador: dadosUsuario.perfis[0].profissional_id
     };
     if (!!formValue.data_nascimento && typeof formValue.data_nascimento === 'string') {
@@ -301,7 +316,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
           if (!!this.dialogRef) {
             this.dialogRef.close(formValue.paciente_id);
           } else {
-            this.router.navigate([`cadastros/pacientes/${formValue.paciente_id}`]);
+            this.carregarPaciente(formValue.paciente_id);
           }
         },
           error => this.snackbar.open(error.mensagem, 'Ok', { duration: 5000 }),
@@ -338,5 +353,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
   }
 
   telaPequena = () => this.activeMediaQuery === 'xs' || this.activeMediaQuery === 'sm';
+
+  valorEscolaridade = (id: number) => this.escolaridades.find(e => e.escolaridade_id === id).descricao;
 
 }

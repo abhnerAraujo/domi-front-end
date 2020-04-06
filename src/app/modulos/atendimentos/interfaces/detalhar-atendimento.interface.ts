@@ -2,7 +2,7 @@ import { Paciente } from './../../cadastros/componentes/paciente/interfaces/deta
 
 export interface Atendimento {
   atendimento_id: number;
-  paciente: number | Paciente;
+  paciente: Paciente | number;
   data_inicio: string;
   data_terminio: string;
   estrategia_geral: string;

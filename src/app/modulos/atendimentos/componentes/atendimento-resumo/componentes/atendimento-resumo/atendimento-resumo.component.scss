@@ -1,3 +1,5 @@
+@import '../../../../../../styles/variables.scss';
+
 mat-nav-list {
   mat-icon {
     opacity: 0.72;
@@ -10,14 +12,9 @@ mat-nav-list {
   text-overflow: ellipsis;
 }
 
-.quote {
-  font-size: 96px;
-  height: 96px;
-  width: 96px;
-  opacity: .4;
-  @media screen and (max-width: 499px) {
-    font-size: 64px;
-    height: 64px;
-    width: 64px;
-  }
+.container-queixa {
+  border-left: 3px solid $primary;
+  margin-left: 24px;
+  padding-left: 32px;
+  min-height: 72px;
 }

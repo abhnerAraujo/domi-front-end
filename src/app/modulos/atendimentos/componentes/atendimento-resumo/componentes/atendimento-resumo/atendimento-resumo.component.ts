@@ -62,4 +62,8 @@ export class AtendimentoResumoComponent implements OnInit {
       );
   }
 
+  recuperarAtributo(objeto: any, nome: string) {
+    return objeto.hasOwnProperty(nome) ? objeto[nome] : null;
+  }
+
 }

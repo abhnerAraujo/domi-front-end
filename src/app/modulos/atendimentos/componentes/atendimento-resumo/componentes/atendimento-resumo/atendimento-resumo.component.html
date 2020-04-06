@@ -8,18 +8,19 @@
   <div *ngIf="!carregando" fxFlex fxLayoutGap.gt-xs="24px" fxLayout="row" fxLayout.lt-md="column">
     <div fxFlex fxLayout="column" fxLayoutGap="16px">
       <mat-card>
-        <img *ngIf="atendimento.paciente.foto" mat-card-image [src]="atendimento.paciente.foto" />
+        <img *ngIf="recuperarAtributo(atendimento.paciente, 'foto')" mat-card-image
+          [src]="recuperarAtributo(atendimento.paciente, 'foto')" />
         <mat-card-header>
-          <mat-icon style="font-size: 32px; width: 32px; height: 32px; opacity: .72;" *ngIf="!atendimento.paciente.foto"
-            mat-card-avatar>account_circle</mat-icon>
-          <mat-card-title>{{ atendimento.paciente?.nome_completo }}</mat-card-title>
-          <mat-card-subtitle>{{ atendimento.paciente?.data_nascimento | idade }} anos</mat-card-subtitle>
+          <mat-icon style="font-size: 32px; width: 32px; height: 32px; opacity: .72;"
+            *ngIf="!recuperarAtributo(atendimento.paciente, 'foto')" mat-card-avatar>account_circle</mat-icon>
+          <mat-card-title>{{ recuperarAtributo(atendimento.paciente, 'nome_completo') }}</mat-card-title>
+          <mat-card-subtitle>{{ recuperarAtributo(atendimento.paciente, 'data_nascimento') | idade }} anos
+          </mat-card-subtitle>
         </mat-card-header>
       </mat-card>
       <div fxLayoutGap="8px">
         <button mat-raised-button color="accent" fxFlex>DAR ALTA</button>
-        <button mat-raised-button color="accent" fxFlex [routerLink]="['/atendimentos/1/sessoes/nova']">ATENDER
-          AGORA</button>
+        <button mat-raised-button color="accent" fxFlex [routerLink]="['/atendimentos/1/sessoes/nova']">ATENDER</button>
       </div>
     </div>
     <div fxFlex="60" fxLayout="column" fxLayoutGap="16px">
@@ -33,7 +34,8 @@
         <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/configuracoes']">
           <mat-icon>settings</mat-icon> &nbsp; Sobre
         </a>
-        <a mat-list-item [routerLink]="['/cadastros/pacientes/' + atendimento.paciente.paciente_id]">
+        <a mat-list-item
+          [routerLink]="['/cadastros/pacientes/' + recuperarAtributo(atendimento.paciente, 'paciente_id') || atendimento.paciente]">
           <mat-icon>edit</mat-icon> &nbsp; Cadastro
         </a>
         <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/anamnese/nova']">
@@ -43,8 +45,7 @@
           <mat-icon>assessment</mat-icon> &nbsp; Avaliação
         </a>
       </mat-nav-list>
-      <div *ngIf="atendimento.queixa" fxLayout="row" fxLayoutAlign="start center">
-        <mat-icon class="quote">format_quote</mat-icon>
+      <div *ngIf="atendimento.queixa" class="container-queixa" fxLayout="column" fxLayoutAlign="center">
         <span style="font-style: italic; font-size: 20px">{{ atendimento.queixa }}</span>
       </div>
       <div fxLayout="column" fxFlex>

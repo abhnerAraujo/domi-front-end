@@ -1,8 +1,8 @@
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { DURACAO_SNACKBAR } from './../../../../constantes/config';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatChipInputEvent } from '@angular/material';
 import { PlanejamentosService } from './../../services/planejamentos/planejamentos.service';
 import { ActivatedRoute } from '@angular/router';
-import { MomentService } from 'src/app/modulos/compartilhado/services/moment/moment.service';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Planejamento, Objetivo, CriarPlanejamentoRequest, Atividade } from '../../interfaces';
@@ -19,6 +19,9 @@ export class PlanejamentoListaComponent implements OnInit {
   planejamentoTexto: FormControl;
   planejamentoForm: FormGroup;
   objetivoSelecionado: AbstractControl;
+  materiais: string[] = [];
+  readonly separadores: number[] = [ENTER, COMMA];
+  editarMateriais: boolean;
 
   carregando: boolean;
   nenhumResultado: boolean;
@@ -30,7 +33,6 @@ export class PlanejamentoListaComponent implements OnInit {
 
   constructor(
     public location: Location,
-    private moment: MomentService,
     private route: ActivatedRoute,
     private planejamentoService: PlanejamentosService,
     private snackbar: MatSnackBar,
@@ -111,13 +113,15 @@ export class PlanejamentoListaComponent implements OnInit {
         Validators.maxLength(255),
         Validators.pattern(/^.*[A-zÀ-ÿ1-9]{1,}.*$/)
       ])],
+      materiais: [null],
       planejamento_id: [null],
       objetivos: this.fb.array([])
     });
     if (planejamento) {
       this.planejamentoForm.patchValue({
         planejamento_texto: planejamento.planejamento_texto,
-        planejamento_id: planejamento.planejamento_id
+        planejamento_id: planejamento.planejamento_id,
+        materiais: planejamento.materiais
       });
       planejamento.objetivos.forEach(objetivo => this.addObjetivo(objetivo));
     }
@@ -164,7 +168,7 @@ export class PlanejamentoListaComponent implements OnInit {
     }
     this.planejamentoForm.patchValue({
       objetivos: this.objetivos.value
-    })
+    });
     this.planejamentoForm.updateValueAndValidity();
   }
 
@@ -187,6 +191,41 @@ export class PlanejamentoListaComponent implements OnInit {
         },
         () => this.carregarPlanejamentos()
       );
+  }
+
+  removerMaterial(material: string) {
+    const index = this.materiais.indexOf(material);
+    if (index >= 0) {
+      this.materiais.splice(index, 1);
+    }
+  }
+
+  adicionarMaterial(evento: MatChipInputEvent) {
+    const input = evento.input;
+    const valor = evento.value;
+
+    if ((valor || '').trim()) {
+      this.materiais.push(valor);
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  salvarChips() {
+    this.planejamentoForm.get('materiais').setValue(this.materiais.join(','));
+    this.materiais = [];
+    this.editarMateriais = false;
+  }
+
+  definirMateriais() {
+    if (this.planejamentoForm.get('materiais').value) {
+      this.materiais = this.planejamentoForm.get('materiais').value.split(',');
+    } else {
+      this.materiais = [];
+    }
+    this.editarMateriais = true;
   }
 
   objetivosFiltrados() {

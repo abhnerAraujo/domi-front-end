@@ -2,6 +2,7 @@ export interface Planejamento {
   planejamento_texto: string;
   planejamento_id: number;
   created_at: string;
+  materiais?: string;
   objetivos?: Objetivo[];
   excluido?: boolean;
 }

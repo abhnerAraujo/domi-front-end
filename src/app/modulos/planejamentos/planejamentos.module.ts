@@ -1,7 +1,7 @@
 import { PipesModule } from './../../pipes/pipes.module';
 import { MomentService } from './../compartilhado/services/moment/moment.service';
 import { PlanejamentosService } from './services/planejamentos/planejamentos.service';
-import { MatIconModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDividerModule, MatSnackBarModule, MatProgressSpinnerModule, MatExpansionModule } from '@angular/material';
+import { MatIconModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatDividerModule, MatSnackBarModule, MatProgressSpinnerModule, MatExpansionModule, MatChipsModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PlanejamentosRoutingModule } from './plajenamentos-routing.module';
@@ -26,7 +26,8 @@ import { PlanejamentoItemComponent } from './componentes/planejamento-item/plane
     MatSnackBarModule,
     MatProgressSpinnerModule,
     PipesModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatChipsModule
   ],
   providers: [
     PlanejamentosService,

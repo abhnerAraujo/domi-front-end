@@ -6,67 +6,143 @@
       </button>
       <h1>Resumo da sessão</h1>
     </div>
-    <div fxFlex fxLayout="column">
+    <form [formGroup]="sessaoForm" fxLayout="column">
       <div class="resumo-item">
-        <div class="item-conteudo" fxLayoutAlign="space-between center">
-          <div fxLayout="column" fxLayoutGap="8px">
+        <div class="item-conteudo" fxLayoutAlign="start start" fxLayoutGap="8px">
+          <div class="flip-in-hor-bottom" *ngIf="!edicao.sessao_data; else sessao_data" fxLayout="column"
+            fxLayoutGap="8px" fxFlex>
             <span class="item-descricao">Data</span>
             <span class="item-valor">
-              {{ sessao.sessao_data | dataHora:'LL' }}
+              {{ sessaoForm.get('sessao_data').value | dataHora:'LL' }}
             </span>
           </div>
-          <button mat-icon-button color="accent">
-            <mat-icon>edit</mat-icon>
+          <ng-template #sessao_data>
+            <mat-form-field class="flip-in-hor-bottom" fxFlex appearance="outline">
+              <mat-label>Data</mat-label>
+              <input matInput [matDatepicker]="picker" [max]="moment.momentBr()" formControlName="sessao_data" readonly>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker [disabled]="sessaoForm.get('sessao_data').disabled"></mat-datepicker>
+              <mat-hint>Altere a data tocando no calendário</mat-hint>
+            </mat-form-field>
+          </ng-template>
+          <button mat-icon-button [ngClass]="{'swing-in-top-fwd': edicao.sessao_data}" *ngIf="edicao.sessao_data"
+            color="accent" (click)="salvar('sessao_data')">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button [color]="edicao.sessao_data ? '' : 'accent'"
+            (click)="edicao.sessao_data = !edicao.sessao_data">
+            <mat-icon>{{ edicao.sessao_data ? 'close' : 'edit'}}</mat-icon>
           </button>
         </div>
         <mat-divider></mat-divider>
       </div>
+
       <div class="resumo-item">
-        <div class="item-conteudo" fxLayoutAlign="space-between center">
-          <div fxLayout="column" fxLayoutGap="8px">
-            <span class="item-descricao">Hora início</span>
+        <div class="item-conteudo" fxLayoutAlign="start start" fxLayoutGap="8px">
+          <div class="flip-in-hor-bottom" *ngIf="!edicao.hora_inicio; else hora_inicio" fxLayout="column"
+            fxLayoutGap="8px" fxFlex>
+            <span class="item-descricao">Hora de início</span>
             <span class="item-valor">
-              {{ sessao.hora_inicio | dataHora:'LT' }}
+              {{ sessaoForm.get('hora_inicio').value }}
             </span>
           </div>
-          <button mat-icon-button color="accent">
-            <mat-icon>edit</mat-icon>
+          <ng-template #hora_inicio>
+            <mat-form-field class="flip-in-hor-bottom" fxFlex appearance="outline">
+              <mat-label>Hora início</mat-label>
+              <input matInput [ngxTimepicker]="pickerInicio" [disableClick]="true" [format]="24"
+                formControlName="hora_inicio" readonly>
+              <ngx-material-timepicker [theme]="temaPrimario" #pickerInicio></ngx-material-timepicker>
+              <ngx-material-timepicker-toggle [for]="pickerInicio" matSuffix>
+                <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
+              </ngx-material-timepicker-toggle>
+              <mat-hint>Altere o horário tocando no relógio</mat-hint>
+            </mat-form-field>
+          </ng-template>
+          <button mat-icon-button [ngClass]="{'swing-in-top-fwd': edicao.hora_inicio}" *ngIf="edicao.hora_inicio"
+            color="accent" (click)="salvar('hora_inicio')">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button [color]="edicao.hora_inicio ? '' : 'accent'"
+            (click)="edicao.hora_inicio = !edicao.hora_inicio">
+            <mat-icon>{{ edicao.hora_inicio ? 'close' : 'edit'}}</mat-icon>
           </button>
         </div>
         <mat-divider></mat-divider>
       </div>
+
       <div class="resumo-item">
-        <div class="item-conteudo" fxLayoutAlign="space-between center">
-          <div fxLayout="column" fxLayoutGap="8px">
-            <span class="item-descricao">Hora final</span>
+        <div class="item-conteudo" fxLayoutAlign="start start" fxLayoutGap="8px">
+          <div class="flip-in-hor-bottom" *ngIf="!edicao.hora_fim; else hora_fim" fxLayout="column" fxLayoutGap="8px"
+            fxFlex>
+            <span class="item-descricao">Data</span>
             <span class="item-valor">
-              {{ sessao.hora_fim | dataHora:'LT' }}
+              {{ sessaoForm.get('hora_fim').value }}
             </span>
           </div>
-          <button mat-icon-button color="accent">
-            <mat-icon>edit</mat-icon>
+          <ng-template #hora_fim>
+            <mat-form-field class="flip-in-hor-bottom" fxFlex appearance="outline">
+              <mat-label>Hora de terminio</mat-label>
+              <input matInput [ngxTimepicker]="pickerFim" [disableClick]="true" [format]="24" formControlName="hora_fim"
+                readonly>
+              <ngx-material-timepicker [theme]="temaPrimario" #pickerFim></ngx-material-timepicker>
+              <ngx-material-timepicker-toggle [for]="pickerFim" matSuffix>
+                <mat-icon ngxMaterialTimepickerToggleIcon>access_time</mat-icon>
+              </ngx-material-timepicker-toggle>
+              <mat-hint>Altere o horário tocando no relógio</mat-hint>
+            </mat-form-field>
+          </ng-template>
+          <button mat-icon-button [ngClass]="{'swing-in-top-fwd': edicao.hora_fim}" *ngIf="edicao.hora_fim"
+            color="accent" (click)="salvar('hora_fim')">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button [color]="edicao.hora_fim ? '' : 'accent'"
+            (click)="edicao.hora_fim = !edicao.hora_fim">
+            <mat-icon>{{ edicao.hora_fim ? 'close' : 'edit'}}</mat-icon>
           </button>
         </div>
         <mat-divider></mat-divider>
       </div>
+
       <div class="resumo-item">
-        <div class="item-conteudo" fxLayoutAlign="space-between center">
-          <div fxLayout="column" fxLayoutGap="8px">
-            <span class="item-descricao">Quantidade de sessões</span>
+        <div class="item-conteudo" fxLayoutAlign="start start" fxLayoutGap="8px">
+          <div class="flip-in-hor-bottom" *ngIf="!edicao.quantidade; else quantidade" fxLayout="column"
+            fxLayoutGap="8px" fxFlex>
+            <span class="item-descricao">Quantidade</span>
             <span class="item-valor">
-              {{ sessao.quantidade }}
+              {{ sessaoForm.get('quantidade').value }}
             </span>
           </div>
-          <button mat-icon-button color="accent">
-            <mat-icon>edit</mat-icon>
+          <ng-template #quantidade>
+            <div fxFlex>
+              <mat-form-field class="flip-in-hor-bottom" fxFlex="100px" appearance="outline">
+                <mat-label>Quantidade</mat-label>
+                <input matInput formControlName="quantidade" readonly>
+              </mat-form-field>
+              <button mat-icon-button [disabled]="sessaoForm.value.quantidade === 1"
+                (click)="sessaoForm.get('quantidade').setValue(sessaoForm.value.quantidade - 1)">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" [disabled]="sessaoForm.value.quantidade === 5"
+                (click)="sessaoForm.get('quantidade').setValue(sessaoForm.value.quantidade + 1)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </ng-template>
+          <button mat-icon-button [ngClass]="{'swing-in-top-fwd': edicao.quantidade}" *ngIf="edicao.quantidade"
+            color="accent" (click)="salvar('quantidade')">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button [color]="edicao.quantidade ? '' : 'accent'" (click)="reverter('quantidade')">
+            <mat-icon>{{ edicao.quantidade ? 'close' : 'edit'}}</mat-icon>
           </button>
         </div>
         <mat-divider></mat-divider>
       </div>
+
       <div class="resumo-item">
-        <div class="item-conteudo" fxLayoutAlign="space-between center">
-          <div fxLayout="column" fxLayoutGap="8px">
-            <span class="item-descricao">Tempo total</span>
+        <div class="item-conteudo" fxLayoutAlign="start start" fxLayoutGap="8px">
+          <div fxLayout="column" fxLayoutGap="8px" fxFlex>
+            <span class="item-descricao">Duração</span>
             <span class="item-valor">
               {{ calculaTempoTotal() }}
             </span>
@@ -74,20 +150,34 @@
         </div>
         <mat-divider></mat-divider>
       </div>
+
       <div class="resumo-item">
-        <div class="item-conteudo" fxLayoutAlign="space-between center">
-          <div fxLayout="column" fxLayoutGap="8px">
-            <span class="item-descricao">Valor</span>
+        <div class="item-conteudo" fxLayoutAlign="start start" fxLayoutGap="8px">
+          <div class="flip-in-hor-bottom" *ngIf="!edicao.valor_sessao; else valor_sessao" fxLayout="column"
+            fxLayoutGap="8px" fxFlex>
+            <span class="item-descricao">Valor por sessão</span>
             <span class="item-valor">
-              {{ sessao.valor_sessao || 0 | moeda:true }}
+              {{ sessaoForm.get('valor_sessao').value | moeda:true }}
             </span>
           </div>
-          <button mat-icon-button color="accent">
-            <mat-icon>edit</mat-icon>
+          <ng-template #valor_sessao>
+            <mat-form-field class="flip-in-hor-bottom" fxFlex appearance="outline">
+              <mat-label>Valor por sessão</mat-label>
+              <input matInput formControlName="valor_sessao" currencyMask autocomplete="off" [options]="moedaOptions">
+            </mat-form-field>
+          </ng-template>
+          <button mat-icon-button [ngClass]="{'swing-in-top-fwd': edicao.valor_sessao}" *ngIf="edicao.valor_sessao"
+            color="accent" (click)="salvar('valor_sessao')">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button [color]="edicao.valor_sessao ? '' : 'accent'"
+            (click)="edicao.valor_sessao = !edicao.valor_sessao">
+            <mat-icon>{{ edicao.valor_sessao ? 'close' : 'edit'}}</mat-icon>
           </button>
         </div>
         <mat-divider></mat-divider>
       </div>
+
       <div class="resumo-item">
         <div class="item-conteudo" fxLayoutAlign="space-between center">
           <div fxLayout="column" fxLayoutGap="8px">
@@ -114,24 +204,15 @@
                     </mat-icon>
                   </button>
                 </div>
-                <mat-list-option *ngFor="let pagamento of sessao.pagamentos">
+                <!-- <mat-list-option *ngFor="let pagamento of sessaoForm.get('pagamentos"').value">
                   <mat-icon mat-list-icon>
                     {{ pagamento.tipo_pagamento === tiposPagamento.dinheiro ? 'money' : 'credit_card' }}</mat-icon>
                   <div mat-line style="font-size: 24px; opacity: .96;">{{ pagamento.valor_pago | moeda:true }}</div>
                   <div mat-line style="font-weight: 600; opacity: .72;">{{ pagamento.tipo_pagamento_descricao }}</div>
-                </mat-list-option>
+                </mat-list-option> -->
               </mat-selection-list>
             </div>
           </ng-container>
-        </div>
-        <mat-divider></mat-divider>
-      </div>
-      <div class="resumo-item">
-        <div class="item-conteudo" fxLayoutAlign="space-between center">
-          <span>Planejamento</span>
-          <button mat-icon-button color="accent">
-            <mat-icon>create</mat-icon>
-          </button>
         </div>
         <mat-divider></mat-divider>
       </div>
@@ -152,7 +233,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </form>
   </ng-container>
   <ng-template #carregando>
     <h4>carregando...</h4>

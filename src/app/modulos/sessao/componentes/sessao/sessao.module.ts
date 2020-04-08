@@ -52,7 +52,6 @@ import { SalvarNotaComponent } from './componentes/salvar-nota/salvar-nota.compo
     DialogConfigDiaAtendimentoModule,
     PipesModule,
     FormsModule,
-    CurrencyMaskModule,
     NgxDropzoneModule,
     AnamneseModule,
     AvaliacaoModule,

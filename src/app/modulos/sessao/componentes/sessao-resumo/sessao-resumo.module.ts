@@ -1,9 +1,12 @@
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SessaoResumoRoutingModule } from './sessao-resumo-routing.module';
 import { SessaoResumoComponent } from './sessao-resumo/sessao-resumo.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MatIconModule, MatButtonModule, MatFormFieldModule, MatCheckboxModule, MatInputModule, MatDividerModule, MatSnackBarModule, MatListModule, MatBadgeModule
+  MatIconModule, MatButtonModule, MatFormFieldModule, MatCheckboxModule, MatInputModule, MatDividerModule,
+  MatSnackBarModule, MatListModule, MatBadgeModule, MatExpansionModule, MatDatepickerModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +30,11 @@ import { MomentService } from '../../../compartilhado/services/moment/moment.ser
     PipesModule,
     MatSnackBarModule,
     MatListModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatExpansionModule,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule.setLocale('pt-BR'),
+    CurrencyMaskModule
   ],
   providers: [
     SessaoService,

@@ -74,7 +74,7 @@
         <div class="item-conteudo" fxLayoutAlign="start start" fxLayoutGap="8px">
           <div class="flip-in-hor-bottom" *ngIf="!edicao.hora_fim; else hora_fim" fxLayout="column" fxLayoutGap="8px"
             fxFlex>
-            <span class="item-descricao">Data</span>
+            <span class="item-descricao">Hora de términio</span>
             <span class="item-valor">
               {{ sessaoForm.get('hora_fim').value }}
             </span>
@@ -216,15 +216,34 @@
         </div>
         <mat-divider></mat-divider>
       </div>
+
       <div class="resumo-item">
-        <div class="item-conteudo" fxLayoutAlign="space-between center">
-          <span>Evolução</span>
-          <button mat-icon-button color="accent">
-            <mat-icon>create</mat-icon>
+        <div class="item-conteudo" fxLayoutAlign="start start" fxLayoutGap="8px">
+          <div class="flip-in-hor-bottom" *ngIf="!edicao.evolucao; else evolucao" fxLayout="column" fxLayoutGap="8px"
+            fxFlex>
+            <span class="item-descricao">Evolução</span>
+            <span class="item-valor">
+              {{ sessaoForm.get('evolucao').value || 'Não informado' }}
+            </span>
+          </div>
+          <ng-template #evolucao>
+            <mat-form-field class="flip-in-hor-bottom" fxFlex appearance="outline">
+              <mat-label>Evolução</mat-label>
+              <textarea matInput matTextareaAutosize formControlName="evolucao"></textarea>
+            </mat-form-field>
+          </ng-template>
+          <button mat-icon-button [ngClass]="{'swing-in-top-fwd': edicao.evolucao}" *ngIf="edicao.evolucao"
+            color="accent" (click)="salvar('evolucao')">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button [color]="edicao.evolucao ? '' : 'accent'"
+            (click)="edicao.evolucao = !edicao.evolucao">
+            <mat-icon>{{ edicao.evolucao ? 'close' : 'edit'}}</mat-icon>
           </button>
         </div>
         <mat-divider></mat-divider>
       </div>
+
       <div class="resumo-item">
         <div class="item-conteudo" fxLayoutAlign="space-between center">
           <span>Mídias</span>

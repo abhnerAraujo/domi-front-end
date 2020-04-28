@@ -30,6 +30,7 @@ export class SessaoResumoComponent implements OnInit {
   mostrarValorPago: boolean;
   tiposPagamento = TIPOS_PAGAMENTO;
   parcelamento: number[];
+  notas: number[];
 
   opcoesPagamento: TipoPagamento[];
   sessaoForm: FormGroup;
@@ -70,7 +71,9 @@ export class SessaoResumoComponent implements OnInit {
       precision: 2,
     };
     this.parcelamento = [...Array(13).keys()];
+    this.notas = [...Array(11).keys()];
     this.parcelamento.shift();
+    this.notas.shift();
   }
 
   ngOnInit() {

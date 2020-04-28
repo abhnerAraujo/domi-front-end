@@ -287,21 +287,21 @@
                     </button>
                   </div>
                 </div>
-                <mat-list-option *ngFor="let pagamento of pagamentos.value" [value]="pagamento">
+                <mat-list-option *ngFor="let pagamento of pagamentos.value" [value]="pagamento" class="pagamento">
                   <mat-icon mat-list-icon>
                     {{ pagamento.tipo_pagamento === tiposPagamento.dinheiro ? 'money' : 'credit_card' }}</mat-icon>
-                  <div mat-line style="font-size: 20px;" fxLayoutGap="8px">
-                    <span style="opacity: .96;">{{ pagamento.valor_pago | moeda:true }}</span>
-                    <span style="opacity: .72;">{{ pagamento.tipo_pagamento_descricao }}</span>
+                  <div mat-line class="cabecalho-pagamento" fxLayoutGap.gt-xs="8px" fxLayout.xs="column">
+                    <span class="valor-pago">{{ pagamento.valor_pago | moeda:true }}</span>
+                    <span class="tipo-pagamento">{{ pagamento.tipo_pagamento_descricao }}</span>
                   </div>
-                  <div mat-line style="opacity: .8;" fxLayoutGap="8px">
+                  <div mat-line class="subtitulo-pagamento" fxLayoutGap="8px">
                     <span>{{ pagamento.data_pagamento | dataHora:'LL' }}</span>
                   </div>
-                  <div mat-line style="opacity: .8;" *ngIf="pagamento.pagamento_cartao_id" fxLayoutGap="8px">
+                  <div mat-line class="subtitulo-pagamento" *ngIf="pagamento.pagamento_cartao_id" fxLayoutGap="8px">
                     <span>Em {{ pagamento.quantidade_parcelas }}X</span>
                     <span>no cartão *****{{ pagamento.numero_cartao }}</span>
                   </div>
-                  <div mat-line style="opacity: .8;" *ngIf="pagamento.pagamento_cartao_id" fxLayoutGap="8px">
+                  <div mat-line class="subtitulo-pagamento" *ngIf="pagamento.pagamento_cartao_id" fxLayoutGap="8px">
                     <span>Nº Comprovante: {{ pagamento.numero_comprovante }}</span>
                   </div>
                 </mat-list-option>
@@ -334,6 +334,36 @@
           <button mat-icon-button [color]="edicao.evolucao ? '' : 'accent'"
             (click)="edicao.evolucao = !edicao.evolucao">
             <mat-icon>{{ edicao.evolucao ? 'close' : 'edit'}}</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+
+      <div class="resumo-item">
+        <div class="item-conteudo" fxLayoutAlign="start center" fxLayoutGap="8px">
+          <div class="flip-in-hor-bottom" *ngIf="!edicao.nota_geral; else nota_geral" fxLayout="column"
+            fxLayoutGap="8px" fxFlex>
+            <span class="item-descricao">Nota geral</span>
+            <span class="item-valor">
+              {{ sessaoForm.get('nota_geral').value || 'Não informado' }}
+            </span>
+          </div>
+          <ng-template #nota_geral>
+            <section fxLayout="row" fxFlex fxLayoutAlign="start">
+              <mat-icon *ngFor="let nota of notas"
+                [ngClass]="{'clicavel': true, 'nota': true, 'selecionado': (sessaoForm.get('nota_geral').value >= nota)}"
+                (click)="sessaoForm.get('nota_geral').setValue(nota)">
+                {{ (sessaoForm.get('nota_geral').value >= nota) ? 'star' : 'star_outline' }}
+              </mat-icon>
+            </section>
+          </ng-template>
+          <button mat-icon-button [ngClass]="{' swing-in-top-fwd': edicao.evolucao}" *ngIf="edicao.nota_geral"
+            color="accent" (click)="salvar('nota_geral')">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button [color]="edicao.nota_geral ? '' : 'accent'"
+            (click)="edicao.nota_geral = !edicao.nota_geral">
+            <mat-icon>{{ edicao.nota_geral ? 'close' : 'edit'}}</mat-icon>
           </button>
         </div>
         <mat-divider></mat-divider>

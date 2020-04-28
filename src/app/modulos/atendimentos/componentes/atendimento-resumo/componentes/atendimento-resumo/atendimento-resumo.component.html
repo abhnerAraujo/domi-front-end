@@ -46,20 +46,14 @@
           <mat-icon>assessment</mat-icon> &nbsp; Avaliação
         </a>
       </mat-nav-list>
+      <h4 style="opacity: 0.88;">QUEIXA</h4>
       <div *ngIf="atendimento.queixa" class="container-queixa" fxLayout="column" fxLayoutAlign="center">
         <span style="font-style: italic; font-size: 20px">{{ atendimento.queixa }}</span>
       </div>
       <div fxLayout="column" fxFlex>
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-          <h4 style="opacity: 0.88;">ÚLTIMA EVOLUÇÃO</h4>
-          <button mat-icon-button [ngClass]="{'rotacao-ida': mostrarMais, 'rotacao-volta': !mostrarMais}"
-            (click)="mostrarMais = !mostrarMais">
-            <mat-icon>expand_more</mat-icon>
-          </button>
-        </div>
-        <div [ngClass]="{'mostrar-menos': !mostrarMais}" style="font-size: 20px">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere perspiciatis enim doloribus qui cupiditate
-          aspernatur maiores animi repellat a beatae, vero odio esse debitis. Nulla possimus commodi iure at quasi!
+        <h4 style="opacity: 0.88;">ÚLTIMA EVOLUÇÃO</h4>
+        <div *ngIf="atendimento.ultima_evolucao" style="font-size: 20px">
+          {{ atendimento.ultima_evolucao }}
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ export interface Atendimento {
   valor_padrao: number;
   diagnostico: string;
   hipotese_diagnostica_especifica: string;
+  ultima_evolucao?: string;
 }
 
 export interface DetalharAtendimentoRequest {

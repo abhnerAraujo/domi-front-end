@@ -185,6 +185,10 @@
             <span class="item-valor">{{ calculaValorPago() | moeda:true }}</span>
           </div>
           <div>
+            <button mat-icon-button color="accent" [disabled]="pagamentoForm"
+              (click)="carregarFormPagamento(); mostrarValorPago = true;">
+              <mat-icon>add_circle</mat-icon>
+            </button>
             <button mat-icon-button (click)="mostrarValorPago = !mostrarValorPago" color="accent">
               <mat-icon [ngClass]="{'rotacao-ida': mostrarValorPago, 'rotacao-volta': !mostrarValorPago}">expand_more
               </mat-icon>
@@ -194,22 +198,113 @@
         <div [ngClass]="{'expandir': mostrarValorPago, 'esconder': !mostrarValorPago}">
           <ng-container *ngIf="mostrarValorPago && sessao?.pagamentos">
             <div [ngClass]="{'slide-right': mostrarValorPago, 'sumir': !mostrarValorPago}" fxLayout="column"
-              fxLayoutGap="8px">
-              <mat-selection-list #listaPagamentos>
+              fxLayoutGap="8px" style="max-height: 100%; overflow-y: auto;">
+              <div *ngIf="pagamentoForm">
+                <form [formGroup]="pagamentoForm" fxLayout="column" autocomplete="off"
+                  (ngSubmit)="salvarPagamento(pagamentoForm.getRawValue())">
+                  <div fxLayoutGap="8px" fxLayout.xs="column">
+                    <mat-form-field fxFlex.gt-xs>
+                      <mat-label>Valor</mat-label>
+                      <input matInput formControlName="valor_pago" currencyMask [options]="moedaOptions" required>
+                      <mat-error *ngIf="pagamentoForm.get('valor_pago').hasError('required')">
+                        Informe o valor</mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex.gt-xs>
+                      <mat-label>Tipo do pagamento</mat-label>
+                      <mat-select formControlName="tipo_pagamento" required>
+                        <mat-option *ngFor="let tipo of opcoesPagamento" [value]="tipo.tipo_pagamento_id">
+                          {{ tipo.descricao }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="pagamentoForm.get('tipo_pagamento').hasError('required')">
+                        Informe o tipo de pagamento</mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex.gt-xs>
+                      <mat-label>Data</mat-label>
+                      <input matInput [matDatepicker]="pickerDataPagamento" [max]="moment.momentBr()"
+                        formControlName="data_pagamento" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="pickerDataPagamento"></mat-datepicker-toggle>
+                      <mat-datepicker #pickerDataPagamento></mat-datepicker>
+                      <mat-hint>Altere a data tocando no calendário</mat-hint>
+                      <mat-error *ngIf="pagamentoForm.get('data_pagamento').hasError('required')">
+                        Informe uma data</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxLayoutGap.gt-xs="8px" fxLayout.xs="column"
+                    *ngIf="pagamentoForm.get('tipo_pagamento').value !== tiposPagamento.dinheiro">
+                    <mat-form-field fxFlex.gt-xs>
+                      <mat-label>Autorização/Nº Comprovante</mat-label>
+                      <input matInput formControlName="numero_comprovante" required>
+                      <mat-error *ngIf="pagamentoForm.get('numero_comprovante').hasError('required')">
+                        Informe o comprovante</mat-error>
+                      <mat-error
+                        *ngIf="!pagamentoForm.get('numero_comprovante').hasError('required') && pagamentoForm.get('numero_comprovante').hasError('maxlength')">
+                        Máximo de 100 caracteres</mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex.gt-xs>
+                      <mat-label>Últimos 4 dígitos</mat-label>
+                      <input matInput formControlName="numero_cartao" type="number" required>
+                      <mat-error
+                        *ngIf="!pagamentoForm.get('numero_cartao').hasError('required') && pagamentoForm.get('numero_cartao').hasError('pattern')">
+                        Devem ser 4 dígitos (ex: 1234)</mat-error>
+                      <mat-error *ngIf="pagamentoForm.get('numero_cartao').hasError('required')">
+                        Informe os 4 últimos dígitos</mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex.gt-xs>
+                      <mat-label>Parcelas</mat-label>
+                      <mat-select formControlName="quantidade_parcelas" required>
+                        <mat-option *ngFor="let quantidade of parcelamento" [value]="quantidade">
+                          {{ quantidade }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="pagamentoForm.get('quantidade_parcelas').hasError('required')">
+                        Informe a quantidade de parcelas</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxLayoutAlign="end" fxLayoutGap="16px">
+                    <button mat-icon-button type="button" (click)="pagamentoForm = null">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                    <button mat-icon-button type="submit" color="accent" [disabled]="!pagamentoForm.valid">
+                      <mat-icon>save</mat-icon>
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <mat-selection-list *ngIf="!pagamentoForm" #listaPagamentos formControlName="pagamento_selecionado">
                 <div fxLayoutAlign="space-between center">
                   <div mat-subheader>Pagamentos</div>
-                  <button *ngIf="listaPagamentos.selectedOptions.selected.length" mat-icon-button>
-                    <mat-icon [matBadge]="listaPagamentos.selectedOptions.selected.length" matBadgeColor="warn"
-                      style="opacity: .8;">delete
-                    </mat-icon>
-                  </button>
+                  <div fxLayoutAlign="end">
+                    <button *ngIf="listaPagamentos.selectedOptions.selected.length === 1" mat-icon-button
+                      (click)="editarPagamento()">
+                      <mat-icon style="opacity: .8;">edit</mat-icon>
+                    </button>
+                    <button *ngIf="listaPagamentos.selectedOptions.selected.length" mat-icon-button
+                      (click)="excluirPagamentos()">
+                      <mat-icon [matBadge]="listaPagamentos.selectedOptions.selected.length" matBadgeColor="warn"
+                        style="opacity: .8;">delete
+                      </mat-icon>
+                    </button>
+                  </div>
                 </div>
-                <!-- <mat-list-option *ngFor="let pagamento of sessaoForm.get('pagamentos"').value">
+                <mat-list-option *ngFor="let pagamento of pagamentos.value" [value]="pagamento">
                   <mat-icon mat-list-icon>
                     {{ pagamento.tipo_pagamento === tiposPagamento.dinheiro ? 'money' : 'credit_card' }}</mat-icon>
-                  <div mat-line style="font-size: 24px; opacity: .96;">{{ pagamento.valor_pago | moeda:true }}</div>
-                  <div mat-line style="font-weight: 600; opacity: .72;">{{ pagamento.tipo_pagamento_descricao }}</div>
-                </mat-list-option> -->
+                  <div mat-line style="font-size: 20px;" fxLayoutGap="8px">
+                    <span style="opacity: .96;">{{ pagamento.valor_pago | moeda:true }}</span>
+                    <span style="opacity: .72;">{{ pagamento.tipo_pagamento_descricao }}</span>
+                  </div>
+                  <div mat-line style="opacity: .8;" fxLayoutGap="8px">
+                    <span>{{ pagamento.data_pagamento | dataHora:'LL' }}</span>
+                  </div>
+                  <div mat-line style="opacity: .8;" *ngIf="pagamento.pagamento_cartao_id" fxLayoutGap="8px">
+                    <span>Em {{ pagamento.quantidade_parcelas }}X</span>
+                    <span>no cartão *****{{ pagamento.numero_cartao }}</span>
+                  </div>
+                  <div mat-line style="opacity: .8;" *ngIf="pagamento.pagamento_cartao_id" fxLayoutGap="8px">
+                    <span>Nº Comprovante: {{ pagamento.numero_comprovante }}</span>
+                  </div>
+                </mat-list-option>
               </mat-selection-list>
             </div>
           </ng-container>
@@ -232,7 +327,7 @@
               <textarea matInput matTextareaAutosize formControlName="evolucao"></textarea>
             </mat-form-field>
           </ng-template>
-          <button mat-icon-button [ngClass]="{'swing-in-top-fwd': edicao.evolucao}" *ngIf="edicao.evolucao"
+          <button mat-icon-button [ngClass]="{' swing-in-top-fwd': edicao.evolucao}" *ngIf="edicao.evolucao"
             color="accent" (click)="salvar('evolucao')">
             <mat-icon>save</mat-icon>
           </button>

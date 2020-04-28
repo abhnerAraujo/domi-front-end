@@ -258,7 +258,8 @@ export class SessaoComponent implements OnInit, OnDestroy {
             tipo_pagamento: pagamento.sessao_tipo_pagamento,
             sessao: this.sessaoId,
             sessao_pagamento_id: undefined,
-            tipo_pagamento_descricao: ''
+            tipo_pagamento_descricao: '',
+            data_pagamento: this.moment.momentBr().toISOString()
           };
         });
 

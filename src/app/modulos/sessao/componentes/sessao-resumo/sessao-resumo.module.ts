@@ -1,3 +1,4 @@
+import { TiposPagamentoService } from './../../services/tipos-pagamento/tipos-pagamento.service';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { SessaoResumoRoutingModule } from './sessao-resumo-routing.module';
@@ -6,7 +7,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatIconModule, MatButtonModule, MatFormFieldModule, MatCheckboxModule, MatInputModule, MatDividerModule,
-  MatSnackBarModule, MatListModule, MatBadgeModule, MatExpansionModule, MatDatepickerModule
+  MatSnackBarModule, MatListModule, MatBadgeModule, MatExpansionModule, MatDatepickerModule, MatSelectModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -34,11 +35,13 @@ import { MomentService } from '../../../compartilhado/services/moment/moment.ser
     MatExpansionModule,
     MatDatepickerModule,
     NgxMaterialTimepickerModule.setLocale('pt-BR'),
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    MatSelectModule
   ],
   providers: [
     SessaoService,
-    MomentService
+    MomentService,
+    TiposPagamentoService
   ]
 })
 export class SessaoResumoModule { }

@@ -4,6 +4,12 @@ export interface Pagamento {
   valor_pago: number;
   tipo_pagamento: number;
   tipo_pagamento_descricao: string;
+  data_pagamento: string;
+  pagamento_cartao_id?: number;
+  quantidade_parcelas?: number;
+  numero_comprovante?: string;
+  numero_cartao?: string;
+  excluido?: boolean;
 }
 
 export interface PagamentosListarResponse {

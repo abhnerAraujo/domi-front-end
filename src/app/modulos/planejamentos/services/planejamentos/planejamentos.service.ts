@@ -22,9 +22,9 @@ export class PlanejamentosService {
       .put<EditarPlanejamentoResponse>(`atendimentos/${atendimentoId}/planejamentos/${planejamentoId}`, dados);
   }
 
-  listar(atendimentoId: number) {
+  listar(atendimentoId: number, filtros: any) {
     return this.http
-      .get<ListarPlanejamentoResponse>(`atendimentos/${atendimentoId}/planejamentos`);
+      .get<ListarPlanejamentoResponse>(`atendimentos/${atendimentoId}/planejamentos`, { params: filtros });
   }
 
   excluir(atendimentoId: number, planejamentoId: number) {

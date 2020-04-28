@@ -48,7 +48,7 @@ export class PlanejamentoListaComponent implements OnInit {
   private async carregarPlanejamentos() {
     this.carregando = true;
     this.nenhumResultado = true;
-    this.planejamentoService.listar(this.atendimentoId)
+    this.planejamentoService.listar(this.atendimentoId, null)
       .subscribe(
         r => this.planejamentos = r.dados,
         e => this.snackbar.open(e.error.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),

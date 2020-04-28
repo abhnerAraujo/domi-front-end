@@ -1,3 +1,5 @@
+import { Planejamento } from './../../../../../planejamentos/interfaces';
+import { PlanejamentosService } from './../../../../../planejamentos/services/planejamentos/planejamentos.service';
 import { FinalizarSessaoComponent } from './../finalizar-sessao/finalizar-sessao.component';
 import { DURACAO_SNACKBAR } from './../../../../../../constantes/config';
 import { SessaoService } from './../../../../services/sessao/sessao.service';
@@ -34,6 +36,7 @@ export class SessaoComponent implements OnInit, OnDestroy {
   timeline: any[];
   sessao: Sessao;
   agoraServidor: Moment;
+  planejamento: Planejamento;
 
   parado: boolean;
   extrapolou: boolean;
@@ -50,6 +53,8 @@ export class SessaoComponent implements OnInit, OnDestroy {
   atendimentoId: number;
   sessaoId: number;
 
+  artefatos: any[];
+
   constructor(
     public bottomSheet: MatBottomSheet
     , public dialog: MatDialog
@@ -59,7 +64,8 @@ export class SessaoComponent implements OnInit, OnDestroy {
     , private atendimentoService: AtendimentosService
     , private sessaoService: SessaoService
     , private moment: MomentService
-    , private snackbar: MatSnackBar) {
+    , private snackbar: MatSnackBar
+    , private planejamentoService: PlanejamentosService) {
     this.counter = 0;
     this.parado = true;
     this.extrapolou = false;
@@ -70,6 +76,13 @@ export class SessaoComponent implements OnInit, OnDestroy {
       valor_padrao: [100],
     });
     this.carregando = true;
+    this.artefatos = [
+      { tipo: ARTEFATO_TIPO.nota, icon: 'note_add', texto: 'NOTA' },
+      { tipo: ARTEFATO_TIPO.imagem, icon: 'add_a_photo', texto: 'FOTO OU VÍDEO' },
+      { tipo: ARTEFATO_TIPO.audio, icon: 'mic', texto: 'ÁUDIO' },
+      { tipo: ARTEFATO_TIPO.avaliacao, icon: 'assessment', texto: 'AVALIAÇÃO' },
+      { tipo: ARTEFATO_TIPO.anamnese, icon: 'assignment_ind', texto: 'ANAMNESE' },
+    ];
   }
 
   ngOnInit() {
@@ -110,6 +123,13 @@ export class SessaoComponent implements OnInit, OnDestroy {
       );
   }
 
+  private async carregarUltimoPlanejamento() {
+    this.planejamentoService.listar(this.atendimentoId, { limit: 1, fill: 1 })
+      .subscribe(
+        r => this.planejamento = r.dados[0]
+      );
+  }
+
   private dadosSessao() {
     this.sessaoService.sessao(this.atendimentoId, this.sessaoId)
       .subscribe(
@@ -124,6 +144,7 @@ export class SessaoComponent implements OnInit, OnDestroy {
           if (this.sessao.hora_inicio) {
             this.iniciar();
           }
+          this.carregarUltimoPlanejamento();
         },
         e => this.snackbar.open(e.error.mensagem || 'Não foi possível carregar a sessão', 'Ok', { duration: DURACAO_SNACKBAR }),
         () => this.carregando = false
@@ -201,20 +222,6 @@ export class SessaoComponent implements OnInit, OnDestroy {
     const quantidade: number = this.sessaoForm.get('quantidade').value;
     const totalEmMilli = (duracao * quantidade) * 60 * 1000;
     return this.moment.momentBr().add(totalEmMilli, 'millisecond').format('LT');
-  }
-
-  adicionarArtefato() {
-    const bottomSheetRef = this.bottomSheet.open(BottomSheetNavegacaoComponent, {
-      data: [
-        { tipo: ARTEFATO_TIPO.nota, icon: 'note_add', texto: 'NOTA' },
-        { tipo: ARTEFATO_TIPO.imagem, icon: 'add_a_photo', texto: 'FOTO OU VÍDEO' },
-        { tipo: ARTEFATO_TIPO.audio, icon: 'mic', texto: 'ÁUDIO' },
-        { tipo: ARTEFATO_TIPO.avaliacao, icon: 'assessment', texto: 'AVALIAÇÃO' },
-        { tipo: ARTEFATO_TIPO.anamnese, icon: 'assignment_ind', texto: 'ANAMNESE' },
-      ],
-      closeOnNavigation: true
-    });
-    bottomSheetRef.afterDismissed().subscribe(resultado => this.tipoArtefatoAdd = resultado);
   }
 
   finalizar() {

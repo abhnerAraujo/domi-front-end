@@ -15,6 +15,18 @@
   opacity: .88;
 }
 
+.planejamento {
+  span, li {
+    font-size: 20px;
+    padding-top: 8px;
+  }
+  ol li {
+    font-size: 16px;
+    opacity: .8;
+    font-weight: 600;
+  }
+}
+
 .resultado {
   font-weight: 600; 
   font-size: 24px; 

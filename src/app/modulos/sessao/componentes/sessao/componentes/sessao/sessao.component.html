@@ -1,4 +1,4 @@
-<div *ngIf="!carregando" fxLayout="column" fxLayoutGap="16px">
+<div *ngIf="!carregando" fxLayout="column" fxLayoutGap="24px">
   <div fxLayout="column" *ngIf="prontoParaComecar">
     <div fxLayoutAlign="space-between center" fxLayout="row" fxFlex="100">
       <div fxLayoutGap="8px" fxFlex="nogrow" fxLayoutAlign="center center">
@@ -78,7 +78,39 @@
     </div>
     <div *ngSwitchDefault>
       <div>
-        <h3>Atividade</h3>
+        <section fxLayout="column" fxLayoutGap="8px">
+          <h3>Adicionar</h3>
+          <mat-nav-list>
+            <mat-list-item *ngFor="let artefato of artefatos" (click)="tipoArtefatoAdd = artefato.tipo">
+              <mat-icon mat-list-icon style="opacity: 0.72;">{{ artefato.icon }}</mat-icon>
+              <a mat-line>
+                {{ artefato.texto }}
+              </a>
+            </mat-list-item>
+          </mat-nav-list>
+        </section>
+        <mat-divider *ngIf="planejamento"></mat-divider>
+        <section *ngIf="planejamento" class="planejamento">
+          <h3>Último planejamento</h3>
+          <div>
+            <span>{{ planejamento.planejamento_texto }}</span>
+          </div>
+          <h4>Objetivos</h4>
+          <div>
+            <ul>
+              <li *ngFor="let objetivo of planejamento?.objetivos"> {{ objetivo.conteudo }}
+                <ol>
+                  <li *ngFor="let atividade of objetivo?.atividades">{{ atividade.conteudo }}</li>
+                </ol>
+              </li>
+            </ul>
+          </div>
+          <h4 *ngIf="planejamento.materiais">Materiais</h4>
+          <mat-chip-list *ngIf="planejamento.materiais">
+            <mat-chip *ngFor="let material of planejamento.materiais?.split(',')">{{ material }}</mat-chip>
+          </mat-chip-list>
+        </section>
+        <!-- <h3>Atividade</h3>
         <div *ngIf="timeline" fxLayout="column" fxLayoutGap="8px" class="ultimos-acontecimentos">
           <div *ngFor="let grupo of timeline.slice().reverse(); let i = index" fxLayout="row"
             fxLayoutAlign="start start" fxLayoutGap="8px" fxFlex="45px">
@@ -95,12 +127,8 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </div>
-
-<button mat-fab color="accent" (click)="adicionarArtefato()" *ngIf="prontoParaComecar && tipoArtefatoAdd === null">
-  <mat-icon>add</mat-icon>
-</button>

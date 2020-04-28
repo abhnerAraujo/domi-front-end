@@ -2,7 +2,22 @@
   <ng-container *ngIf="!carregandoLista; else carregando">
     <ng-container *ngIf="atendimentos?.length; else vazia">
       <mat-nav-list>
-        <a mat-list-item *ngFor="let atendimento of atendimentos"
+        <div mat-subheader *ngIf="atendimentosHoje?.length">Hoje</div>
+        <a mat-list-item *ngFor="let atendimento of atendimentosHoje"
+          [routerLink]="['/atendimentos/' + atendimento.atendimento_id]">
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          <h4 mat-line class="titulo-linha">{{atendimento.nome_completo}}</h4>
+          <p mat-line class="subtitulo-linha">Desde {{atendimento.data_inicio | dataHora: 'LL'}} </p>
+        </a>
+        <div mat-subheader *ngIf="atendimentosAmanha?.length">Amanhã</div>
+        <a mat-list-item *ngFor="let atendimento of atendimentosAmanha"
+          [routerLink]="['/atendimentos/' + atendimento.atendimento_id]">
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          <h4 mat-line class="titulo-linha">{{atendimento.nome_completo}}</h4>
+          <p mat-line class="subtitulo-linha">Desde {{atendimento.data_inicio | dataHora: 'LL'}} </p>
+        </a>
+        <div mat-subheader *ngIf="atendimentosDemais?.length">Em breve/Não configurados</div>
+        <a mat-list-item *ngFor="let atendimento of atendimentosDemais"
           [routerLink]="['/atendimentos/' + atendimento.atendimento_id]">
           <mat-icon mat-list-icon>account_circle</mat-icon>
           <h4 mat-line class="titulo-linha">{{atendimento.nome_completo}}</h4>

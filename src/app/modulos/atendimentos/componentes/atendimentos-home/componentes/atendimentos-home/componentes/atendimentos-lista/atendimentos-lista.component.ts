@@ -12,6 +12,9 @@ import * as moment from 'moment';
 export class AtendimentosListaComponent implements OnInit {
 
   atendimentos: ListarAtendimentosDados[];
+  atendimentosDemais: ListarAtendimentosDados[];
+  atendimentosHoje: ListarAtendimentosDados[];
+  atendimentosAmanha: ListarAtendimentosDados[];
   carregandoLista: boolean;
 
 
@@ -27,7 +30,12 @@ export class AtendimentosListaComponent implements OnInit {
       .subscribe(
         resultado => this.atendimentos = resultado.dados,
         erro => this.snackbar.open(erro.mensagem || 'Erro ao carregar atendimentos', 'OK', { duration: 5000 }),
-        () => this.carregandoLista = false);
+        () => {
+          this.atendimentosDemais = this.atendimentos.filter(a => !a.hoje && !a.amanha);
+          this.atendimentosHoje = this.atendimentos.filter(a => a.hoje);
+          this.atendimentosAmanha = this.atendimentos.filter(a => !a.hoje && a.amanha);
+          this.carregandoLista = false;
+        });
   }
 
 }

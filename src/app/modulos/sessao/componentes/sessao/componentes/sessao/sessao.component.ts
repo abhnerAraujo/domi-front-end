@@ -84,9 +84,11 @@ export class SessaoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sessaoService.pausar(this.atendimentoId, this.sessaoId, this.counter)
-      .subscribe(
-        r => { });
+    if (this.sessaoId) {
+      this.sessaoService.pausar(this.atendimentoId, this.sessaoId, this.counter)
+        .subscribe(
+          r => { });
+    }
   }
 
   prepararConfiguracao() {

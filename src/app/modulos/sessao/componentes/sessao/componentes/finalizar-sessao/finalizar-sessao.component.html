@@ -31,9 +31,21 @@
               {{ resumoSessaoForm.get('sessao_quantidade').value }}
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <mat-slider [min]="1" [max]="5" [step]="1" [thumbLabel]="true" formControlName="sessao_quantidade" fxFlex
-            color="accent">
-          </mat-slider>
+          <div fxLayoutAlign="center center" fxLayoutGap="16px">
+            <button mat-icon-button [disabled]="resumoSessaoForm.get('sessao_quantidade').value === 1"
+              (click)="resumoSessaoForm.patchValue({sessao_quantidade: resumoSessaoForm.get('sessao_quantidade').value - 1})">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <mat-form-field appearance="outline" fxFlex="50px">
+              <input type="number" formControlName="sessao_quantidade" matInput style="text-align: center;" min="1"
+                max=5>
+            </mat-form-field>
+            <button mat-icon-button
+              (click)="resumoSessaoForm.patchValue({sessao_quantidade: resumoSessaoForm.get('sessao_quantidade').value + 1})"
+              [disabled]="resumoSessaoForm.get('sessao_quantidade').value === 5">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
         </mat-expansion-panel>
         <mat-expansion-panel>
           <mat-expansion-panel-header>

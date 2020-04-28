@@ -20,7 +20,8 @@
       </mat-card>
       <div fxLayoutGap="8px">
         <button mat-raised-button color="accent" fxFlex>DAR ALTA</button>
-        <button mat-raised-button color="accent" fxFlex [routerLink]="['/atendimentos/1/sessoes/nova']">ATENDER</button>
+        <button mat-raised-button color="accent" fxFlex
+          [routerLink]="['/atendimentos/' + atendimentoId + '/sessoes/nova']">ATENDER</button>
       </div>
     </div>
     <div fxFlex="60" fxLayout="column" fxLayoutGap="16px">

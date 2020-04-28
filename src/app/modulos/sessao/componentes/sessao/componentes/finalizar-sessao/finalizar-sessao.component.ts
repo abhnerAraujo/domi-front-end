@@ -68,7 +68,17 @@ export class FinalizarSessaoComponent implements OnInit {
     };
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.resumoSessaoForm.get('sessao_quantidade')
+      .valueChanges
+      .subscribe(quantidade => this.resumoSessaoForm.patchValue({ sessao_valor: this.data.sessao_valor * quantidade }));
+  }
+
+  quantidadeSessoes() {
+    this.resumoSessaoForm
+      .get('sessao_valor')
+      .setValue(this.data.sessao_valor * this.resumoSessaoForm.get('sessao_quantidade').value);
+  }
 
   formatarData = (valor: string, formato: string) => moment(valor).format(formato);
 

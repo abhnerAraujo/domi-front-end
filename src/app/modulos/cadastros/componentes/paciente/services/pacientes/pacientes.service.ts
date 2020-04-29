@@ -32,4 +32,9 @@ export class PacientesService {
     return this.http
       .put<any>(`pacientes/${pacienteId}`, paciente);
   }
+
+  editarFoto(pacienteId: number, foto: string) {
+    return this.http
+      .post<any>(`pacientes/${pacienteId}/foto`, { imagem: foto });
+  }
 }

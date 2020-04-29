@@ -1,3 +1,4 @@
+import { DialogoSelecaoComponent } from './../../../../compartilhado/selecao-imagem/componentes/dialogo-selecao/dialogo-selecao.component';
 import { Escolaridade } from './../../../../compartilhado/interfaces/escolaridade';
 import { EscolaridadesService } from './../../../../compartilhado/services/escolaridades/escolaridades.service';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
@@ -13,7 +14,7 @@ import { SalvarPacienteRequest } from './../interfaces/salvar-paciente-request.i
 import { SIGLAS_ESTADOS } from './../../../../../constantes/estados';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Location } from '@angular/common';
 
@@ -52,7 +53,8 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
     private pacienteService: PacientesService,
     private responsavelTiposService: ResponsavelTiposService,
     private mediaObserver: MediaObserver,
-    private escolaridadeService: EscolaridadesService) {
+    private escolaridadeService: EscolaridadesService,
+    private dialog: MatDialog) {
     this.mediaQuerySubscription = this.mediaObserver.asObservable().subscribe(
       (change: MediaChange[]) => this.activeMediaQuery = change[0].mqAlias
     );
@@ -126,6 +128,7 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
       email: [!!dados ? dados.email : null, Validators.email],
       data_nascimento: [!!dados ? dados.data_nascimento : null],
       escolaridade: [!!dados ? dados.escolaridade : null],
+      foto: [!!dados && dados.foto ? dados.foto : '../../../../../../assets/imagens/image-placeholder.png'],
       telefones: this.formBuilder.array([]),
       enderecos: this.formBuilder.array([]),
       responsaveis: this.formBuilder.array([])
@@ -350,6 +353,43 @@ export class PacienteCadastroComponent implements OnInit, OnDestroy {
 
   imprimir() {
     window.print();
+  }
+
+  changeListner(evento, elemento) {
+    if (evento.target.files && evento.target.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        (document.getElementById('imagem') as HTMLImageElement).src = reader.result as string;
+      };
+
+      reader.readAsDataURL(evento.target.files[0]);
+    }
+  }
+
+  escolherImagem() {
+    this.dialog.open(DialogoSelecaoComponent, {
+      hasBackdrop: true
+    }).afterClosed().subscribe(
+      async (arquivos: File[]) => {
+        if (arquivos) {
+          const reader = new FileReader();
+          const pacienteId = this.pacienteForm.value.paciente_id;
+
+          reader.onload = () => {
+            (document.getElementById('imagem') as HTMLImageElement).src = reader.result as string;
+            this.pacienteService.editarFoto(pacienteId, reader.result as string)
+              .subscribe(
+                r => this.snackbar.open(r.mensagem, 'Ótimo', { duration: DURACAO_SNACKBAR }),
+                e => this.snackbar.open(e.error.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
+                () => this.carregarPaciente(pacienteId)
+              );
+          };
+
+          reader.readAsDataURL(arquivos[0]);
+        }
+      }
+    );
   }
 
   telaPequena = () => this.activeMediaQuery === 'xs' || this.activeMediaQuery === 'sm';

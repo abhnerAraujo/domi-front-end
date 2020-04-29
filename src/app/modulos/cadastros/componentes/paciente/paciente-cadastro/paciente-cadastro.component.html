@@ -3,23 +3,26 @@
     <mat-icon>{{ !!dialogRef ? 'close' : 'arrow_back' }}</mat-icon>
   </button>
   <div *ngIf="!processando">
-    <button mat-icon-button color="accent" (click)="salvar()" [disabled]="!pacienteForm.valid || !edicao">
+    <button title="Salvar" mat-icon-button color="accent" (click)="salvar()"
+      [disabled]="!pacienteForm.valid || !edicao">
       <mat-icon>save</mat-icon>
     </button>
-    <button mat-icon-button *ngIf="!edicao && !dialogRef" (click)="edicao = true;">
+    <button title="Edição" mat-icon-button *ngIf="!edicao && !dialogRef" (click)="edicao = true;">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button *ngIf="edicao && !dialogRef" (click)="edicao = false;">
+    <button title="Visualização" mat-icon-button *ngIf="edicao && !dialogRef" (click)="edicao = false;">
       <mat-icon>visibility</mat-icon>
     </button>
-    <button mat-icon-button (click)="imprimir()" *ngIf="!dialogRef">
+    <button title="Imprimir" mat-icon-button (click)="imprimir()" *ngIf="!dialogRef">
       <mat-icon>print</mat-icon>
     </button>
-    <button mat-icon-button *ngIf="!alinhadoDireita && !dialogRef" (click)="alinhadoDireita = true;">
-      <mat-icon>format_align_right</mat-icon>
-    </button>
-    <button mat-icon-button *ngIf="alinhadoDireita && !dialogRef" (click)="alinhadoDireita = false;">
+    <button title="Alinhar à esquerda" mat-icon-button *ngIf="!alinhadoDireita && !dialogRef"
+      (click)="alinhadoDireita = true;">
       <mat-icon>format_align_left</mat-icon>
+    </button>
+    <button title="Alinhar à direita" mat-icon-button *ngIf="alinhadoDireita && !dialogRef"
+      (click)="alinhadoDireita = false;">
+      <mat-icon>format_align_right</mat-icon>
     </button>
   </div>
 </div>
@@ -233,9 +236,21 @@
   <section *ngIf="!dialogRef && (!telaPequena() || (telaPequena() && !edicao))" fxFlex
     [ngClass]="{'alinhar-esquerda ': !alinhadoDireita, 'container-visualizacao': true}"
     [fxLayoutAlign]="alinhadoDireita ? 'start' : 'start end'" fxLayout="column" fxLayoutGap="24px">
-    <section fxLayout="column" [fxLayoutAlign]="alinhadoDireita ? 'start' : 'start end'">
-      <ng-container *ngIf="pacienteForm.value?.nome_completo; else naoInformado"></ng-container>
-      <span class="nome-paciente">{{ pacienteForm.value?.nome_completo }}</span>
+    <section fxLayout="column" fxLayoutGap="16px" [fxLayoutAlign]="alinhadoDireita ? 'start' : 'start end'">
+      <div fxLayoutAlign="start center" style="margin-bottom: 16px;" [fxLayout]="alinhadoDireita ? 'row': 'row-reverse'"
+        fxLayoutGap="24px" fxLayout.xs="column">
+        <div *ngIf="pacienteForm.value?.paciente_id" class="perfil-imagem">
+          <img id="imagem" class="imagem" [src]="pacienteForm.value.foto">
+          <div class="panel-troca-imagem">
+            <button mat-icon-button (click)="escolherImagem()">
+              <mat-icon style="color: #fff">camera_alt</mat-icon>
+            </button>
+          </div>
+        </div>
+        <ng-container *ngIf="pacienteForm.value?.nome_completo; else naoInformado">
+          <span class="nome-paciente">{{ pacienteForm.value?.nome_completo }}</span>
+        </ng-container>
+      </div>
       <div fxLayout="column" fxLayoutGap="16px">
         <div fxLayoutGap="24px" fxLayoutAlign="start">
           <div fxLayout="column">
@@ -249,15 +264,17 @@
               class="texto">{{ pacienteForm.value?.data_nascimento | idade }} anos</span>
           </div>
         </div>
-        <div fxLayout="column">
-          <span class="rotulo">Escolaridade</span>
-          <span *ngIf="pacienteForm.value?.escolaridade; else naoInformado"
-            class="texto">{{ valorEscolaridade(pacienteForm.value?.escolaridade) }}</span>
-        </div>
+      </div>
+      <div fxLayout="column">
+        <span class="rotulo">Escolaridade</span>
+        <span *ngIf="pacienteForm.value?.escolaridade && escolaridades; else naoInformado"
+          class="texto">{{ valorEscolaridade(pacienteForm.value?.escolaridade) }}</span>
       </div>
       <ng-container *ngIf="pacienteForm.value.email">
-        <span class="rotulo">E-mail</span>
-        <span class="texto">{{ pacienteForm.value.email }}</span>
+        <div fxLayout="column">
+          <span class="rotulo">E-mail</span>
+          <span class="texto">{{ pacienteForm.value.email }}</span>
+        </div>
       </ng-container>
     </section>
     <section fxLayout="column">
@@ -273,9 +290,9 @@
               <span class="texto-menor">{{ responsavel.nome_responsavel }}</span>
               <div *ngIf="responsavel.telefone_responsavel" [fxLayoutAlign]="alinhadoDireita ? 'start' : 'end center'">
                 <div fxFlex="nogrow" [fxLayout]="alinhadoDireita ? 'row-reverse' : 'row'" fxLayoutGap="8px">
-                  <span fxFlex="122px" class="enfase texto-pequeno">
+                  <span fxFlex="122px" class="texto-menor">
                     {{ responsavel.telefone_responsavel | mask:mascara(responsavel.tipo_telefone_responsavel) }}</span>
-                  <span class="enfase texto-pequeno"> {{ responsavel.tipo_telefone_responsavel | tipoTelefone }}</span>
+                  <span class="texto-menor"> {{ responsavel.tipo_telefone_responsavel | tipoTelefone }}</span>
                 </div>
               </div>
             </ng-container>

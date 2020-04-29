@@ -1,3 +1,4 @@
+import { SelecaoImagemModule } from './../../../compartilhado/selecao-imagem/selecao-imagem.module';
 import { EscolaridadesService } from './../../../compartilhado/services/escolaridades/escolaridades.service';
 import { ResponsavelTiposService } from './services/responsavel-tipos/responsavel-tipos.service';
 import { PipesModule } from './../../../../pipes/pipes.module';
@@ -36,7 +37,8 @@ import { NgxMaskModule } from 'ngx-mask';
     MatListModule,
     PipesModule,
     NgxMaskModule.forRoot(null),
-    MatSnackBarModule
+    MatSnackBarModule,
+    SelecaoImagemModule
   ],
   providers: [
     PacientesService,

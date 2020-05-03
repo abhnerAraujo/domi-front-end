@@ -39,10 +39,10 @@
           [routerLink]="['/cadastros/pacientes/' + recuperarAtributo(atendimento.paciente, 'paciente_id') || atendimento.paciente]">
           <mat-icon>edit</mat-icon> &nbsp; Cadastro
         </a>
-        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/anamnese/nova']">
+        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/anamnese']">
           <mat-icon>assignment_ind</mat-icon> &nbsp; Anamnese
         </a>
-        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/avaliacao/nova']">
+        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/avaliacao']">
           <mat-icon>assessment</mat-icon> &nbsp; Avaliação
         </a>
       </mat-nav-list>

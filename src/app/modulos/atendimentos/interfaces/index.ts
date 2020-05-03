@@ -6,3 +6,4 @@ export * from './dia-atendimento.interface';
 export * from './listar-atendimentos.interface';
 export * from './detalhar-atendimento.interface';
 export * from './editar-atendimento-response.interface';
+export * from './anamnese-avaliacao-item.interface';

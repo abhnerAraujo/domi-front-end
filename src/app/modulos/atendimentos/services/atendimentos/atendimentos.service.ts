@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   CriarAtendimentoRequest, CriarAtendimentoResponse, ListarAtendimentosResponse, ListarAtendimentoConfiguracoesResponse,
-  ConfiguracaoAtendimento, Atendimento, DetalharAtendimentoRequest, EditarAtendimentoResponse
+  ConfiguracaoAtendimento, Atendimento, DetalharAtendimentoRequest, EditarAtendimentoResponse, AnamneseAvaliacaoListar
 } from '../../interfaces';
 
 @Injectable()
@@ -53,6 +53,16 @@ export class AtendimentosService {
   excluirConfiguracao(atendimentoId: number, atendimentoConfiguracaoId: number) {
     return this.http
       .delete<any>(`atendimentos/${atendimentoId}/configuracoes/${atendimentoConfiguracaoId}`);
+  }
+
+  anameneses(atendimentoId: number) {
+    return this.http
+      .get<any>(`atendimentos/${atendimentoId}/anamnese-avaliacao`, { params: { tipo: 'A' } });
+  }
+
+  avaliacoes(atendimentoId: number) {
+    return this.http
+      .get<AnamneseAvaliacaoListar>(`atendimentos/${atendimentoId}/anamnese-avaliacao`, { params: { tipo: 'V' } });
   }
 
 }

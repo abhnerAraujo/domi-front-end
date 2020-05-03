@@ -121,6 +121,10 @@ export class SessaoComponent implements OnInit, OnDestroy {
         e => this.snackbar.open(e.error.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
         () => this.carregando = false
       );
+    this.atendimentoService.detalhar(this.atendimentoId, false)
+      .subscribe(
+        r => this.sessaoForm.get('valor_padrao').setValue(r.dados[0].valor_padrao || 100)
+      );
   }
 
   private async carregarUltimoPlanejamento() {

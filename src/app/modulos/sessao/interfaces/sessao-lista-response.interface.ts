@@ -19,6 +19,7 @@ export interface Sessao {
   updated_at: string;
   deleted_at?: any;
   pagamentos?: Pagamento[];
+  falta: boolean;
 }
 
 export interface ListarSessoesResponse {

@@ -23,6 +23,7 @@ export interface FinalizarSessaoDados {
   sessao_paga: boolean;
   sessao_nota_geral: number;
   sessao_pagamentos?: { sessao_valor_pago: number; sessao_tipo_pagamento: number; }[];
+  sessao_falta: boolean;
 }
 
 @Component({

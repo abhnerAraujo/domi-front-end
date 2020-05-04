@@ -1,3 +1,5 @@
+import { map, first, mergeMap } from 'rxjs/operators';
+import { Location } from '@angular/common';
 import { Planejamento } from './../../../../../planejamentos/interfaces';
 import { PlanejamentosService } from './../../../../../planejamentos/services/planejamentos/planejamentos.service';
 import { FinalizarSessaoComponent } from './../finalizar-sessao/finalizar-sessao.component';
@@ -12,9 +14,6 @@ import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatBottomSheet, MatDialog, MatSnackBar } from '@angular/material';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  BottomSheetNavegacaoComponent
-} from '../../../../../compartilhado/componentes/bottom-sheet-navegacao/bottom-sheet-navegacao.component';
 import { CurrencyMaskConfig } from 'ng2-currency-mask/src/currency-mask.config';
 import { Sessao } from 'src/app/modulos/sessao/interfaces';
 import { Moment } from 'moment';
@@ -57,6 +56,7 @@ export class SessaoComponent implements OnInit, OnDestroy {
 
   constructor(
     public bottomSheet: MatBottomSheet
+    , public location: Location
     , public dialog: MatDialog
     , private router: Router
     , fb: FormBuilder
@@ -74,6 +74,7 @@ export class SessaoComponent implements OnInit, OnDestroy {
       duracao: [45, Validators.compose([Validators.required])],
       quantidade: [1, Validators.compose([Validators.required])],
       valor_padrao: [100],
+      falta: [false]
     });
     this.carregando = true;
     this.artefatos = [
@@ -102,6 +103,27 @@ export class SessaoComponent implements OnInit, OnDestroy {
         .subscribe(
           r => { });
     }
+  }
+
+  falta() {
+    const dados = {
+      duracao: 0,
+      quantidade: 0,
+      falta: true
+    };
+    this.sessaoService.salvar(this.atendimentoId, dados)
+      .pipe(
+        mergeMap(r => this.sessaoService.sessao(this.atendimentoId, r.dados.sessao.sessao_id)
+          .pipe(
+            map(sessao => this.sessao = sessao.dados[0])
+          ))
+      ).subscribe(
+        r => {
+          this.sessaoId = r.sessao_id;
+          this.valorSessao = this.sessaoForm.value.valor_padrao;
+        },
+        e => this.snackbar.open(e.error.mensagem || 'Ops! Algo deu errado', 'Ok', { duration: DURACAO_SNACKBAR }),
+        () => this.finalizar(true));
   }
 
   prepararConfiguracao() {
@@ -177,7 +199,6 @@ export class SessaoComponent implements OnInit, OnDestroy {
             this.atualizarTimeLine();
           }
           this.interval = setInterval(() => this.atualizarTempo(), 1000);
-          // this.criarArtefatoAleatorio();
         },
         e => this.snackbar.open(e.error.mensagem || 'Não foi possível iniciar a sessão', 'Ok', { duration: DURACAO_SNACKBAR })
       );
@@ -209,7 +230,6 @@ export class SessaoComponent implements OnInit, OnDestroy {
         r => this.router.navigate([`atendimentos/${this.atendimentoId}/sessoes/${r.dados.sessao.sessao_id}`]),
         e => this.snackbar.open(e.error.mensagem || 'Ocorreu um erro ao criar sessão', 'Ok', { duration: DURACAO_SNACKBAR }),
         () => this.carregando = false);
-
   }
 
   tempoTotal = () => {
@@ -228,12 +248,14 @@ export class SessaoComponent implements OnInit, OnDestroy {
     return this.moment.momentBr().add(totalEmMilli, 'millisecond').format('LT');
   }
 
-  finalizar() {
-    this.sessaoService.pausar(this.atendimentoId, this.sessaoId, this.counter)
-      .subscribe(
-        r => { }
-      );
-    const sessaoQuantidade = this.counter < (this.sessao.duracao * 60)
+  finalizar(falta?: boolean) {
+    if (!falta) {
+      this.sessaoService.pausar(this.atendimentoId, this.sessaoId, this.counter)
+        .subscribe(
+          r => { }
+        );
+    }
+    const sessaoQuantidade = this.counter < (this.sessao.duracao * 60) || falta
       ? 1
       : Math.round(this.counter / (this.sessao.duracao * 60));
     const data: FinalizarSessaoDados = {
@@ -248,7 +270,8 @@ export class SessaoComponent implements OnInit, OnDestroy {
       sessao_orientacoes: '',
       sessao_valor: this.sessaoForm.value.valor_padrao * sessaoQuantidade,
       sessao_paga: false,
-      sessao_nota_geral: this.sessao.nota_geral ? this.sessao.nota_geral : 5
+      sessao_nota_geral: this.sessao.nota_geral ? this.sessao.nota_geral : 5,
+      sessao_falta: falta
     };
 
     const dialogRef = this.dialog.open(FinalizarSessaoComponent, {
@@ -265,6 +288,7 @@ export class SessaoComponent implements OnInit, OnDestroy {
         this.sessao.quantidade = resultado.sessao_quantidade;
         this.sessao.tempo_corrido = this.counter;
         this.sessao.nota_geral = resultado.sessao_nota_geral;
+        this.sessao.falta = resultado.sessao_falta;
         this.sessao.pagamentos = resultado.sessao_pagamentos.map(pagamento => {
           return {
             valor_pago: pagamento.sessao_valor_pago * 100,

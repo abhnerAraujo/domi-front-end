@@ -1,6 +1,7 @@
 export interface SalvarSessaoRequest {
   quantidade: number;
   duracao: number;
+  falta: boolean;
 }
 
 export interface SalvarSessaoResponse {

@@ -34,11 +34,18 @@
     <app-anamnese-detalhe *ngSwitchCase="5" (cancelado)="tipoArtefatoAdd = null" [sessao]="true"></app-anamnese-detalhe>
     <div *ngSwitchCase="0">
       <div fxLayout="column" fxLayoutGap="16px">
-        <div fxLayoutAlign="space-between center">
-          <h3>Configurar sessão</h3>
-          <button mat-raised-button color="accent" (click)="aplicarConfiguracoes();" [disabled]="!sessaoForm.valid">TUDO
-            PRONTO
-          </button>
+        <div fxLayoutAlign.gt-xs="space-between center" fxLayout.xs="column">
+          <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="star center">
+            <button mat-icon-button (click)="location.back()">
+              <mat-icon>{{ sessao ? 'close' : 'arrow_back' }}</mat-icon>
+            </button>
+            <h3>Configurar sessão</h3>
+          </div>
+          <div fxLayoutAlign.xs="center" fxLayoutGap="8px">
+            <button fxFlex.xs mat-stroked-button color="accent" (click)="falta()">REGISTRAR FALTA</button>
+            <button fxFlex.xs mat-raised-button color="accent" (click)="aplicarConfiguracoes();"
+              [disabled]="!sessaoForm.valid">TUDO PRONTO</button>
+          </div>
         </div>
         <section fxLayout="row" fxLayoutGap="16px" fxLayout.lt-md="column">
           <form [formGroup]="sessaoForm" fxLayout="column" fxLayoutGap="16px" autocomplete="off" fxFlex="50">
@@ -110,24 +117,6 @@
             <mat-chip *ngFor="let material of planejamento.materiais?.split(',')">{{ material }}</mat-chip>
           </mat-chip-list>
         </section>
-        <!-- <h3>Atividade</h3>
-        <div *ngIf="timeline" fxLayout="column" fxLayoutGap="8px" class="ultimos-acontecimentos">
-          <div *ngFor="let grupo of timeline.slice().reverse(); let i = index" fxLayout="row"
-            fxLayoutAlign="start start" fxLayoutGap="8px" fxFlex="45px">
-            <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="start center">
-              <div class="timeline-circulo" fxFlex="nogrow"></div>
-              <div fxFlex class="timeline-traco" *ngIf="i !== timeline.length - 1"></div>
-            </div>
-            <div fxLayout="column" fxFlex>
-              <div class="evento-descricao">
-                {{ grupo[0] }}
-              </div>
-              <div fxLayoutGap="8px" fxLayout="row">
-                {{ grupo[1].length }} {{ grupo[1].length > 1 ? 'itens' : 'item' }}
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>

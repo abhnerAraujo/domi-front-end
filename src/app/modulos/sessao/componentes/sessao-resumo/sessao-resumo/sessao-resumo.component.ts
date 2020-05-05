@@ -47,6 +47,7 @@ export class SessaoResumoComponent implements OnInit {
     quantidade: false,
     valor_sessao: false,
     nota_geral: false,
+    falta: false
   };
 
   constructor(
@@ -97,6 +98,7 @@ export class SessaoResumoComponent implements OnInit {
             nota_geral: [this.sessao.nota_geral],
             pagamentos: this.fb.array([]),
             pagamento_selecionado: [],
+            falta: [{ value: this.sessao.falta, disabled: true }]
           });
           this.carregarTiposPagamento();
           if (this.sessao.pagamentos) {

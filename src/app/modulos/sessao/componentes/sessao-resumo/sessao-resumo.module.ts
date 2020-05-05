@@ -7,7 +7,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatIconModule, MatButtonModule, MatFormFieldModule, MatCheckboxModule, MatInputModule, MatDividerModule,
-  MatSnackBarModule, MatListModule, MatBadgeModule, MatExpansionModule, MatDatepickerModule, MatSelectModule
+  MatSnackBarModule, MatListModule, MatBadgeModule, MatExpansionModule, MatDatepickerModule, MatSelectModule, MatSlideToggleModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -36,7 +36,8 @@ import { MomentService } from '../../../compartilhado/services/moment/moment.ser
     MatDatepickerModule,
     NgxMaterialTimepickerModule.setLocale('pt-BR'),
     CurrencyMaskModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   providers: [
     SessaoService,

@@ -1,0 +1,29 @@
+::ng-deep .mat-list-item-content {
+  .mat-list-icon {
+    opacity: .72;
+  }
+}
+
+.espaco{
+  .descricao {
+    opacity: .9 !important;
+    font-weight: 600 !important;
+  }
+  .padrao {
+    opacity: .3;
+  }
+  .icone-edicao {
+    display: none;
+  }
+  .icone {
+    display: block;
+  }
+  &:hover {
+    .icone-edicao {
+      display: block;
+    }
+    .icone {
+      display: none;
+    }
+  }
+}

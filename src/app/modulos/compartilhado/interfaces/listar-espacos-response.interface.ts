@@ -5,14 +5,7 @@ export interface ListarEspacosResponse {
 }
 
 export interface Espaco {
-  id: string;
-  dados: EspacoDados;
-}
-
-export interface EspacoDados {
-  updated_at: string;
+  espaco_id: number;
   descricao: string;
-  deleted_at: string;
   padrao: boolean;
-  created_at: string;
 }

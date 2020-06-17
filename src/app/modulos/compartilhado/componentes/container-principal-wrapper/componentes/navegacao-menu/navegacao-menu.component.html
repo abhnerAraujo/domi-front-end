@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="16px">
   <div>
     <div fxLayout="row" fxLayoutAlign="space-between center" style="opacity: 0.72;">
-      <h6 style="margin: 0; opacity: 0.72;">ESPAÇO ATUAL</h6>
+      <h6 style="margin: 0; opacity: 0.72;">LOCAL ATUAL</h6>
       <button mat-icon-button color="accent" [matMenuTriggerFor]="menuEspacos"
         (click)="$event.stopPropagation(); carregarEspacos()">
         <mat-icon>swap_horizontal_circle</mat-icon>
@@ -19,9 +19,6 @@
     </a>
     <a mat-list-item routerLinkActive="active-link" routerLink="/cadastros">
       <mat-icon>account_circle</mat-icon> Cadastros
-    </a>
-    <a mat-list-item routerLinkActive="active-link" routerLink="/espacos">
-      <mat-icon>local_hospital</mat-icon> Espaços
     </a>
   </mat-nav-list>
 </div>

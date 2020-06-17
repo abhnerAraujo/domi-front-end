@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EspacosListaComponent } from './espacos-lista.component';
+import { DialogAjudaComponent } from './dialog-ajuda.component';
 
-describe('EspacosListaComponent', () => {
-  let component: EspacosListaComponent;
-  let fixture: ComponentFixture<EspacosListaComponent>;
+describe('DialogAjudaComponent', () => {
+  let component: DialogAjudaComponent;
+  let fixture: ComponentFixture<DialogAjudaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EspacosListaComponent ]
+      declarations: [ DialogAjudaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EspacosListaComponent);
+    fixture = TestBed.createComponent(DialogAjudaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

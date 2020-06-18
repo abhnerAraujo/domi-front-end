@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_ITENS } from './../../../../constantes/config';
 import { DadosUsuarioResponse } from './../../interfaces/dados-usuario-response.interface';
 import { CriarUsuarioResponse } from './../../interfaces/criar-usuario-response.interface';
 import { Observable } from 'rxjs';
@@ -17,8 +18,8 @@ export class UsuarioService {
       .post<CriarUsuarioResponse>('usuarios', dados);
   }
 
-  dadosUsuario(id: number): Observable<DadosUsuarioResponse> {
+  dadosUsuario(): Observable<DadosUsuarioResponse> {
     return this.http
-      .get<DadosUsuarioResponse>(`usuarios/${id}`);
+      .get<DadosUsuarioResponse>(`usuarios`, { headers: { 'Token': localStorage.getItem(LOCAL_STORAGE_ITENS.token) } });
   }
 }

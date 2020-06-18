@@ -39,3 +39,16 @@ export const TIPOS_PAGAMENTO = {
   debito: 2,
   credito: 3
 };
+
+export const PROFISSOES = [
+  'Fonoaudiologia',
+  'Fisioterapia',
+  'Terapia Ocupacional',
+  'Psicologia',
+  'Enfermagem'
+];
+
+export const TEXTOS = {
+  texto_apoio_login: 'entre ou cadastre-se utilizando',
+  conectando: 'conectando...'
+};

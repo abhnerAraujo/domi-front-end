@@ -1,3 +1,4 @@
+import { AuthService } from './../../../../services/auth/auth.service';
 import { DadosUsuario } from './../../../../../acesso/interfaces/dados-usuario-response.interface';
 import { Router } from '@angular/router';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
@@ -13,7 +14,7 @@ export class ToolbarComponent implements OnInit {
 
   dadosUsuario: DadosUsuario;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.toggleSidenav = new EventEmitter();
   }
 
@@ -23,7 +24,8 @@ export class ToolbarComponent implements OnInit {
 
   sair() {
     localStorage.clear();
-    this.router.navigate(['/acessar']);
+    this.authService.logout()
+      .then(r => this.router.navigate(['/acessar']));
   }
 
 }

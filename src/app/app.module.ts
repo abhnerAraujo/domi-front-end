@@ -1,3 +1,4 @@
+import { AuthService } from './modulos/compartilhado/services/auth/auth.service';
 import { ContextoService } from './modulos/compartilhado/componentes/container-principal-wrapper/services/contexto/contexto.service';
 import { ApiResponseInterceptor } from './interceptors/api-response-interceptor';
 import {
@@ -40,7 +41,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     { provide: HTTP_INTERCEPTORS, useClass: ApiResponseInterceptor, multi: true },
     { provide: 'BASE_API_URL', useValue: environment.domi_api },
     ProgressBarService,
-    ContextoService
+    ContextoService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

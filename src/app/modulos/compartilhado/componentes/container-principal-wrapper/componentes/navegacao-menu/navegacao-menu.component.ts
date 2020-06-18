@@ -48,7 +48,7 @@ export class NavegacaoMenuComponent implements OnInit {
 
   atualizar() {
     const dados = JSON.parse(localStorage.getItem('x-user-data'));
-    this.usuarioService.dadosUsuario(dados.usuario.usuario_id)
+    this.usuarioService.dadosUsuario()
       .subscribe(r => {
         localStorage.setItem('x-user-data', JSON.stringify(r.dados));
         this.carregarEspacos();

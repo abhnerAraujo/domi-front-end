@@ -22,7 +22,7 @@ export class ApiInterceptor implements HttpInterceptor {
       const dadosUsuario: DadosUsuario = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ITENS.dados_usuario));
 
       const headers = new HttpHeaders()
-        .set('Usuario-Id', localStorage.getItem('x-access-token'))
+        .set('Token', localStorage.getItem('x-access-token'))
         .set('Contexto', localStorage.getItem('x-context') || '')
         .set('Profissional', `${dadosUsuario.perfis[0].profissional_id}`);
       const apiReq = request.clone({ url: `${this.baseUrl}/${request.url}`, headers });

@@ -1,3 +1,4 @@
+import { AuthService } from './../modulos/compartilhado/services/auth/auth.service';
 import { DadosUsuario } from './../modulos/acesso/interfaces/dados-usuario-response.interface';
 import {
   ProgressBarService
@@ -12,7 +13,8 @@ export class ApiInterceptor implements HttpInterceptor {
 
   constructor(
     @Inject('BASE_API_URL') private baseUrl: string,
-    private progressBar: ProgressBarService) {
+    private progressBar: ProgressBarService,
+    private authService: AuthService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -21,10 +23,13 @@ export class ApiInterceptor implements HttpInterceptor {
     if (!rotaSemAuth) {
       const dadosUsuario: DadosUsuario = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ITENS.dados_usuario));
 
+      this.authService.updateToken();
+
       const headers = new HttpHeaders()
-        .set('Token', localStorage.getItem('x-access-token'))
-        .set('Contexto', localStorage.getItem('x-context') || '')
-        .set('Profissional', `${dadosUsuario.perfis[0].profissional_id}`);
+        .set('Token', localStorage.getItem(LOCAL_STORAGE_ITENS.token))
+        .set('Contexto', localStorage.getItem(LOCAL_STORAGE_ITENS.contexto) || '')
+        .set('Profissional',
+          dadosUsuario && dadosUsuario.perfis && dadosUsuario.perfis.length ? `${dadosUsuario.perfis[0].profissional_id}` : '');
       const apiReq = request.clone({ url: `${this.baseUrl}/${request.url}`, headers });
       return next.handle(apiReq);
     } else {

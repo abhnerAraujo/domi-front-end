@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_ITENS } from './../../../../constantes/config';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -23,6 +24,13 @@ export class AuthService {
         return new firebase.auth.FacebookAuthProvider();
       default:
         throw new Error(`No provider implemented for ${providerId}`);
+    }
+  }
+
+  async updateToken() {
+    if (firebase.auth().currentUser) {
+      const token = await firebase.auth().currentUser.getIdToken();
+      localStorage.setItem(LOCAL_STORAGE_ITENS.token, token);
     }
   }
 

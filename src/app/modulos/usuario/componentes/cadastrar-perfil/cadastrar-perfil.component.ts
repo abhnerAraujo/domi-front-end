@@ -1,3 +1,4 @@
+import { DURACAO_SNACKBAR } from './../../../../constantes/config';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -73,7 +74,7 @@ export class CadastrarPerfilComponent implements OnInit {
         this.usuarioService.dadosUsuario(this.dadosUsuario.usuario.usuario_id)
           .subscribe(usuarioResultado => {
             localStorage.setItem('x-user-data', JSON.stringify(usuarioResultado.dados));
-            this.snack.open('Seu perfil foi criado! Redirecionando...', 'Entendi', { duration: 3500 });
+            this.snack.open('Seu perfil foi criado! Redirecionando...', 'Entendi', { duration: DURACAO_SNACKBAR });
             setTimeout(() => this.router.navigate(['/']), 2000);
           },
             erro => {
@@ -84,7 +85,7 @@ export class CadastrarPerfilComponent implements OnInit {
       },
         erro => {
           this.carregando = false;
-          this.snack.open(erro.error.mensagem, 'OK', { duration: 3500 });
+          this.snack.open(erro.error ? erro.error.mensagem : 'Ops! Ocorreu um erro.', 'OK', { duration: DURACAO_SNACKBAR });
         });
   }
 

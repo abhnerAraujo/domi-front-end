@@ -1,6 +1,5 @@
 export const ROUTES_NO_AUTH = [
-  'acesso',
-  'usuarios'
+  'acesso'
 ];
 
 export const LOCAL_STORAGE_ITENS = {

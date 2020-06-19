@@ -1,10 +1,9 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
 export const environment = {
   production: false,
-  domi_api: process.env.DOMI_API || 'http://127.0.0.1:3000/v1',
+  domi_api: process.env.DOMI_API || (window as any).domi_env.domi_api || 'http://127.0.0.1:3000/v1',
   firebaseConfig: {
     apiKey: 'AIzaSyBHUM8BCroR_7-4X1G59AClePXlcmESR3c',
     authDomain: 'domi-app-web.firebaseapp.com',

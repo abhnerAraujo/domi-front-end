@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  domi_api: process.env.DOMI_API || 'http://127.0.0.1:3000/v1',
+  domi_api: process.env.DOMI_API || (window as any).domi_env.domi_api || 'http://127.0.0.1:3000/v1',
   firebaseConfig: {
     apiKey: 'AIzaSyBHUM8BCroR_7-4X1G59AClePXlcmESR3c',
     authDomain: 'domi-app-web.firebaseapp.com',

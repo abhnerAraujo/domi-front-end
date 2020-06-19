@@ -112,7 +112,6 @@ export class AcessarComponent implements OnInit, OnDestroy {
           e => {
             this.textoApoioLogin = TEXTOS.texto_apoio_login;
             this.entrando = false;
-            console.log(e);
           },
           this.dadosUsuario
         );
@@ -123,40 +122,19 @@ export class AcessarComponent implements OnInit, OnDestroy {
   async loginFacebook() {
     this.textoApoioLogin = TEXTOS.conectando;
     this.entrando = true;
-    // try {
-    //   const provider = new firebase.auth.FacebookAuthProvider();
-    //   // provider.addScope('user_birthday');
-    //   provider.setCustomParameters({
-    //     display: 'popup'
-    //   });
-    //   await firebase.auth().signInWithPopup(provider);
-    //   this.fazerLogin();
-    // } catch (erro) {
-    //   this.textoApoioLogin = TEXTOS.texto_apoio_login;
-    //   this.entrando = false;
-    //   console.log(erro);
-    // }
-    await this.oauthLogin(this.authService.getProvider(firebase.auth.FacebookAuthProvider.PROVIDER_ID));
-    // ...
-    // Handle Errors here.
-    // var errorCode = error.code;
-    // var errorMessage = error.message;
-    // // The email of the user's account used.
-    // var email = error.email;
-    // // The firebase.auth.AuthCredential type that was used.
-    // var credential = error.credential;
+    try {
+      await this.oauthLogin(this.authService.getProvider(firebase.auth.FacebookAuthProvider.PROVIDER_ID));
+    } catch (erro) {
+      this.textoApoioLogin = TEXTOS.texto_apoio_login;
+      this.entrando = false;
+    }
   }
 
   async loginGoogle() {
-    // Using a popup.
     this.textoApoioLogin = TEXTOS.conectando;
     this.entrando = true;
     try {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope('profile');
-      provider.addScope('email');
-      await firebase.auth().signInWithPopup(provider);
-      this.fazerLogin();
+      await this.oauthLogin(this.authService.getProvider(firebase.auth.GoogleAuthProvider.PROVIDER_ID));
     } catch (erro) {
       this.textoApoioLogin = TEXTOS.texto_apoio_login;
       this.entrando = false;
@@ -168,7 +146,7 @@ export class AcessarComponent implements OnInit, OnDestroy {
       .dadosUsuario()
       .subscribe(usuarioData => {
         if (usuarioData.sucesso) {
-          localStorage.setItem('x-user-data', JSON.stringify(usuarioData.dados));
+          localStorage.setItem(LOCAL_STORAGE_ITENS.dados_usuario, JSON.stringify(usuarioData.dados));
           if (usuarioData.dados.perfis && usuarioData.dados.perfis.length) {
             this.router.navigate(['home']);
           } else {

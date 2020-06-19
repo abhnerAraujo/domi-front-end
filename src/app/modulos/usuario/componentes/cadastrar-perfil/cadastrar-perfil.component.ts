@@ -71,7 +71,7 @@ export class CadastrarPerfilComponent implements OnInit {
       .criarPerfil(dadosProfissional)
       .subscribe(resultado => {
         localStorage.setItem(LOCAL_STORAGE_ITENS.contexto, `${resultado.dados.profissional_id}`);
-        this.usuarioService.dadosUsuario(this.dadosUsuario.usuario.usuario_id)
+        this.usuarioService.dadosUsuario()
           .subscribe(usuarioResultado => {
             localStorage.setItem(LOCAL_STORAGE_ITENS.dados_usuario, JSON.stringify(usuarioResultado.dados));
             this.snack.open('Seu perfil foi criado! Redirecionando...', 'Entendi', { duration: DURACAO_SNACKBAR });

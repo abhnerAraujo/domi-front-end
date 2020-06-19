@@ -17,9 +17,9 @@ export class UsuarioService {
       .post<SalvarProfissionalResponse>('profissionais', dados);
   }
 
-  dadosUsuario(id: number): Observable<DadosUsuarioResponse> {
+  dadosUsuario(): Observable<DadosUsuarioResponse> {
     return this.http
-      .get<DadosUsuarioResponse>(`usuarios/${id}`);
+      .get<DadosUsuarioResponse>(`usuarios`);
   }
 
 }

@@ -1,4 +1,4 @@
-import { DURACAO_SNACKBAR } from './../../../../constantes/config';
+import { DURACAO_SNACKBAR, LOCAL_STORAGE_ITENS } from './../../../../constantes/config';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -70,10 +70,10 @@ export class CadastrarPerfilComponent implements OnInit {
     this.requestSubscription = this.usuarioService
       .criarPerfil(dadosProfissional)
       .subscribe(resultado => {
-        localStorage.setItem('x-context', `${resultado.dados.profissional_id}`);
+        localStorage.setItem(LOCAL_STORAGE_ITENS.contexto, `${resultado.dados.profissional_id}`);
         this.usuarioService.dadosUsuario(this.dadosUsuario.usuario.usuario_id)
           .subscribe(usuarioResultado => {
-            localStorage.setItem('x-user-data', JSON.stringify(usuarioResultado.dados));
+            localStorage.setItem(LOCAL_STORAGE_ITENS.dados_usuario, JSON.stringify(usuarioResultado.dados));
             this.snack.open('Seu perfil foi criado! Redirecionando...', 'Entendi', { duration: DURACAO_SNACKBAR });
             setTimeout(() => this.router.navigate(['/']), 2000);
           },

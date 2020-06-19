@@ -1,3 +1,3 @@
 window.domi_env = {
-  domi_api: 'https://domi-api.herokuapp.com/v1'
+  domi_api: 'http://localhost:3000/v1'
 };

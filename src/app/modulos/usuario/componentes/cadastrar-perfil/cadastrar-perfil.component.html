@@ -57,15 +57,15 @@
             </div>
           </mat-step>
           <mat-step [editable]="!carregando" [stepControl]="espacoForm">
-            <ng-template matStepLabel>Espaços</ng-template>
+            <ng-template matStepLabel>Locais</ng-template>
             <form [formGroup]="espacoForm" fxLayoutAlign="start center">
               <div fxLayout="column" fxFlex="50">
-                <h4 style="margin: 0 0 8px 0; opacity: .96;">Dê um nome ao seu primeiro espaço</h4>
-                <h5 style="margin: 0 0 16px 0; opacity: .5;">Espaços são o contexto do seu trabalho
+                <h4 style="margin: 0 0 8px 0; opacity: .96;">Dê um nome ao seu primeiro local</h4>
+                <h5 style="margin: 0 0 16px 0; opacity: .5;">Locais são o contexto do seu trabalho
                   (ex: Pessoal, Clínica Abc, etc)
                 </h5>
                 <mat-form-field appearance="outline">
-                  <mat-label>Nome do espaço</mat-label>
+                  <mat-label>Nome do local</mat-label>
                   <input matInput formControlName="descricao" required>
                 </mat-form-field>
               </div>

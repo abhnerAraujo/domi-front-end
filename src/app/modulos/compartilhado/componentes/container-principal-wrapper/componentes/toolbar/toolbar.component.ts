@@ -11,11 +11,13 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class ToolbarComponent implements OnInit {
 
   @Output() toggleSidenav: EventEmitter<void>;
+  @Output() toggleSidenavDireito: EventEmitter<void>;
 
   dadosUsuario: DadosUsuario;
 
   constructor(private router: Router, private authService: AuthService) {
     this.toggleSidenav = new EventEmitter();
+    this.toggleSidenavDireito = new EventEmitter();
   }
 
   ngOnInit() {

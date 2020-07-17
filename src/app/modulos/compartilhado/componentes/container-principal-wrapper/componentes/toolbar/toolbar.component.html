@@ -8,10 +8,6 @@
     </div>
   </div>
   <div fxFlex fxLayoutAlign="end center">
-    <button mat-button [matMenuTriggerFor]="menu">{{ dadosUsuario?.usuario.primeiro_nome }}</button>
+    <button mat-button (click)="toggleSidenavDireito.emit()">{{ dadosUsuario?.usuario.primeiro_nome }}</button>
   </div>
 </mat-toolbar>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item>Perfil</button>
-  <button mat-menu-item (click)="sair()">Sair</button>
-</mat-menu>

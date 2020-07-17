@@ -10,7 +10,7 @@ export class AcessoGuard implements CanActivate {
   constructor(private router: Router) { }
 
   canActivate(): boolean {
-    if (localStorage.getItem('x-access-token') && firebase.auth().currentUser) {
+    if (localStorage.getItem('x-access-token')) {
       return true;
     } else {
       this.router.navigate(['acessar']);

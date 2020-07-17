@@ -12,7 +12,7 @@ export class ContainerPrincipalWrapperComponent implements OnInit, AfterViewChec
 
   sidenavEsquerdoAberto: boolean;
   sidenavDireitoAberto: boolean;
-  sidenavEsquerdoMode: string;
+  sidenavMode: string;
 
   mediaQuerySubscription: Subscription;
   activeMediaQuery: string;
@@ -26,9 +26,9 @@ export class ContainerPrincipalWrapperComponent implements OnInit, AfterViewChec
         if (this.activeMediaQuery === 'xs' || this.activeMediaQuery === 'sm') {
           this.sidenavDireitoAberto = false;
           this.sidenavEsquerdoAberto = false;
-          this.sidenavEsquerdoMode = 'over';
+          this.sidenavMode = 'over';
         } else {
-          this.sidenavEsquerdoMode = 'side';
+          this.sidenavMode = 'side';
           this.sidenavDireitoAberto = false;
           this.sidenavEsquerdoAberto = true;
         }

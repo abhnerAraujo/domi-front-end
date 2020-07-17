@@ -1,0 +1,52 @@
+<form [formGroup]="formPerfil" fxFlex style="padding: 8px" fxLayout="column" fxLayoutGap="16px" class="perfil-usuario">
+  <span *ngIf="edicao" class="titulo">Edição de perfil</span>
+  <div fxLayout="column" [fxLayoutGap]="edicao ? '' : '16px'">
+    <ng-container *ngIf="!edicao; else editarPerfil">
+      <div fxLayoutAlign="center center">
+        <img src="../../../../../../../assets/imagens/image-placeholder.png" width="70%"
+          style="border-radius: 100%; background-color: #f0f0f0;">
+      </div>
+      <span class="nome-completo">{{ dadosUsuario?.usuario?.primeiro_nome }} {{dadosUsuario?.usuario?.sobrenome}}</span>
+    </ng-container>
+  </div>
+  <span class="email">{{ dadosUsuario?.usuario?.email }}</span>
+  <mat-divider></mat-divider>
+  <div fxFlex fxLayout="column">
+    <div *ngIf="perfilAtivo" fxLayout="column">
+      <span class="titulo">{{ perfilAtivo?.profissional_tipo_descricao }}</span>
+      <ng-container *ngIf="!edicao; else editarRegistroConselho">
+        <div class="detalhes-inscricao" fxLayoutGap="8px">
+          <span>{{ perfilAtivo?.numero_inscricao }}</span>
+          <span style="opacity: .88;">{{ perfilAtivo?.inscricao_data | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <button mat-button color="accent" *ngIf="!edicao" (click)="edicao = true">EDITAR PERFIL</button>
+  <div fxLayout="row" *ngIf="edicao">
+    <button mat-button color="accent" (click)="edicao = false" fxFlex>CANCELAR</button>
+    <button mat-button color="accent" (click)="salvar(formPerfil.value)" [disabled]="!formPerfil.valid" fxFlex>SALVAR</button>
+  </div>
+  <button *ngIf="!edicao" mat-button>SAIR DO DOMI</button>
+  <ng-template #editarPerfil>
+    <mat-form-field>
+      <input matInput placeholder="Primeiro nome" formControlName="primeiro_nome" required>
+      <mat-error *ngIf="formPerfil.get('primeiro_nome').hasError('required')">Obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Sobrenome" formControlName="sobrenome">
+      <mat-error *ngIf="formPerfil.get('sobrenome').hasError('required')">Obrigatório</mat-error>
+    </mat-form-field>
+  </ng-template>
+  <ng-template #editarRegistroConselho>
+    <mat-form-field>
+      <input matInput placeholder="Número de inscrição" formControlName="numero_inscricao">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Data da inscrição" [matDatepicker]="picker" (click)="picker.open()" formControlName="inscricao_data" [max]="momentService.momentBr()">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker disabled="false"></mat-datepicker>
+      <mat-error *ngIf="formPerfil.get('inscricao_data').hasError('matDatepickerParse')">Data inválida</mat-error>
+    </mat-form-field>
+  </ng-template>
+</form>

@@ -3,14 +3,15 @@
     <app-loader></app-loader>
   </div>
   <div class="cabecalho no-print" fxFlex="nogrow" fxLayout="column">
-    <app-toolbar fxFlex (toggleSidenav)="sidenavEsquerdoAberto = !sidenavEsquerdoAberto"></app-toolbar>
+    <app-toolbar fxFlex (toggleSidenav)="sidenavEsquerdoAberto = !sidenavEsquerdoAberto"
+      (toggleSidenavDireito)="sidenavDireitoAberto = !sidenavDireitoAberto"></app-toolbar>
   </div>
   <mat-sidenav-container fxFlex>
-    <mat-sidenav [(opened)]="sidenavEsquerdoAberto" [mode]="sidenavEsquerdoMode" fxFlex="250px"
-      class="navegacao no-print">
+    <mat-sidenav [(opened)]="sidenavEsquerdoAberto" [mode]="sidenavMode" fxFlex="250px" class="navegacao no-print">
       <app-navegacao-menu (click)="fecharSidenavEsquerdo()"></app-navegacao-menu>
     </mat-sidenav>
-    <mat-sidenav class="no-print" [(opened)]="sidenavDireitoAberto" mode="side" fxFlex="200px" position="end">
+    <mat-sidenav class="no-print" [(opened)]="sidenavDireitoAberto" [mode]="sidenavMode" fxFlex="300px" position="end">
+      <app-perfil-usuario style="height: 100%;"></app-perfil-usuario>
     </mat-sidenav>
     <mat-sidenav-content fxLayoutAlign="center" fxFlex fxLayout="column">
       <div fxFlex class="conteudo">

@@ -18,6 +18,11 @@ export class UsuarioService {
       .post<CriarUsuarioResponse>('usuarios', dados);
   }
 
+  editar(dados: any) {
+    return this.http
+      .put<any>('usuarios', dados);
+  }
+
   dadosUsuario(): Observable<DadosUsuarioResponse> {
     return this.http
       .get<DadosUsuarioResponse>(`usuarios`, { headers: { 'Token': localStorage.getItem(LOCAL_STORAGE_ITENS.token) } });

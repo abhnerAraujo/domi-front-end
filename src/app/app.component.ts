@@ -14,8 +14,8 @@ export class AppComponent {
   title = 'Domi';
   firebaseConfig: any;
   constructor() {
-    this.firebaseConfig = environment.firebaseConfig;
-    firebase.initializeApp(this.firebaseConfig);
+    // this.firebaseConfig = environment.firebaseConfig;
+    // firebase.initializeApp(this.firebaseConfig);
   }
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];

@@ -18,6 +18,8 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
     CompartilhadoModule,
     NgxMaterialTimepickerModule.setLocale('pt-BR'),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),

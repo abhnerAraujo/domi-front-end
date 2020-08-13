@@ -9,6 +9,7 @@ export const environment = {
     storageBucket: 'domi-app-web.appspot.com',
     messagingSenderId: '615854700273',
     appId: '1:615854700273:web:ba995c11bbf49dde749b50',
-    measurementId: 'G-RW1WZXZD7B'
+    measurementId: 'G-RW1WZXZD7B',
+    clientId: '615854700273-hppmhlreqeiji85mmkchl7crpotjcnc5.apps.googleusercontent.com'
   }
 };

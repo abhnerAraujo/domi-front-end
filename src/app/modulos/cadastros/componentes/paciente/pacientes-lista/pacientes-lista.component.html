@@ -6,10 +6,11 @@
 </div>
 <div fxLayout="column" fxLayoutGap="8px">
   <mat-list>
-    <mat-list-item *ngFor="let paciente of pacientes" [routerLink]="['/cadastros/pacientes/novo']">
+    <mat-list-item *ngFor="let paciente of pacientes" [routerLink]="['/cadastros/pacientes/' + paciente.paciente_id]">
       <mat-icon mat-list-icon>account_circle</mat-icon>
-      <h4 mat-line class="titulo-linha">{{paciente.nome}}</h4>
-      <p mat-line class="subtitulo-linha">{{paciente.idade}} anos</p>
+      <h4 mat-line class="titulo-linha">{{ paciente.nome_completo }}</h4>
+      <p mat-line *ngIf="!!paciente.data_nascimento" class="subtitulo-linha">{{ paciente.data_nascimento | idade }} anos
+      </p>
       <mat-divider></mat-divider>
     </mat-list-item>
   </mat-list>

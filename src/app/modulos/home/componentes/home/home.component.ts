@@ -1,4 +1,4 @@
-import { Usuario } from './../../../acesso/interfaces/usuario.interface';
+import { DadosUsuario } from './../../../acesso/interfaces/dados-usuario-response.interface';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,12 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  usuario: Usuario;
+  dadosUsuario: DadosUsuario;
 
   constructor() { }
 
   ngOnInit() {
-    this.usuario = JSON.parse(localStorage.getItem('x-user-data'));
+    this.dadosUsuario = JSON.parse(localStorage.getItem('x-user-data'));
   }
 
 }

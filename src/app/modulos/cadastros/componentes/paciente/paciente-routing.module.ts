@@ -11,6 +11,10 @@ const rotas: Routes = [
   {
     path: 'novo',
     component: PacienteCadastroComponent
+  },
+  {
+    path: ':paciente_id',
+    component: PacienteCadastroComponent
   }
 ];
 

@@ -1,0 +1,13 @@
+@import '../../../../../../styles/variables.scss';
+
+.clicavel:hover {
+  cursor: pointer;
+}
+
+.nota {
+  color: rgba($color: #000000, $alpha: .64)
+}
+
+.selecionado {
+  color: $accent;
+}

@@ -1,0 +1,200 @@
+<div fxLayout="column" fxLayoutGap="32px">
+  <section fxLayoutAlign.gt-xs="space-between center" fxLayout.xs="column" class="titulo-pagina" fxLayoutGap="16px">
+    <div fxLayoutAlign="start center" fxLayoutGap="16px">
+      <button mat-icon-button (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Planejamentos</h1>
+    </div>
+    <div fxLayoutAlign.xs="end">
+      <button fxFlex.xs mat-raised-button *ngIf="!planejamentoForm" color="accent"
+        (click)="adicionar()">ADICIONAR</button>
+      <button mat-icon-button *ngIf="planejamentoForm" (click)="planejamentoForm = null">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </section>
+
+  <section *ngIf="planejamentoForm">
+    <form [formGroup]="planejamentoForm" fxLayout="column" fxLayoutGap="8px">
+      <mat-form-field appearance="outline" fxFlex>
+        <mat-label>Resumo do planejamento</mat-label>
+        <textarea matTextareaAutosize formControlName="planejamento_texto" matInput placeholder="Estou planejando..."
+          required></textarea>
+        <mat-error *ngIf="planejamentoForm.get('planejamento_texto').hasError('required')">
+          Este campo é obrigatório
+        </mat-error>
+        <mat-error
+          *ngIf="!planejamentoForm.get('planejamento_texto').hasError('required') && planejamentoForm.get('planejamento_texto').hasError('maxlength')">
+          O máximo é de {{ planejamentoForm.get('planejamento_texto').getError('maxlength').requiredLength }} caracteres
+        </mat-error>
+        <mat-error
+          *ngIf="!planejamentoForm.get('planejamento_texto').hasError('required') && planejamentoForm.get('planejamento_texto').hasError('pattern')">
+          O texto deve conter pelo menos uma letra ou número
+        </mat-error>
+        <mat-hint align="end">{{planejamentoForm.get('planejamento_texto').value?.length || 0}}/255</mat-hint>
+      </mat-form-field>
+      <div fxLayout="column">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+          <h4>Materiais/Utensílios</h4>
+          <button type="button" [disabled]="editarMateriais" (click)="definirMateriais()" mat-icon-button
+            color="accent">
+            <mat-icon>{{ planejamentoForm.get('materiais').value ? 'edit' : 'add_circle' }}</mat-icon>
+          </button>
+        </div>
+        <mat-form-field appearance="outline" *ngIf="editarMateriais">
+          <mat-label>Materiais/Utensílios</mat-label>
+          <mat-chip-list #chipList>
+            <mat-chip *ngFor="let material of materiais" [selectable]="false" [removable]="true"
+              (removed)="removerMaterial(material)">
+              {{ material }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separadores"
+              [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="adicionarMaterial($event)">
+          </mat-chip-list>
+          <button mat-icon-button matSuffix color="accent" type="button" (click)="salvarChips()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <mat-hint>Utilize <strong>enter</strong> ou <strong>vírgula</strong> para adicionar</mat-hint>
+        </mat-form-field>
+        <ng-container *ngIf="planejamentoForm.get('materiais').value || editarMateriais; else adicioneMateriais">
+          <mat-chip-list>
+            <mat-chip *ngFor="let material of planejamentoForm.get('materiais').value?.split(',')">{{material}}
+            </mat-chip>
+          </mat-chip-list>
+        </ng-container>
+        <ng-template #adicioneMateriais>
+          <span>Adicione materiais/utensílios ao seu planejamento clicando no botão acima</span>
+        </ng-template>
+      </div>
+      <div fxLayoutAlign="start center" fxLayoutGap="16px" fxLayout="row">
+        <h4>Objetivos</h4>
+        <button mat-icon-button type="button" (click)="addObjetivo()" color="accent">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+      <mat-accordion>
+        <ng-container *ngIf="objetivos.length; else adicioneObjetivos">
+          <mat-expansion-panel formArrayName="objetivos" *ngFor="let objetivo of objetivosFiltrados(); let i = index"
+            (opened)="carregarAtividades(objetivo)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Objetivo {{ i + 1 }}
+              </mat-panel-title>
+              <mat-panel-description fxHide.xs>
+                {{ objetivo.get('conteudo').value }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div [formGroupName]="i" fxLayout="column">
+              <div fxLayoutAlign="center">
+                <button mat-button color="warn" (click)="removerObjetivo(i)">
+                  EXCLUIR ESTE OBJETIVO
+                </button>
+              </div>
+              <mat-form-field appearance="outline">
+                <textarea (click)="objetivoSelecionado = objetivo" matTextareaAutosize formControlName="conteudo"
+                  matInput placeholder="Descreva seu objetivo" required></textarea>
+              </mat-form-field>
+              <h5 style="opacity: .72">Atividades</h5>
+              <div formArrayName="atividades" *ngFor="let atividade of atividades(objetivo).controls; let j = index">
+                <div [formGroupName]="j" fxLayout="column" *ngIf="!atividade.get('excluido').value">
+                  <div fxLayoutAlign="end">
+                    <button mat-icon-button color="warn" (click)="removerAtividade(objetivo, j)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                  <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Atividade {{ j + 1}}</mat-label>
+                    <textarea matTextareaAutosize formControlName="conteudo" matInput required></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-icon-button type="button" (click)="addAtividade(objetivo)" color="accent">
+                <mat-icon>add_circle</mat-icon>
+              </button>
+            </div>
+          </mat-expansion-panel>
+        </ng-container>
+        <ng-template #adicioneObjetivos>
+          <div fxLayoutAlign="start center" fxLayoutGap="8px">
+            <span>Adicione objetivos ao seu planejamento clicando no botão acima</span>
+          </div>
+        </ng-template>
+      </mat-accordion>
+      <div fxFlex="36px" *ngIf="planejamentoForm"
+        [ngClass]="{'slide-in-left': planejamentoForm, 'slide-out-left': !planejamentoForm}">
+        <button type="button" [disabled]="!planejamentoForm.valid" matSuffix mat-raised-button color="accent"
+          (click)="salvar()">
+          SALVAR
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <section fxLayoutAlign="end">
+    <ng-container
+      *ngIf="planejamentos?.length && ((!carregando && !nenhumResultado) || carregando); else adicionePlanejamento">
+      <mat-card fxLayout="column" fxFlex="80" fxFlex.lt-md="100" fxLayoutGap="16px"
+        [ngClass]="{'timeline': true, 'blink-2': carregando}">
+        <div *ngFor="let planejamento of planejamentos; let i = index" fxLayoutAlign="start" fxLayoutGap="16px"
+          class="planejamento">
+          <div fxHide.lt-lg fxFlex="25" fxFlex.lt-md="15" fxLayoutAlign="start end" fxLayout="column"
+            class="container-data">
+            <span *ngIf="!carregando; else exemploCarregando" class="planejamento-data">
+              {{ planejamento.created_at | dataHora:'LL' }}
+            </span>
+          </div>
+          <div fxLayout="column" fxFlex fxLayoutGap="8px" style="min-height: 100px;">
+            <div fxHide.gt-md>
+              <span *ngIf="!carregando; else exemploCarregando" class="planejamento-data">
+                {{ planejamento.created_at | dataHora:'LL' }}
+              </span>
+            </div>
+            <div fxFlex fxLayout="column" fxLayoutGap="8px">
+              <span *ngIf="!carregando; else exemploCarregando" class="planejamento-texto">
+                {{ planejamento.planejamento_texto }}
+              </span>
+              <div *ngIf="!carregando; else exemploCarregando" fxLayout="column">
+                <ul class="objetivos">
+                  <li *ngFor="let objetivo of planejamento.objetivos">{{ objetivo.conteudo }}</li>
+                </ul>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" style="min-height: 40px">
+              <mat-chip-list>
+                <mat-chip *ngFor="let material of planejamento.materiais?.split(',')">
+                  {{ material }}
+                </mat-chip>
+              </mat-chip-list>
+              <div fxFlex fxLayoutAlign="end" fxLayoutGap="8px">
+                <button [fxHide]="carregando" mat-icon-button color="warn" class="botao-editar"
+                  (click)="excluir(planejamento.planejamento_id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button [fxHide]="carregando" mat-icon-button color="accent" class="botao-editar"
+                  (click)="adicionar(planejamento)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </div>
+            </div>
+            <mat-divider *ngIf="i < planejamentos.length - 1" [inset]="true"></mat-divider>
+          </div>
+          <div class="evento-circulo"></div>
+        </div>
+      </mat-card>
+    </ng-container>
+  </section>
+</div>
+
+<ng-template #exemploCarregando>
+  <div class="blink-2 placeholder"></div>
+</ng-template>
+
+<ng-template #adicionePlanejamento>
+  <section style="opacity: .64;">
+    <div fxFlex fxLayoutAlign="start">
+      <h2>Adicione seu primeiro planejamento!</h2>
+    </div>
+  </section>
+</ng-template>

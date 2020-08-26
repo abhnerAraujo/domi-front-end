@@ -1,101 +1,59 @@
-<div fxLayout="column" style="min-height: 100%;">
+<div fxLayout="column" style="margin-bottom: 32px;">
   <div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
     <button mat-icon-button (click)="location.back()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <h1>Atendimento</h1>
   </div>
-  <div fxFlex fxLayoutGap="16px" fxLayout="row" fxLayout.lt-md="column">
-    <div fxFlex>
-      <mat-card class="card-paciente">
+  <div *ngIf="!carregando" fxFlex fxLayoutGap.gt-xs="24px" fxLayout="row" fxLayout.lt-md="column">
+    <div fxFlex fxLayout="column" fxLayoutGap="16px">
+      <mat-card>
+        <img *ngIf="recuperarAtributo(atendimento.paciente, 'foto')" mat-card-image
+          [src]="recuperarAtributo(atendimento.paciente, 'foto')" />
         <mat-card-header>
-          <img mat-card-avatar class="avatar" [src]="atendimento.paciente.foto" />
-          <mat-card-title>{{ atendimento.paciente.nome }}</mat-card-title>
-          <mat-card-subtitle>{{ atendimento.paciente.idade }} anos</mat-card-subtitle>
+          <mat-icon style="font-size: 32px; width: 32px; height: 32px; opacity: .72;"
+            *ngIf="!recuperarAtributo(atendimento.paciente, 'foto')" mat-card-avatar>account_circle</mat-icon>
+          <mat-card-title>{{ recuperarAtributo(atendimento.paciente, 'nome_completo') }}</mat-card-title>
+          <mat-card-subtitle>{{ recuperarAtributo(atendimento.paciente, 'data_nascimento') | idade }} anos
+          </mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content fxLayout="column" fxLayoutGap="4px">
-          <div class="content-info">
-            Dt. Nascimento: {{ atendimento.paciente.data_nascimento }}
-          </div>
-          <div class="content-info">
-            Responsável: {{ atendimento.responsavel }}
-          </div>
-          <div class="content-info">
-            Queixa: "{{ atendimento.queixa }}"
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <mat-card-actions [align]="'end'">
-          <button mat-raised-button color="accent" fxFlex.xs>DAR ALTA</button>
-          <button mat-raised-button color="accent" fxFlex.xs [routerLink]="['/atendimentos/1/sessoes/nova']">ATENDER
-            AGORA</button>
-        </mat-card-actions>
       </mat-card>
-      <app-informacao-numerica fxHide.gt-sm [sessoes]="atendimento.total_sessoes"
-        [recebido]="atendimento.total_recebido" [receber]=atendimento.total_receber></app-informacao-numerica>
-      <p>
-        <mat-nav-list>
-          <a mat-list-item [routerLink]="['/atendimentos/1/sessoes']">
-            <mat-icon>history</mat-icon> HISTÓRICO DE SESSÕES
-          </a>
-          <a mat-list-item [routerLink]="['/atendimentos/1/configuracoes']">
-            <mat-icon>settings</mat-icon> CONFIGURAÇÕES
-          </a>
-          <a mat-list-item [routerLink]="['/cadastros/pacientes/1']">
-            <mat-icon>edit</mat-icon> EDITAR PACIENTE
-          </a>
-          <a mat-list-item [routerLink]="['/atendimentos/1/anamnese/nova']">
-            <mat-icon>assignment_ind</mat-icon> ANAMNESE
-          </a>
-          <a mat-list-item [routerLink]="['/atendimentos/1/avaliacao/nova']">
-            <mat-icon>assessment</mat-icon> AVALIAÇÃO
-          </a>
-        </mat-nav-list>
-      </p>
+      <div fxLayoutGap="8px">
+        <button mat-raised-button color="accent" fxFlex>DAR ALTA</button>
+        <button mat-raised-button color="accent" fxFlex
+          [routerLink]="['/atendimentos/' + atendimentoId + '/sessoes/nova']">ATENDER</button>
+      </div>
     </div>
-    <mat-divider fxHide.xs [vertical]="true"></mat-divider>
-    <div fxFlex="60" fxLayout="column">
-      <app-informacao-numerica fxHide.lt-md [sessoes]="atendimento.total_sessoes"
-        [recebido]="atendimento.total_recebido" [receber]=atendimento.total_receber></app-informacao-numerica>
-      <div fxHide.xs fxLayout="column" fxFlex>
-        <div fxLayoutAlign="start center" fxLayoutGap="8px" fxFlex="nogrow">
-          <mat-icon>trending_up</mat-icon>
-          <h3>Última evolução</h3>
-        </div>
-        <div>
-          <mat-card class="ultima-evolucao">
-            <mat-card-content [ngClass]="{'ocultar-evolucao': evolucaoOcultada}">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere perspiciatis enim doloribus qui cupiditate
-              aspernatur maiores animi repellat a beatae, vero odio esse debitis. Nulla possimus commodi iure at quasi!
-            </mat-card-content>
-            <mat-card-actions [align]="'end'">
-              <button mat-icon-button (click)="evolucaoOcultada = !evolucaoOcultada">
-                <mat-icon *ngIf="evolucaoOcultada">expand_more</mat-icon>
-                <mat-icon *ngIf="!evolucaoOcultada">expand_less</mat-icon>
-              </button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div fxLayoutAlign="start center" fxLayoutGap="8px" fxFlex="nogrow">
-          <mat-icon>timeline</mat-icon>
-          <h3>Últimos acontecimentos</h3>
-        </div>
-        <div class="ultimos-acontecimentos" fxLayout="column" fxLayoutGap="8px">
-          <div *ngFor="let evento of atendimento.ultimos_acontecimentos" fxLayout="row" fxLayoutAlign="start start"
-            fxLayoutGap="8px" fxFlex="45px">
-            <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="center center">
-              <div class="timeline-circulo" fxFlex="nogrow"></div>
-              <div fxFlex class="timeline-traco"></div>
-            </div>
-            <div fxLayout="column">
-              <div class="evento-descricao">
-                Criou: {{ evento.descricao }}
-              </div>
-              <div>
-                {{ evento.data }}
-              </div>
-            </div>
-          </div>
+    <div fxFlex="60" fxLayout="column" fxLayoutGap="16px">
+      <mat-nav-list>
+        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/sessoes']">
+          <mat-icon>history</mat-icon> &nbsp; Histórico de sessões
+        </a>
+        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/planejamentos']">
+          <mat-icon>list_alt</mat-icon> &nbsp; Planejamentos
+        </a>
+        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/configuracoes']">
+          <mat-icon>settings</mat-icon> &nbsp; Sobre
+        </a>
+        <a mat-list-item
+          [routerLink]="['/cadastros/pacientes/' + recuperarAtributo(atendimento.paciente, 'paciente_id') || atendimento.paciente]">
+          <mat-icon>edit</mat-icon> &nbsp; Cadastro
+        </a>
+        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/anamnese']">
+          <mat-icon>assignment_ind</mat-icon> &nbsp; Anamnese
+        </a>
+        <a mat-list-item [routerLink]="['/atendimentos/' + atendimentoId + '/avaliacao']">
+          <mat-icon>assessment</mat-icon> &nbsp; Avaliação
+        </a>
+      </mat-nav-list>
+      <h4 style="opacity: 0.88;">QUEIXA</h4>
+      <div *ngIf="atendimento.queixa" class="container-queixa" fxLayout="column" fxLayoutAlign="center">
+        <span style="font-style: italic; font-size: 20px">{{ atendimento.queixa }}</span>
+      </div>
+      <div fxLayout="column" fxFlex>
+        <h4 style="opacity: 0.88;">ÚLTIMA EVOLUÇÃO</h4>
+        <div *ngIf="atendimento.ultima_evolucao" style="font-size: 20px">
+          {{ atendimento.ultima_evolucao }}
         </div>
       </div>
     </div>

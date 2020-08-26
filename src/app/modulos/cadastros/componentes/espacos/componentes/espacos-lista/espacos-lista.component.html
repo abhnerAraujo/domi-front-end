@@ -1,1 +1,35 @@
-<p>espacos-lista works!</p>
+<div fxLayoutAlign="space-between center" fxLayout="row">
+  <h1>Locais</h1>
+  <button mat-button (click)="ajuda()" color="accent">AJUDA</button>
+</div>
+
+<div fxLayout="column" fxLayoutGap="16px">
+  <div [formGroup]="espaco" *ngFor="let espaco of espacosForm?.controls; let i = index" class="espaco"
+    fxLayoutAlign="space-between">
+    <input mat-card-title formControlName="descricao" placeholder="Escreva um nome" [readOnly]="espaco.value.padrao"
+      (change)="salvarNome(espaco)" />
+    <div *ngIf="!espaco.value.padrao" fxLayoutGap="16px" fxLayout="row">
+      <button mat-icon-button color="accent" (click)="arquivar(espaco)">
+        <mat-icon>archive</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="excluir(espaco)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <mat-icon class="padrao" *ngIf="espaco.value.padrao">lock</mat-icon>
+  </div>
+  <mat-divider *ngIf="espacosArquivadosForm?.length"></mat-divider>
+  <p *ngIf="espacosArquivadosForm?.length">Arquivados</p>
+  <div [formGroup]="espaco" *ngFor="let espaco of espacosArquivadosForm?.controls; let i = index"
+    class="espaco arquivado" fxLayoutAlign="space-between">
+    <span>{{ espaco.get('descricao').value }}</span>
+    <div fxLayoutGap="16px" fxLayout="row">
+      <button mat-icon-button color="accent" (click)="desarquivar(espaco)">
+        <mat-icon>unarchive</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="excluir(espaco)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

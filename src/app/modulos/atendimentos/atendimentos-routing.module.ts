@@ -37,6 +37,10 @@ const rotas: Routes = [
       {
         path: 'avaliacao',
         loadChildren: () => import('../avaliacao/avaliacao.module').then(m => m.AvaliacaoModule)
+      },
+      {
+        path: 'planejamentos',
+        loadChildren: () => import('../planejamentos/planejamentos.module').then(m => m.PlanejamentosModule)
       }
     ]
   }

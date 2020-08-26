@@ -1,9 +1,10 @@
+import { Agendamento } from './../../../../interfaces/agendamento.interface';
+import { MomentService } from 'src/app/modulos/compartilhado/services/moment/moment.service';
 import { TEMA_PRIMARIO } from './../../../../../../constantes/time-picker';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-dialog-adicionar-evento',
@@ -21,39 +22,49 @@ export class DialogAdicionarEventoComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogAdicionarEventoComponent>,
     formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: Date) {
+    private moment: MomentService,
+    @Inject(MAT_DIALOG_DATA) public data: Agendamento) {
     this.horarioForm = formBuilder.group({
-      inicio: ['', Validators.required],
-      quantidade: [1],
-      duracao: [40]
+      inicio: [this.moment.momentBr(data.agendamento_data).format('LT'), Validators.required],
+      quantidade: [data.quantidade || 1],
+      duracao: [data.duracao || 40],
+      titulo: [data.titulo || '', Validators.required]
     });
     this.temaPrimario = TEMA_PRIMARIO;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    if (this.data.atendimento) {
+      this.horarioForm.disable();
+    }
+  }
 
   confirmar() {
     this.eventos = [];
     const value = this.horarioForm.value;
     if (value.inicio) {
-      for (let i = 0; i < value.quantidade; i++) {
-        const dataAtendimento = this.data.toISOString().split('T').shift();
-        let horaAtendimento: string;
-        if (i > 0) {
-          horaAtendimento = moment(this.eventos[i - 1].end).format('HH:mm');
-        } else {
-          horaAtendimento = (value.inicio as string);
-        }
-        const inicio = moment(`${dataAtendimento} ${horaAtendimento}`);
-        this.eventos.push({
-          title: 'Matheus Felipe',
-          start: inicio.toISOString(),
-          end: inicio.add(value.duracao, 'minutes').toISOString(),
-          description: 'Atendimento de Matheus Felipe (Sessão 1)'
-        });
-      }
+      const dataAtendimento = this.data.agendamento_data;
+      const inicio = this.moment.momentBr(dataAtendimento)
+        .hour(Number(value.inicio.split(':').shift()))
+        .minute(Number(value.inicio.split(':').pop()));
+      this.dialogRef.close({
+        id: this.data.agendamento_id,
+        title: value.titulo,
+        start: inicio.toISOString(),
+        end: inicio.add(value.duracao * value.quantidade, 'minutes').toISOString(),
+        description: 'Agendamento de sessão',
+        duration: value.duracao,
+        amount: value.quantidade,
+        acao: 'editar'
+      });
     }
-    this.dialogRef.close(this.eventos);
+  }
+
+  excluir() {
+    this.dialogRef.close({
+      agendamentoId: this.data.agendamento_id,
+      acao: 'excluir'
+    });
   }
 
 }

@@ -1,13 +1,18 @@
 <div class="container-geral" fxLayout="column">
-  <div class="cabecalho" fxFlex="nogrow" fxLayout="column">
-    <app-toolbar fxFlex (toggleSidenav)="sidenavEsquerdoAberto = !sidenavEsquerdoAberto"></app-toolbar>
-    <mat-progress-bar *ngIf="progressBar" [mode]="'indeterminate'" color="accent"></mat-progress-bar>
+  <div class="loader" fxFlex="4px">
+    <app-loader></app-loader>
+  </div>
+  <div class="cabecalho no-print" fxFlex="nogrow" fxLayout="column">
+    <app-toolbar fxFlex (toggleSidenav)="sidenavEsquerdoAberto = !sidenavEsquerdoAberto"
+      (toggleSidenavDireito)="sidenavDireitoAberto = !sidenavDireitoAberto"></app-toolbar>
   </div>
   <mat-sidenav-container fxFlex>
-    <mat-sidenav [(opened)]="sidenavEsquerdoAberto" [mode]="sidenavEsquerdoMode" fxFlex="250px" class="navegacao">
+    <mat-sidenav [(opened)]="sidenavEsquerdoAberto" [mode]="sidenavMode" fxFlex="250px" class="navegacao no-print">
       <app-navegacao-menu (click)="fecharSidenavEsquerdo()"></app-navegacao-menu>
     </mat-sidenav>
-    <mat-sidenav [(opened)]="sidenavDireitoAberto" mode="side" fxFlex="200px" position="end"></mat-sidenav>
+    <mat-sidenav class="no-print" [(opened)]="sidenavDireitoAberto" [mode]="sidenavMode" fxFlex="300px" position="end">
+      <app-perfil-usuario style="height: 100%;"></app-perfil-usuario>
+    </mat-sidenav>
     <mat-sidenav-content fxLayoutAlign="center" fxFlex fxLayout="column">
       <div fxFlex class="conteudo">
         <router-outlet></router-outlet>

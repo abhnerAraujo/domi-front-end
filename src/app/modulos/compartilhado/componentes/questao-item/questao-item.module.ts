@@ -1,3 +1,4 @@
+import { QuestoesService } from './../../services/questoes/questoes.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { QuestaoItemComponent } from './questao-item.component';
@@ -19,6 +20,9 @@ import { MatFormFieldModule, MatButtonModule, MatInputModule, MatCardModule, Mat
   ],
   exports: [
     QuestaoItemComponent
+  ],
+  providers: [
+    QuestoesService
   ]
 })
 export class QuestaoItemModule { }

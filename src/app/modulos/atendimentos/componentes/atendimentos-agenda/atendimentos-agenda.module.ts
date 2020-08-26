@@ -1,3 +1,5 @@
+import { PipesModule } from './../../../../pipes/pipes.module';
+import { AgendamentosService } from './../../services/agendamentos/agendamentos.service';
 import { AtendimentosAgendaRoutingModule } from './atendimentos-agenda-routing.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +11,8 @@ import { CommonModule } from '@angular/common';
 import {
   MatIconModule, MatDividerModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatDialogModule,
   MatSnackBarModule,
-  MatSliderModule
+  MatSliderModule,
+  MatCardModule
 } from '@angular/material';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
@@ -29,10 +32,15 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     MatDialogModule,
     MatSnackBarModule,
     MatSliderModule,
-    NgxMaterialTimepickerModule.setLocale('pt-BR')
+    NgxMaterialTimepickerModule.setLocale('pt-BR'),
+    MatCardModule,
+    PipesModule
   ],
   entryComponents: [
     DialogAdicionarEventoComponent
+  ],
+  providers: [
+    AgendamentosService
   ]
 })
 export class AtendimentosAgendaModule { }

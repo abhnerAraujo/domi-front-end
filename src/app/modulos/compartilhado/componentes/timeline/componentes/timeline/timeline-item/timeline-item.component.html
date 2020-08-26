@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="8px" fxFlex="45px" (mouseover)="hover = true"
-  (mouseleave)="hover = false" fxFlex [ngClass]="{'timeline-item': config.clicavel}">
+  (mouseleave)="hover = false" fxFlex [ngClass]="{'clicavel': config.clicavel, 'timeline-item': true}">
   <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="start center">
     <div class="timeline-circulo"
       [style.background-color]="hover && config.clicavel ? config.cores.secundaria : config.cores.principal"

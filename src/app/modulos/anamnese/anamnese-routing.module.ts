@@ -5,12 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 const rotas: Routes = [
   {
     path: '',
-    children: [
-      {
-        path: 'nova',
-        component: AnamneseDetalheComponent
-      }
-    ]
+    component: AnamneseDetalheComponent
   }
 ];
 

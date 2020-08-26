@@ -1,16 +1,16 @@
-<h1 mat-dialog-title>Novo agendamento</h1>
+<h1 mat-dialog-title>{{ data?.travarBotoes ? 'Configurar sessão' : 'Novo agendamento'}}</h1>
 <div mat-dialog-content>
-  <form fxLayout="column" [formGroup]="horarioForm" autocomplete="off">
+  <form fxLayout="column" [formGroup]="horarioForm" fxLayoutGap="8px" autocomplete="off">
     <mat-button-toggle-group formControlName="diaSemana">
-      <mat-button-toggle [value]="0" [disabled]="data.travarBotoes"> D </mat-button-toggle>
-      <mat-button-toggle [value]="1" [disabled]="data.travarBotoes"> S </mat-button-toggle>
-      <mat-button-toggle [value]="2" [disabled]="data.travarBotoes"> T </mat-button-toggle>
-      <mat-button-toggle [value]="3" [disabled]="data.travarBotoes"> Q </mat-button-toggle>
-      <mat-button-toggle [value]="4" [disabled]="data.travarBotoes"> Q </mat-button-toggle>
-      <mat-button-toggle [value]="5" [disabled]="data.travarBotoes"> S </mat-button-toggle>
-      <mat-button-toggle [value]="6" [disabled]="data.travarBotoes"> S </mat-button-toggle>
+      <mat-button-toggle [value]="0" [disabled]="data.travarBotoes" fxFlex> D </mat-button-toggle>
+      <mat-button-toggle [value]="1" [disabled]="data.travarBotoes" fxFlex> S </mat-button-toggle>
+      <mat-button-toggle [value]="2" [disabled]="data.travarBotoes" fxFlex> T </mat-button-toggle>
+      <mat-button-toggle [value]="3" [disabled]="data.travarBotoes" fxFlex> Q </mat-button-toggle>
+      <mat-button-toggle [value]="4" [disabled]="data.travarBotoes" fxFlex> Q </mat-button-toggle>
+      <mat-button-toggle [value]="5" [disabled]="data.travarBotoes" fxFlex> S </mat-button-toggle>
+      <mat-button-toggle [value]="6" [disabled]="data.travarBotoes" fxFlex> S </mat-button-toggle>
     </mat-button-toggle-group>
-    <mat-form-field appearance="outline" fxFlex>
+    <mat-form-field *ngIf="!data.travarBotoes" appearance="outline" fxFlex>
       <mat-label>Horário</mat-label>
       <input matInput [ngxTimepicker]="pickerInicio" [disableClick]="true" [format]="24" formControlName="hora"
         readonly>
@@ -52,5 +52,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button [mat-dialog-close]="null">CANCELAR</button>
-  <button mat-button [disabled]="!horarioForm.valid" (click)="confirmar()">CRIAR</button>
+  <button mat-button [disabled]="!horarioForm.valid" (click)="confirmar()" color="accent">CONFIRMAR</button>
 </div>

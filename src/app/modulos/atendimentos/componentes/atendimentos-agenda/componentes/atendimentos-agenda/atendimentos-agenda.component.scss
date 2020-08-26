@@ -4,3 +4,46 @@
 ::ng-deep .fc-toolbar h2 {
   font-size: 16px;
 }
+
+::ng-deep full-calendar{
+  .fc-right .fc-prev-button, 
+  .fc-right .fc-next-button, 
+  .fc-right .fc-today-button,
+  .fc-left  .fc-prev-button, 
+  .fc-left  .fc-timeGridWeek-button,
+  .fc-left  .fc-dayGridMonth-button,
+  .fc-left  .fc-timeGridDay-button,
+  .fc-left  .fc-listWeek-button {
+    background-color: $accent;
+    background-image: none;
+  }
+
+  .fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: $primary;
+    background-image: none;
+  }
+
+  .fc-button-primary {
+    border: none;
+  }
+  .fc-day-grid-event > .fc-content {
+    white-space: normal;
+  }
+}
+
+.calendar-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+@media screen and (min-width: 1367px) {
+  .calendar-container {
+    max-height: 700px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .calendar-container {
+    margin: 0 -16px;
+  }
+}

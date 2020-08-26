@@ -1,47 +1,48 @@
-<div class="container-principal" fxLayoutAlign.gt-xs="center" fxLayout="column">
-  <div fxFlex="nogrow" class="titulo">
-    <h1>Domi</h1>
-    <h4>{{ criarUsuario 
-      ? 'Preencha os campos abaixo para iniciar.'
-      : 'Digite seu e-mail e senha para acessar.'}}
-    </h4>
+<div class="container-principal" fxLayout="column">
+  <div class="header" id="header" fxLayout="column">
+    <div fxLayoutAlign="space-between start" id="primeira-linha" fxFlex>
+      <div class="titulo">
+        <h1 id="titulo">Domi</h1>
+      </div>
+      <div fxLayoutGap="16px" id="navegacao" fxHide.xs>
+        <button mat-button class="botao-navegacao">INÍCIO</button>
+        <button mat-button class="botao-navegacao">O APLICATIVO</button>
+        <button mat-button class="botao-navegacao">PLANOS</button>
+        <button mat-button class="botao-navegacao">BLOG</button>
+      </div>
+    </div>
+    <button mat-raised-button (click)="drawer.toggle()" id="btn-acesso">ENTRAR</button>
   </div>
-  <div fxFlex.xs fxLayout="row">
-    <div fxFlex="100" fxLayoutAlign="center">
-      <mat-card fxFlex.xs="100" fxFlex="50" fxLayoutGap="16px" fxLayout="column">
-        <mat-card-content fxLayoutAlign="center" fxFlex.xs style="overflow-y: auto;">
+  <mat-sidenav-container autosize fxFlex="100">
+    <mat-sidenav [opened]="false"></mat-sidenav>
+    <mat-sidenav #drawer mode="side" position="end">
+      <mat-card class="card-login">
+        <div fxLayoutGap="32px" fxLayoutAlign="center">
+          <div fxLayout="column" fxLayoutGap="64px" class="login">
+            <span>{{ textoApoioLogin }}</span>
+            <div fxLayout="column" fxLayoutGap="16px" *ngIf="!entrando; else spnEntrando">
+              <button mat-stroked-button class="botao-login" (click)="loginFacebook()" color="accent">
+                FACEBOOK
+              </button>
+              <span fxLayoutAlign="center">ou</span>
+              <button mat-stroked-button class="botao-login" (click)="loginGoogle()" color="accent">
+                GOOGLE
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+      <!-- <mat-card class="card-login">
+        <mat-card-content style="overflow-y: auto; height: 100%;" fxLayout="row">
           <ng-container *ngIf="!criarUsuario; else novoUsuario">
-            <form [formGroup]="loginForm" fxFlex="60" fxFlex.xs="100" fxLayout="column">
-              <mat-form-field appearance="outline">
-                <mat-label>E-mail</mat-label>
-                <input matInput formControlName="email" required>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Senha</mat-label>
-                <input matInput type="password" formControlName="senha" required>
-              </mat-form-field>
-            </form>
+
           </ng-container>
           <ng-template #novoUsuario>
-            <app-criar-usuario fxFlex (valido)="formCriacaoValido = $event" (formChange)="formChange($event)">
+            <app-criar-usuario fxFlex [erros]="erros" (valido)="formCriacaoValido = $event"
+              (formChange)="formChange($event)">
             </app-criar-usuario>
           </ng-template>
         </mat-card-content>
-        <mat-card-actions fxLayoutAlign="center center" *ngIf="!criarUsuario">
-          <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
-            <div>
-              <button mat-raised-button fxFlex="100" (click)="entrar()" color="accent"
-                [disabled]="!loginForm.valid || entrando">{{ entrando ? 'Aguarde...' : 'ENTRAR' }}</button>
-            </div>
-            <div>
-              <button mat-stroked-button fxFlex="100" (click)="criarUsuario = true" color="accent">CADASTRAR</button>
-            </div>
-            <div>
-              <button mat-button fxFlex="100" (click)="entrar()" color="accent">Esqueci minha
-                senha</button>
-            </div>
-          </div>
-        </mat-card-actions>
         <mat-card-actions fxLayoutAlign="center center" *ngIf="criarUsuario">
           <div fxFlex="40" fxFlex.xs="90" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="center">
             <div>
@@ -50,11 +51,37 @@
             </div>
             <div fxLayoutAlign="center center" fxLayoutGap="8px">
               <h5 style="opacity: 0.72;">Já possui uma conta?</h5>
-              <button mat-button (click)="criarUsuario = false" color="accent">Entrar</button>
+              <button mat-button type="reset" (click)="criarUsuario = false" color="accent">Entrar</button>
             </div>
           </div>
         </mat-card-actions>
-      </mat-card>
-    </div>
-  </div>
+      </mat-card> -->
+    </mat-sidenav>
+    <mat-sidenav-content class="conteudo" id="content">
+      <section fxLayout="column" class="texto-apresentacao" fxLayoutGap="32px">
+        <div fxLayout="column" fxLayoutGap="24px">
+          <span>Somos o <strong class="destaque">Domi</strong> e nosso objetivo é oferecer ao <strong
+              class="destaque">profissional</strong> da</span>
+          <span> <strong class="profissao">{{ profissoes[profissaoAtual] }}</strong></span>
+          <span>a ferramenta ideal para <strong class="destaque">gerenciar</strong> e <strong
+              class="destaque">acompanhar</strong> seus atendimentos.</span>
+        </div>
+      </section>
+      <section>
+        <h1>O aplicativo</h1>
+      </section>
+      <section>
+        <h1>Planos</h1>
+      </section>
+      <section>
+        <h1>Blog</h1>
+      </section>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
+
+<ng-template #spnEntrando>
+  <div fxLayoutAlign="center">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

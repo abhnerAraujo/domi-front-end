@@ -15,4 +15,9 @@ export class AcessoService {
     return this.http
       .post<LoginResponse>('acesso', dados);
   }
+
+  authFirebase(token: string): Observable<any> {
+    return this.http
+      .post<any>('acesso/auth', null, { headers: { token } });
+  }
 }

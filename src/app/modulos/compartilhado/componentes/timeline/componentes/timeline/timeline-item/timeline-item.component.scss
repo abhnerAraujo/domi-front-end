@@ -1,5 +1,9 @@
 @import '../../../../../../../styles/variables.scss';
 
+.timeline-item {
+  height: 100%;
+}
+
 .container-esquerdo {
   height: 100%;
   .timeline-circulo {
@@ -8,6 +12,7 @@
   }
   .timeline-traco {
     width: 1.6px;
+    height: 100%;
     background-color: #bbb;
   }
 }
@@ -16,10 +21,13 @@
   font-size: 16px;
 }
 
-.timeline-item:hover {
+.clicavel:hover {
   cursor: pointer;
 }
 
 .discreto {
-  opacity: 0.72;
+  opacity: 0.64;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 14px;
 }

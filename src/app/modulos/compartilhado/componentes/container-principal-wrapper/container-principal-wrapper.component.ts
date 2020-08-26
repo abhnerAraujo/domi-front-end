@@ -1,5 +1,5 @@
 import { ProgressBarService } from './services/progress-bar/progress-bar.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
 import { Subscription } from 'rxjs';
 
@@ -8,19 +8,16 @@ import { Subscription } from 'rxjs';
   templateUrl: './container-principal-wrapper.component.html',
   styleUrls: ['./container-principal-wrapper.component.scss']
 })
-export class ContainerPrincipalWrapperComponent implements OnInit {
+export class ContainerPrincipalWrapperComponent implements OnInit, AfterViewChecked {
 
   sidenavEsquerdoAberto: boolean;
   sidenavDireitoAberto: boolean;
-  sidenavEsquerdoMode: string;
+  sidenavMode: string;
 
   mediaQuerySubscription: Subscription;
   activeMediaQuery: string;
 
-  progressBar: boolean;
-  progressBarSubscription: Subscription;
-
-  constructor(private mediaObserver: MediaObserver, private progressBarService: ProgressBarService) {
+  constructor(private mediaObserver: MediaObserver) {
     this.sidenavEsquerdoAberto = true;
     this.sidenavDireitoAberto = true;
     this.mediaQuerySubscription = this.mediaObserver.asObservable().subscribe(
@@ -29,21 +26,20 @@ export class ContainerPrincipalWrapperComponent implements OnInit {
         if (this.activeMediaQuery === 'xs' || this.activeMediaQuery === 'sm') {
           this.sidenavDireitoAberto = false;
           this.sidenavEsquerdoAberto = false;
-          this.sidenavEsquerdoMode = 'over';
+          this.sidenavMode = 'over';
         } else {
-          this.sidenavEsquerdoMode = 'side';
-          this.sidenavDireitoAberto = true;
+          this.sidenavMode = 'side';
+          this.sidenavDireitoAberto = false;
           this.sidenavEsquerdoAberto = true;
         }
       });
   }
 
   ngOnInit() {
-    this.progressBarSubscription = this.progressBarService.loaderState.subscribe(
-      (estado) => {
-        this.progressBar = estado;
-      }
-    );
+
+  }
+
+  ngAfterViewChecked() {
   }
 
   fecharSidenavEsquerdo() {

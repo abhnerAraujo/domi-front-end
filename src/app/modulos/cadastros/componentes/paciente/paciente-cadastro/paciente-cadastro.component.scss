@@ -3,3 +3,96 @@
   bottom: 24px;
   right: 32px;
 }
+
+.alinhar-esquerda {
+  text-align: end;
+}
+
+.texto {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.perfil-imagem {
+  border-radius: 50%;
+  height: 64px;
+  width: 64px;
+  position: relative;
+  &:hover {
+    .panel-troca-imagem {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 0;
+    }
+  }
+  .panel-troca-imagem {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: rgba($color: #78909c, $alpha: .8);
+    display: none;
+    position: absolute;
+  }
+}
+
+.imagem {
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+}
+
+.rotulo {
+  opacity: .72;
+  font-size: 20px;
+}
+
+.titulo {
+  margin: 16px 0;
+  font-size: 20px;
+  font-weight: 500;
+  display: block;
+}
+
+.texto-menor {
+  font-size: 18px !important;
+  font-weight: 500;
+}
+
+.texto-pequeno {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.enfase {
+  font-size: 24px;
+  opacity: .96;
+}
+
+.icone {
+  opacity: .72;
+}
+
+.nome-grande {
+  font-size: xx-large;
+}
+
+.nome-paciente {
+  font-size: xx-large;
+  margin: 16px 0;
+  @media screen and (max-width: 499px){
+    text-align: center;
+  }
+}
+
+.container-cadastro {
+  height: 80vh;
+  min-height: 500px;
+  overflow-y: auto;
+  padding-right: 16px;
+}
+
+.container-visualizacao {
+  overflow-y: auto;
+  margin: 0 16px;
+}

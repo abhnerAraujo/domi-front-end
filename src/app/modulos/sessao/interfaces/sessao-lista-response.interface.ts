@@ -1,14 +1,29 @@
+import { Pagamento } from './pagamentos.interface';
+
 export interface Sessao {
   sessao_id: number;
-  valor_pago: number;
+  atendimento: number;
   sessao_data: string;
-  sessao_valor: number;
-  evolucao?: Evolucao;
+  hora_inicio: string;
+  hora_fim: string;
+  quantidade: number;
+  duracao: number;
+  tempo_corrido: number;
+  utensilios_especificos?: any;
+  objetivos_especificos?: any;
+  estrategias_especificas?: any;
+  evolucao: string;
+  nota_geral: number;
+  valor_sessao: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: any;
+  pagamentos?: Pagamento[];
+  falta: boolean;
 }
 
-export interface Evolucao {
-  evolucao_id: number;
-  sessao_id: number;
-  evolucao_descricao: string;
-  indicador: number;
+export interface ListarSessoesResponse {
+  sucesso: boolean;
+  mensagem: string;
+  dados: Sessao[];
 }

@@ -1,3 +1,9 @@
+import { PlanejamentosService } from './../../../planejamentos/services/planejamentos/planejamentos.service';
+import { PagamentosService } from './../../services/pagamentos/pagamentos.service';
+import { TiposPagamentoService } from './../../services/tipos-pagamento/tipos-pagamento.service';
+import { SessaoService } from './../../services/sessao/sessao.service';
+import { AtendimentosService } from './../../../atendimentos/services/atendimentos/atendimentos.service';
+import { MomentService } from './../../../compartilhado/services/moment/moment.service';
 import { AvaliacaoModule } from './../../../avaliacao/avaliacao.module';
 import { AnamneseModule } from './../../../anamnese/anamnese.module';
 import { PipesModule } from './../../../../pipes/pipes.module';
@@ -10,7 +16,7 @@ import { BottomSheetNavegacaoModule } from './../../../compartilhado/componentes
 import {
   MatButtonModule, MatIconModule, MatDividerModule, MatProgressBarModule,
   MatFormFieldModule, MatInputModule, MatCheckboxModule, MatExpansionModule, MatDialogModule
-  , MatSliderModule, MatDatepickerModule, MatChipsModule
+  , MatSliderModule, MatDatepickerModule, MatSnackBarModule, MatSelectModule, MatListModule, MatChipsModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SessaoRoutingModule } from './sessao-routing.module';
@@ -42,15 +48,25 @@ import { SalvarNotaComponent } from './componentes/salvar-nota/salvar-nota.compo
     MatDialogModule,
     MatSliderModule,
     MatDatepickerModule,
+    MatSelectModule,
     CurrencyMaskModule,
     DialogConfigDiaAtendimentoModule,
-    MatChipsModule,
     PipesModule,
     FormsModule,
-    CurrencyMaskModule,
     NgxDropzoneModule,
     AnamneseModule,
-    AvaliacaoModule
+    AvaliacaoModule,
+    MatSnackBarModule,
+    MatListModule,
+    MatChipsModule
+  ],
+  providers: [
+    MomentService,
+    AtendimentosService,
+    SessaoService,
+    TiposPagamentoService,
+    PagamentosService,
+    PlanejamentosService
   ],
   entryComponents: [FinalizarSessaoComponent]
 })

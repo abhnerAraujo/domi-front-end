@@ -9,14 +9,20 @@
           <mat-expansion-panel-header>
             <mat-panel-title> Duração </mat-panel-title>
             <mat-panel-description fxLayoutAlign="end">
-              {{ resumoSessaoForm.get('sessao_duracao').value }}
+              {{ resumoSessaoForm.get('sessao_tempo_corrido').value }}
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <mat-form-field appearance="outline">
-            <mat-label>Tempo</mat-label>
-            <input matInput formControlName="sessao_duracao">
-            <mat-hint>hh:mm:ss ou hhmmss</mat-hint>
-          </mat-form-field>
+          <section fxLayoutGap.gt-xs="8px" fxLayout.xs="column">
+            <mat-form-field appearance="outline">
+              <mat-label>Tempo por sessão</mat-label>
+              <input matInput formControlName="sessao_duracao">
+              <span matSuffix>minutos</span>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Tempo</mat-label>
+              <input matInput formControlName="sessao_tempo_corrido">
+            </mat-form-field>
+          </section>
         </mat-expansion-panel>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -25,9 +31,21 @@
               {{ resumoSessaoForm.get('sessao_quantidade').value }}
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <mat-slider [min]="1" [max]="5" [step]="1" [thumbLabel]="true" formControlName="sessao_quantidade" fxFlex
-            color="accent">
-          </mat-slider>
+          <div fxLayoutAlign="center center" fxLayoutGap="16px">
+            <button mat-icon-button [disabled]="resumoSessaoForm.get('sessao_quantidade').value === 1"
+              (click)="resumoSessaoForm.patchValue({sessao_quantidade: resumoSessaoForm.get('sessao_quantidade').value - 1})">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <mat-form-field appearance="outline" fxFlex="50px">
+              <input type="number" formControlName="sessao_quantidade" matInput style="text-align: center;" min="1"
+                max=5>
+            </mat-form-field>
+            <button mat-icon-button
+              (click)="resumoSessaoForm.patchValue({sessao_quantidade: resumoSessaoForm.get('sessao_quantidade').value + 1})"
+              [disabled]="resumoSessaoForm.get('sessao_quantidade').value === 5">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
         </mat-expansion-panel>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -40,10 +58,10 @@
             <mat-label>Dia</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="sessao_data" readonly>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker disabled="false"></mat-datepicker>
+            <mat-datepicker #picker [disabled]="resumoSessaoForm.get('sessao_data').disabled"></mat-datepicker>
           </mat-form-field>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <!-- <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title> Responsável </mat-panel-title>
             <mat-panel-description fxLayoutAlign="end"> Ver mais </mat-panel-description>
@@ -59,21 +77,67 @@
             </mat-form-field>
             <mat-checkbox formControlName="sessao_envia_email_responsavel">Enviar e-mail para responsável</mat-checkbox>
           </div>
-        </mat-expansion-panel>
+        </mat-expansion-panel> -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title> Valor </mat-panel-title>
             <mat-panel-description fxLayoutAlign="end"> Ver mais </mat-panel-description>
           </mat-expansion-panel-header>
-          <div fxLayout="column">
+          <div fxLayout="column" fxLayoutGap="8px">
             <mat-form-field appearance="outline">
               <mat-label>Preço</mat-label>
               <input matInput formControlName="sessao_valor" currencyMask autocomplete="off" [options]="moedaOptions">
             </mat-form-field>
-            <mat-checkbox formControlName="sessao_paga">Pago</mat-checkbox>
+            <mat-checkbox (change)="sessaoPagaChange()" formControlName="sessao_paga">Pagamento</mat-checkbox>
+            <ng-container *ngIf="resumoSessaoForm.get('sessao_paga').value && tiposPagamento">
+              <div fxLayout="row" formArrayName="sessao_pagamentos"
+                *ngFor="let pagamento of pagamentos.controls; let i = index">
+
+                <div fxLayoutGap.gt-xs="8px" fxLayoutAlign="start" [formGroupName]="i">
+                  <div fxLayout="row" fxLayoutGap.gt-xs="8px" fxLayout.xs="column">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Forma de pagamento</mat-label>
+                      <mat-select formControlName="sessao_tipo_pagamento">
+                        <mat-option>Selecione</mat-option>
+                        <mat-option *ngFor="let tipoPagamento of tiposPagamento"
+                          [value]="tipoPagamento.tipo_pagamento_id">
+                          {{ tipoPagamento.descricao }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="pagamento.get('sessao_tipo_pagamento').hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Valor pago</mat-label>
+                      <input matInput formControlName="sessao_valor_pago" currencyMask autocomplete="off"
+                        [options]="moedaOptions">
+                      <mat-error *ngIf="pagamento.get('sessao_valor_pago').hasError('required')">
+                        Este campo é obrigatório
+                      </mat-error>
+                      <mat-error
+                        *ngIf="!pagamento.get('sessao_valor_pago').hasError('required') && pagamento.get('sessao_valor_pago').hasError('min')">
+                        Valor não pode ser zero
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <button mat-icon-button color="warn" (click)="removerPagamento(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+
+              </div>
+              <div fxLayoutAlign="center">
+                <button mat-icon-button color="accent" (click)="addPagamento()">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+            </ng-container>
           </div>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <!-- <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title> Orientações </mat-panel-title>
             <mat-panel-description fxLayoutAlign="end"> Ver mais </mat-panel-description>
@@ -82,12 +146,26 @@
             <mat-label>Texto</mat-label>
             <textarea matInput formControlName="sessao_orientacoes"></textarea>
           </mat-form-field>
+        </mat-expansion-panel> -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Nota geral </mat-panel-title>
+            <mat-panel-description fxLayoutAlign="end"> {{ resumoSessaoForm.get('sessao_nota_geral').value }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <section fxLayout="row" fxLayoutAlign="center">
+            <mat-icon *ngFor="let nota of notas"
+              [ngClass]="{'clicavel': true, 'nota': true, 'selecionado': (resumoSessaoForm.get('sessao_nota_geral').value >= nota)}"
+              (click)="resumoSessaoForm.get('sessao_nota_geral').setValue(nota)">
+              {{ (resumoSessaoForm.get('sessao_nota_geral').value >= nota) ? 'star' : 'star_outline' }}
+            </mat-icon>
+          </section>
         </mat-expansion-panel>
       </mat-accordion>
     </form>
   </div>
   <div mat-dialog-actions align="end">
     <button mat-button color="accent" [mat-dialog-close]="null">CANCELAR</button>
-    <button mat-button color="accent" [mat-dialog-close]="true">CONFIRMAR</button>
+    <button mat-button color="accent" [mat-dialog-close]="resumoSessaoForm.value">CONFIRMAR</button>
   </div>
 </div>

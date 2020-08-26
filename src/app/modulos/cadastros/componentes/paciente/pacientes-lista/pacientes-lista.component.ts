@@ -1,3 +1,4 @@
+import { PacientesService } from './../services/pacientes/pacientes.service';
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,15 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PacientesListaComponent implements OnInit {
 
-  pacientes = [
-    { nome: 'Matheus Felipe', idade: 6, responsavel: 'Beatriz Fernanda' },
-    { nome: 'Ana Maria', idade: 23, responsavel: null },
-    { nome: 'Matheus Felipe', idade: 3, responsavel: 'Thiago Alves' },
-  ];
+  pacientes: any[];
 
-  constructor(public location: Location) { }
+  constructor(public location: Location, private pacienteService: PacientesService) { }
 
   ngOnInit() {
+    this.carregarPacientes();
+  }
+
+  carregarPacientes() {
+    this.pacienteService.listar(null)
+      .subscribe(resultado => {
+        if (!!resultado.dados && resultado.dados.length) {
+          this.pacientes = resultado.dados;
+        }
+      });
   }
 
 }

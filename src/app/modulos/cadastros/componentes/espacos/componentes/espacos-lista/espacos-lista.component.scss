@@ -1,0 +1,25 @@
+.mat-icon.padrao {
+  padding: 8px;
+  opacity: .5;
+}
+
+.espaco {
+  input {
+    width: 100%;
+    border: none; 
+    font-size: 20px; 
+    height: fit-content;
+    background-color: transparent;
+    &:focus {
+      outline: none;
+      text-decoration: underline;
+    }
+  }
+  &.arquivado {
+    span {
+      opacity: .8;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+}

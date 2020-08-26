@@ -1,6 +1,8 @@
 import { slideInAnimation } from './animations';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { environment } from './../environments/environment';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,11 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'Domi';
-  constructor() { }
+  firebaseConfig: any;
+  constructor() {
+    // this.firebaseConfig = environment.firebaseConfig;
+    // firebase.initializeApp(this.firebaseConfig);
+  }
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
   }

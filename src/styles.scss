@@ -9,6 +9,12 @@
   font-weight: 600 !important;
 }
 
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
 mat-icon {
   font-family: 'Material Icons' !important;
 }
@@ -19,4 +25,19 @@ mat-icon {
 
 .timepicker-backdrop-overlay {
   z-index: 10000000 !important;
+}
+
+.mat-dialog-override {
+  mat-dialog-container {
+    > :first-child {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    mat-dialog-content,
+    div[mat-dialog-content] {
+      flex-grow: 1;
+      max-height: unset;
+    }
+  }
 }

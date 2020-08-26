@@ -1,8 +1,13 @@
+import { DURACAO_SNACKBAR } from './../../../../../../constantes/config';
+import { MatSnackBar } from '@angular/material';
+import { AtendimentosService } from './../../../../services/atendimentos/atendimentos.service';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import { Location } from '@angular/common';
 import { CountUpOptions } from 'countup.js';
+import { Atendimento } from '../../../../interfaces';
 
 moment.locale('pt-BR');
 
@@ -14,27 +19,10 @@ moment.locale('pt-BR');
 })
 export class AtendimentoResumoComponent implements OnInit {
 
-  atendimento: {
-    paciente: {
-      nome: string;
-      data_nascimento: string;
-      idade: number;
-      sexo: string;
-      nome_mae: string;
-      nome_pai: string;
-      email: string;
-      telefone: string[],
-      foto: string;
-    },
-    responsavel: string;
-    contato_responsavel: string;
-    data_inicio: string;
-    total_recebido: number;
-    total_receber: number;
-    total_sessoes: number;
-    queixa: string;
-    ultimos_acontecimentos: { tipo: number; descricao: string; data: string }[]
-  };
+  atendimento: Atendimento;
+
+  atendimentoId: number;
+  carregando: boolean;
 
   countUpOptionsMoeda: CountUpOptions = {
     decimalPlaces: 2,
@@ -49,44 +37,33 @@ export class AtendimentoResumoComponent implements OnInit {
     separator: '.'
   };
 
-  evolucaoOcultada = true;
+  mostrarMais: boolean;
 
-  constructor(public location: Location) {
-    this.atendimento = {
-      paciente: {
-        nome: 'Matheus Felipe',
-        data_nascimento: moment(new Date().toISOString()).subtract(6, 'years').format('ll'),
-        idade: null,
-        sexo: 'M',
-        nome_mae: 'Ana Lúcia',
-        nome_pai: 'Mário Henrique',
-        email: null,
-        telefone: [],
-        foto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcShzsUCDBt-yFKpKj9C2de7skiUTKTdKTvoBL5DbZ-XZ-4XHZhs'
-      },
-      responsavel: 'Ana Lúcia',
-      contato_responsavel: '81999009999',
-      data_inicio: moment(new Date().toISOString()).subtract(56, 'days').format('ll'),
-      total_recebido: 800.00,
-      total_receber: 240.00,
-      total_sessoes: 8,
-      queixa: 'Fala poucas palavras e não interage.',
-      ultimos_acontecimentos: [
-        { tipo: 1, descricao: 'Nota', data: moment(new Date().toISOString()).subtract(7, 'days').format('ll') },
-        { tipo: 1, descricao: 'Imagem', data: moment(new Date().toISOString()).subtract(14, 'days').format('ll') },
-        { tipo: 1, descricao: 'Nota', data: moment(new Date().toISOString()).subtract(21, 'days').format('ll') },
-        { tipo: 1, descricao: 'Nota', data: moment(new Date().toISOString()).subtract(28, 'days').format('ll') },
-        { tipo: 1, descricao: 'Áudio', data: moment(new Date().toISOString()).subtract(35, 'days').format('ll') },
-        { tipo: 1, descricao: 'Imagem', data: moment(new Date().toISOString()).subtract(42, 'days').format('ll') },
-        { tipo: 1, descricao: 'Nota', data: moment(new Date().toISOString()).subtract(49, 'days').format('ll') },
-        { tipo: 1, descricao: 'Nota', data: moment(new Date().toISOString()).subtract(56, 'days').format('ll') }
-      ]
-    };
-
-    this.atendimento.paciente.idade = Math.abs(moment(new Date().toISOString()).subtract(6, 'years').diff(moment(), 'years'));
+  constructor(
+    public location: Location,
+    public route: ActivatedRoute,
+    private atendimentoService: AtendimentosService,
+    private snackbar: MatSnackBar) {
+    this.mostrarMais = false;
   }
 
   ngOnInit() {
+    this.atendimentoId = Number.parseInt(this.route.snapshot.params.id_atendimento, 10);
+    this.carregarAtendimento();
+  }
+
+  async carregarAtendimento() {
+    this.carregando = true;
+    this.atendimentoService.detalhar(this.atendimentoId, true)
+      .subscribe(
+        r => this.atendimento = r.dados[0],
+        e => this.snackbar.open(e.error.mensagem, 'Ok', { duration: DURACAO_SNACKBAR }),
+        () => this.carregando = false
+      );
+  }
+
+  recuperarAtributo(objeto: any, nome: string) {
+    return objeto.hasOwnProperty(nome) ? objeto[nome] : null;
   }
 
 }

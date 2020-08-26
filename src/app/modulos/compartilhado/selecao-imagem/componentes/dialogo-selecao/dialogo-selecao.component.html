@@ -1,0 +1,20 @@
+<div mat-dialog-title>
+  Escolha ou arraste uma imagem
+</div>
+<mat-dialog-content ngx-dropzone [multiple]="false" [maxFileSize]="4 * 1024 * 1024" [accept]="'image/*'"
+  (change)="arquivoEscolhido($event)">
+  <ngx-dropzone-label>
+    <div>
+      <mat-icon>cloud</mat-icon>
+    </div>
+  </ngx-dropzone-label>
+  <ngx-dropzone-image-preview *ngFor="let f of files" [file]="f" [removable]="true" (removed)="aoRemover(f)">
+  </ngx-dropzone-image-preview>
+</mat-dialog-content>
+<div class="spacer"></div>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="null">CANCELAR</button>
+  <button mat-button color="accent" [mat-dialog-close]="files">
+    CONFIRMAR
+  </button>
+</mat-dialog-actions>

@@ -12,7 +12,16 @@ const rotas: Routes = [
   },
   {
     path: ':id_sessao',
-    loadChildren: () => import('./componentes/sessao-resumo/sessao-resumo.module').then(m => m.SessaoResumoModule)
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./componentes/sessao/sessao.module').then(m => m.SessaoModule)
+      },
+      {
+        path: 'resumo',
+        loadChildren: () => import('./componentes/sessao-resumo/sessao-resumo.module').then(m => m.SessaoResumoModule)
+      }
+    ]
   }
 ];
 

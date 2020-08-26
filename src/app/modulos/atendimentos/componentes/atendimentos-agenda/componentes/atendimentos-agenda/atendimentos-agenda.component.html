@@ -1,7 +1,32 @@
-<div fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
-  <button mat-icon-button (click)="location.back()">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
-  <h1>Agenda</h1>
+<div fxLayout="column">
+  <div fxShow.gt-sm fxLayoutAlign="start center" class="titulo-pagina" fxLayoutGap="16px">
+    <button mat-icon-button (click)="location.back()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Agenda</h1>
+  </div>
+
+  <div *ngIf="calendario !== null" fxLayoutAlign="space-between center" fxLayout="row" fxLayoutGap="16px">
+    <div fxFlex="nogrow">
+      <button mat-button (click)="hoje()" color="accent" [disabled]="carregando">HOJE</button>
+    </div>
+    <div fxFlex fxLayoutAlign.xs="end center" fxLayoutAlign="center center" fxLayout="row" fxLayoutGap="8px">
+      <button mat-mini-fab (click)="anterior()" [disabled]="carregando">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <ng-container>
+        <h3 fxFlex="90px" fxLayoutAlign="center">{{ calendario.getDate() | dataHora:'MMMM' }}</h3>
+      </ng-container>
+      <button mat-mini-fab (click)="proximo()" [disabled]="carregando">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+    <div fxFlex="nogrow">
+      <span>{{ calendario.getDate() | dataHora:'YYYY' }}</span>
+    </div>
+  </div>
+  <div class="calendar-container">
+    <full-calendar [plugins]="calendarPlugins" (eventClick)="abrirEvento($event)" id="calendar" #calendar>
+    </full-calendar>
+  </div>
 </div>
-<full-calendar [plugins]="calendarPlugins" id="calendar" #calendar></full-calendar>

@@ -34,7 +34,10 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+.firebase
 
 # System Files
 .DS_Store
 Thumbs.db
+firebase-debug.log
+src/assets/env.js

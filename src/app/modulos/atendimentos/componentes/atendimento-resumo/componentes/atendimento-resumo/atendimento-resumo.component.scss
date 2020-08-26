@@ -1,45 +1,20 @@
 @import '../../../../../../styles/variables.scss';
 
-.avatar {
-  background-size: cover; 
-}
-
-.card-paciente {
-  .mat-card-header .mat-card-title{
-    font-size: 16px;
-  }
-}
-
 mat-nav-list {
   mat-icon {
     opacity: 0.72;
   }
 }
 
-.ocultar-evolucao {
+.mostrar-menos{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.ultimos-acontecimentos {
-  overflow-y: auto;
-  height: 200px;
-  .container-esquerdo {
-    height: 100%;
-    .timeline-circulo {
-      border-radius: 50%;
-      background-color: $primary;
-      padding: 8px;
-    }
-    .timeline-traco {
-      width: 1.6px;
-      background-color: #bbb;
-    }
-  }
-  .evento-descricao {
-    font-weight: 600;
-    font-size: 16px;
-    color: $accent;
-  }
+.container-queixa {
+  border-left: 3px solid $primary;
+  margin-left: 24px;
+  padding-left: 32px;
+  min-height: 72px;
 }

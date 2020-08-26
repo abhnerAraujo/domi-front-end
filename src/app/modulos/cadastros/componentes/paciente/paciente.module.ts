@@ -1,6 +1,11 @@
+import { SelecaoImagemModule } from './../../../compartilhado/selecao-imagem/selecao-imagem.module';
+import { EscolaridadesService } from './../../../compartilhado/services/escolaridades/escolaridades.service';
+import { ResponsavelTiposService } from './services/responsavel-tipos/responsavel-tipos.service';
+import { PipesModule } from './../../../../pipes/pipes.module';
+import { PacientesService } from './services/pacientes/pacientes.service';
 import {
   MatIconModule, MatDividerModule, MatButtonModule, MatFormFieldModule, MatInputModule,
-  MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, MatListModule
+  MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, MatListModule, MatSnackBarModule
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -10,10 +15,11 @@ import { CommonModule } from '@angular/common';
 import { PacientesListaComponent } from './pacientes-lista/pacientes-lista.component';
 import { PacienteCadastroComponent } from './paciente-cadastro/paciente-cadastro.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [PacientesListaComponent, PacienteCadastroComponent],
+  exports: [PacienteCadastroComponent],
   imports: [
     CommonModule,
     PacienteRoutingModule,
@@ -28,8 +34,16 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
-    MatListModule
+    MatListModule,
+    PipesModule,
+    NgxMaskModule.forRoot(null),
+    MatSnackBarModule,
+    SelecaoImagemModule
   ],
-  providers: []
+  providers: [
+    PacientesService,
+    ResponsavelTiposService,
+    EscolaridadesService
+  ]
 })
 export class PacienteModule { }

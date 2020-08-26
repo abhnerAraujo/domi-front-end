@@ -1,5 +1,9 @@
+import { PipesModule } from './../../../../pipes/pipes.module';
+import { AtendimentosService } from './../../services/atendimentos/atendimentos.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatIconModule, MatButtonModule, MatListModule, MatCardModule } from '@angular/material';
+import {
+  MatIconModule, MatButtonModule, MatListModule, MatCardModule, MatSnackBarModule
+} from '@angular/material';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AtendimentosHomeComponent } from './componentes/atendimentos-home/atendimentos-home.component';
@@ -16,7 +20,12 @@ import { AtendimentosListaComponent } from './componentes/atendimentos-home/comp
     MatButtonModule,
     FlexLayoutModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule,
+    PipesModule
+  ],
+  providers: [
+    AtendimentosService
   ]
 })
 export class AtendimentosHomeModule { }

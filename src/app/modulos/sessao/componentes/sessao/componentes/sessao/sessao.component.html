@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutGap="16px">
+<div *ngIf="!carregando" fxLayout="column" fxLayoutGap="24px">
   <div fxLayout="column" *ngIf="prontoParaComecar">
     <div fxLayoutAlign="space-between center" fxLayout="row" fxFlex="100">
       <div fxLayoutGap="8px" fxFlex="nogrow" fxLayoutAlign="center center">
@@ -33,84 +33,91 @@
     </app-avaliacao-detalhe>
     <app-anamnese-detalhe *ngSwitchCase="5" (cancelado)="tipoArtefatoAdd = null" [sessao]="true"></app-anamnese-detalhe>
     <div *ngSwitchCase="0">
-      <div>
-        <h3>Configurar atendimento</h3>
-        <p> {{ mensagemConfiguracao }} </p>
-        <div *ngIf="configuracaoAtendimentoSalva.atendimento_dias.length" fxLayoutGap="8px" fxLayout="column">
-          <div fxLayout="row" class="header-atender-dias">
-            <div>
-              Dia/
-            </div>
-            <div>
-              Hora/
-            </div>
-            <div>
-              Duração/
-            </div>
-            <div>
-              Sessões
-            </div>
+      <div fxLayout="column" fxLayoutGap="16px">
+        <div fxLayoutAlign.gt-xs="space-between center" fxLayout.xs="column">
+          <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="star center">
+            <button mat-icon-button (click)="location.back()">
+              <mat-icon>{{ sessao ? 'close' : 'arrow_back' }}</mat-icon>
+            </button>
+            <h3>Configurar sessão</h3>
           </div>
-          <div fxLayoutAlign="start">
-            <mat-chip-list class="mat-chip-list-stacked" fxLayoutGap="8px">
-              <mat-chip *ngFor="let dia of configuracaoAtendimentoSalva.atendimento_dias" [selectable]="true"
-                [selected]="dia.selecionado" color="accent" (click)="chipSelecao(dia)">
-                {{ dia.diaSemana | diaSemana:true }} /
-                {{ dia.hora | hora }} /
-                {{ dia.duracao }} (min) /
-                {{ dia.qtdSessoes }}
-              </mat-chip>
-              <h4 *ngIf="agendamento?.agendamento_id">Agendamento</h4>
-              <mat-chip *ngIf="novoDiaAtendimento" [selected]="novoDiaAtendimento?.selecionado" color="accent"
-                (click)="novaConfiguracaoDia()">
-                <mat-icon>edit</mat-icon>
-                {{ novoDiaAtendimento.diaSemana | diaSemana:true }} /
-                {{ novoDiaAtendimento.hora | hora }} /
-                {{ novoDiaAtendimento.duracao }} (min) /
-                {{ novoDiaAtendimento.qtdSessoes }}
-              </mat-chip>
-              <mat-chip (click)="novaConfiguracaoDia()" *ngIf=" !novoDiaAtendimento">NOVA</mat-chip>
-            </mat-chip-list>
+          <div fxLayoutAlign.xs="center" fxLayoutGap="8px">
+            <button fxFlex.xs mat-stroked-button color="accent" (click)="falta()">REGISTRAR FALTA</button>
+            <button fxFlex.xs mat-raised-button color="accent" (click)="aplicarConfiguracoes();"
+              [disabled]="!sessaoForm.valid">TUDO PRONTO</button>
           </div>
         </div>
-        <p>
-          <mat-form-field appearance="outline" fxFlex.xs="100">
-            <mat-label>Valor por sessão</mat-label>
-            <input matInput currencyMask [(ngModel)]="valorSessao" autocomplete="off" [options]="moedaOptions">
-          </mat-form-field>
-        </p>
-        <p>
-          <button mat-raised-button color="accent" (click)="aplicarConfiguracoes();"
-            [disabled]="!diaAtendimentoSelecionado || !valorSessao">TUDO
-            PRONTO</button>
-        </p>
+        <section fxLayout="row" fxLayoutGap="16px" fxLayout.lt-md="column">
+          <form [formGroup]="sessaoForm" fxLayout="column" fxLayoutGap="16px" autocomplete="off" fxFlex="50">
+            <div fxLayout="column" fxLayoutAlign="start">
+              <h4 class="descricao-configuracao">Quantas sessões você irá realizar?</h4>
+              <div>
+                <mat-form-field appearance="outline" fxFlex="200px" fxFlex.xs>
+                  <input matInput min="1" class="configuracao-field" formControlName="quantidade" type="number">
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start">
+              <h4 class="descricao-configuracao">Quantos minutos cada sessão?</h4>
+              <div>
+                <mat-form-field appearance="outline" fxFlex="200px" fxFlex.xs>
+                  <input matInput max="60" min="1" class="configuracao-field" formControlName="duracao" type="number">
+                </mat-form-field>
+              </div>
+            </div>
+          </form>
+          <mat-divider fxHide.xs [vertical]="true"></mat-divider>
+          <div class="container-resultado" fxFlex.gt-sm fxLayoutGap.lt-md="16px" fxLayoutGap="16%"
+            fxLayoutAlign="center center" fxLayoutAlign.lt-sm="space-between start">
+            <div fxLayout="column" fxLayoutAlign="center center">
+              <span class="resultado">
+                {{ tempoTotal() }}</span>
+              <h4>Tempo total</h4>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="center center">
+              <span class="resultado">
+                {{ fimDaSessao() }}</span>
+              <h4>Hora de términio</h4>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
     <div *ngSwitchDefault>
       <div>
-        <h3>Atividade</h3>
-        <div *ngIf="timeline" fxLayout="column" fxLayoutGap="8px" class="ultimos-acontecimentos">
-          <div *ngFor="let grupo of timeline.slice().reverse(); let i = index" fxLayout="row"
-            fxLayoutAlign="start start" fxLayoutGap="8px" fxFlex="45px">
-            <div fxLayout="column" class="container-esquerdo" fxLayoutGap="5px" fxLayoutAlign="start center">
-              <div class="timeline-circulo" fxFlex="nogrow"></div>
-              <div fxFlex class="timeline-traco" *ngIf="i !== timeline.length - 1"></div>
-            </div>
-            <div fxLayout="column" fxFlex>
-              <div class="evento-descricao">
-                {{ grupo[0] }}
-              </div>
-              <div fxLayoutGap="8px" fxLayout="row">
-                {{ grupo[1].length }} {{ grupo[1].length > 1 ? 'itens' : 'item' }}
-              </div>
-            </div>
+        <section fxLayout="column" fxLayoutGap="8px">
+          <h3>Adicionar</h3>
+          <mat-nav-list>
+            <mat-list-item *ngFor="let artefato of artefatos" (click)="tipoArtefatoAdd = artefato.tipo">
+              <mat-icon mat-list-icon style="opacity: 0.72;">{{ artefato.icon }}</mat-icon>
+              <a mat-line>
+                {{ artefato.texto }}
+              </a>
+            </mat-list-item>
+          </mat-nav-list>
+        </section>
+        <mat-divider *ngIf="planejamento"></mat-divider>
+        <section *ngIf="planejamento" class="planejamento">
+          <h3>Último planejamento</h3>
+          <div>
+            <span>{{ planejamento.planejamento_texto }}</span>
           </div>
-        </div>
+          <h4>Objetivos</h4>
+          <div>
+            <ul>
+              <li *ngFor="let objetivo of planejamento?.objetivos"> {{ objetivo.conteudo }}
+                <ol>
+                  <li *ngFor="let atividade of objetivo?.atividades">{{ atividade.conteudo }}</li>
+                </ol>
+              </li>
+            </ul>
+          </div>
+          <h4 *ngIf="planejamento.materiais">Materiais</h4>
+          <mat-chip-list *ngIf="planejamento.materiais">
+            <mat-chip *ngFor="let material of planejamento.materiais?.split(',')">{{ material }}</mat-chip>
+          </mat-chip-list>
+        </section>
       </div>
     </div>
   </div>
 </div>
-
-<button mat-fab color="accent" (click)="adicionarArtefato()" *ngIf="prontoParaComecar && tipoArtefatoAdd === null">
-  <mat-icon>add</mat-icon>
-</button>

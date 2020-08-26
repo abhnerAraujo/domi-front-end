@@ -1,4 +1,6 @@
-<h1 mat-dialog-title>Novo agendamento</h1>
+<h1 mat-dialog-title *ngIf="data.atendimento">Atendimento</h1>
+<h1 mat-dialog-title *ngIf="data.agendamento_id">Editar agendamento</h1>
+<h1 mat-dialog-title *ngIf="!data.atendimento && !data.agendamento_id">Novo agendamento</h1>
 <div mat-dialog-content>
   <form fxLayout="column" [formGroup]="horarioForm" autocomplete="off">
     <mat-form-field appearance="outline">
@@ -46,6 +48,7 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="null">CANCELAR</button>
-  <button mat-button [disabled]="!horarioForm.valid" (click)="confirmar()">CRIAR</button>
+  <button mat-button (click)="excluir()" *ngIf="data.agendamento_id" color="warn">EXCLUIR</button>
+  <button mat-button [mat-dialog-close]="null">FECHAR</button>
+  <button mat-button [disabled]="!horarioForm.valid || horarioForm.disabled" (click)="confirmar()">SALVAR</button>
 </div>

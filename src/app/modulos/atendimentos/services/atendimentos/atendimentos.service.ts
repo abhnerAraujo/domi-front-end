@@ -15,9 +15,9 @@ export class AtendimentosService {
       .post<CriarAtendimentoResponse>('atendimentos', dados);
   }
 
-  listar() {
+  listar(filtros?: any) {
     return this.http
-      .get<ListarAtendimentosResponse>('atendimentos');
+      .get<ListarAtendimentosResponse>('atendimentos', { params: filtros });
   }
 
   detalhar(atendimentoId: number, fill?: boolean) {

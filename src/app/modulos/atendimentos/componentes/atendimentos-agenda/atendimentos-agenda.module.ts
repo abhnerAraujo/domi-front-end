@@ -1,3 +1,4 @@
+import { PipesModule } from './../../../../pipes/pipes.module';
 import { AgendamentosService } from './../../services/agendamentos/agendamentos.service';
 import { AtendimentosAgendaRoutingModule } from './atendimentos-agenda-routing.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -32,7 +33,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     MatSnackBarModule,
     MatSliderModule,
     NgxMaterialTimepickerModule.setLocale('pt-BR'),
-    MatCardModule
+    MatCardModule,
+    PipesModule
   ],
   entryComponents: [
     DialogAdicionarEventoComponent

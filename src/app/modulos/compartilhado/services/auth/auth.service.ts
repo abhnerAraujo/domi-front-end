@@ -51,11 +51,12 @@ export class AuthService {
     await this.afAuth.auth.signInWithCredential(credential);
   }
 
-  async getCalendar() {
+  async getCalendar(start?: string, end?: string) {
     try {
       const events = await gapi.client.calendar.events.list({
         calendarId: 'primary',
-        timeMin: this.moment.momentBr().startOf('month').toISOString(),
+        timeMin: start || this.moment.momentBr().startOf('month').toISOString(),
+        timeMax: end || this.moment.momentBr().endOf('month').toISOString(),
         showDeleted: false,
         // singleEvents: true,
         // orderBy: 'startTime'
@@ -88,6 +89,22 @@ export class AuthService {
       description: evento.description
     });
     return insert;
+  }
+
+  async updateEvent(evento) {
+    const update = await gapi.client.calendar.events.update({
+      calendarId: 'primary',
+      eventId: evento.id,
+      start: {
+        dateTime: evento.start,
+        timeZone: 'America/Recife'
+      },
+      end: {
+        dateTime: evento.end,
+        timeZone: 'America/Recife'
+      }
+    });
+    return update;
   }
 
   getProvider(providerId: string) {

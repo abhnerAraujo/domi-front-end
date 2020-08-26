@@ -12,9 +12,19 @@ export class AgendamentosService {
       .post<CriarAgendamentoRespone>('agendamentos', dados);
   }
 
+  editar(agendamentoId: number, dados: Agendamento) {
+    return this.http
+      .put<any>(`agendamentos/${agendamentoId}`, dados);
+  }
+
   listar(consulta?: any) {
     return this.http
       .get<ListarAgendamentosResponse>('agendamentos', { params: consulta ? consulta : null });
+  }
+
+  excluir(agendamentoId: number) {
+    return this.http
+      .delete<any>(`agendamentos/${agendamentoId}`);
   }
 
 }

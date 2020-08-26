@@ -26,4 +26,24 @@
   .fc-button-primary {
     border: none;
   }
+  .fc-day-grid-event > .fc-content {
+    white-space: normal;
+  }
+}
+
+.calendar-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+@media screen and (min-width: 1367px) {
+  .calendar-container {
+    max-height: 700px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .calendar-container {
+    margin: 0 -16px;
+  }
 }
